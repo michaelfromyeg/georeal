@@ -11,6 +11,7 @@ default_app = initialize_app(cred)
 db = firestore.client()
 
 users_ref = db.collection("users")
+regions_ref = db.collection("regions")
 
 
 @app.route("/live")
@@ -27,15 +28,25 @@ def users(username: str):
     POST /users/:username   - create empty user account with username
     """
     if request.method == "GET":
-        return {"username": username}
+        try:
+            user = users_ref.document(username).get()
+            if not user.to_dict():
+                return jsonify({"message": f"User {username} does not exist"}), 404
+
+            return jsonify(user.to_dict()), 200
+        except Exception as e:
+            return f"An error occurred: {e}"
 
     if request.method == "POST":
-        default_user = {
-            # TODO: add fields for user
-            "username": username
-        }
-        users_ref.document(username).set(default_user)
-        return jsonify({"success": True}), 200
+        try:
+            default_user = {
+                # TODO: add fields for user
+                "username": username
+            }
+            users_ref.document(username).set(default_user)
+            return jsonify({"success": True}), 200
+        except Exception as e:
+            return f"An error occurred: {e}"
 
 
 @app.route("/regions", methods=["GET", "POST"])
