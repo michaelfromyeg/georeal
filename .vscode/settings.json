@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": ["./server"],
+    "python.defaultInterpreterPath": "${workspaceFolder}/server/env/bin/python",
+    "python.envFile": "${workspaceFolder}/server/env"
+}
