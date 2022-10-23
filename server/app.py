@@ -27,9 +27,14 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/live")
-def live():
+@app.route("/")
+def hello():
     return {"hello": "world"}
+
+
+@app.route("/status")
+def status():
+    return {"status": "up"}
 
 
 @app.route("/users/<string:username>", methods=["GET", "POST"])
@@ -63,18 +68,18 @@ def users(username: str):
 
 
 @app.route("/regions", methods=["GET", "POST"])
-def regions(lat: float, lon: float, radius: int):
+def regions():
     """
     A circular region on the map.
 
     GET /regions    - fetch all regions
     POST /regions   - create a single region (with lat, lon, radius); return region ID
-    """
-    """
-    return [
-            {"lat": 1.02, "lon": 2.02, "radius": 3},
-            {"lat": 3.02, "lon": 4.02, "radius": 3},
-        ]
+
+    e.g., an array of regions
+    [
+        {"lat": 1.02, "lon": 2.02, "radius": 3},
+        {"lat": 3.02, "lon": 4.02, "radius": 3},
+    ]
     """
 
     if request.method == "GET":
@@ -84,18 +89,14 @@ def regions(lat: float, lon: float, radius: int):
         except Exception as e:
             return f"An error occurred: {e}"
 
-
     if request.method == "POST":
         try:
             region_id = uuid.uuid4()
+            # ASSUME: request.json contains lat, lon, radius only
             regions_ref.document(region_id).set(request.json)
             return jsonify({"success": True}), 200
         except Exception as e:
             return f"An Error Occurred: {e}"
-
-        # TODO: create region with generated region ID
-
-        return {"regionId": region_id}
 
 
 @app.route("/regions/<string:region_id>/photos", methods=["GET", "POST"])
@@ -103,17 +104,24 @@ def regionPhotos(region_id: str):
     """
     A photo that belongs to a specific region ID.
 
-    GET /regions/:regionId/photos   - fetch all photos in regionId
-    POST /regions/:regionId/photos  - create photo in region
+    GET /regions/:region_id/photos   - fetch all photos in regionId
+    POST /regions/:region_id/photos  - create photo in region
+
+    e.g., example photos
+
+    "photos": [
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+    ]
     """
 
     if request.method == "GET":
-        return {
-            "photos": [
-                "https://via.placeholder.com/150",
-                "https://via.placeholder.com/150",
-            ]
-        }
+        all_photos = [photo.to_dict() for photo in photos_ref.stream()]
+        region_photos = list(
+            filter(lambda photo: photo["regionId"] == region_id, all_photos)
+        )
+
+        return jsonify(region_photos), 200
 
     # TODO: handle case where filename already exists in bucket, photos collection
     if request.method == "POST":
