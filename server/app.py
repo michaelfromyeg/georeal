@@ -1,13 +1,16 @@
-from flask import Flask, request
-import firebase_admin
-from firebase_admin import credentials
+import os
+from flask import Flask, request, jsonify
+from firebase_admin import credentials, firestore, initialize_app
 
 app = Flask(__name__)
 
 cred = credentials.Certificate(
     "georeal-dubhacks-firebase-adminsdk-k6jvz-20e88e2d34.json"
 )
-firebase_admin.initialize_app(cred)
+default_app = initialize_app(cred)
+db = firestore.client()
+
+users_ref = db.collection("users")
 
 
 @app.route("/live")
@@ -16,7 +19,7 @@ def live():
 
 
 @app.route("/users/<string:username>", methods=["GET", "POST"])
-def users(username):
+def users(username: str):
     """
     Method for accessing and creating users.
 
@@ -25,8 +28,14 @@ def users(username):
     """
     if request.method == "GET":
         return {"username": username}
+
     if request.method == "POST":
-        return {"username": username}
+        default_user = {
+            # TODO: add fields for user
+            "username": username
+        }
+        users_ref.document(username).set(default_user)
+        return jsonify({"success": True}), 200
 
 
 @app.route("/regions", methods=["GET", "POST"])
