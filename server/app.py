@@ -77,8 +77,8 @@ def regions():
 
     e.g., an array of regions
     [
-        {"lat": 1.02, "lon": 2.02, "radius": 3},
-        {"lat": 3.02, "lon": 4.02, "radius": 3},
+        { "regionId: "abc", "lat": 1.02, "lon": 2.02, "radius": 3 },
+        { "regionId: "abc", "lat": 3.02, "lon": 4.02, "radius": 3 },
     ]
     """
 
