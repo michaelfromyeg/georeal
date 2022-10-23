@@ -1,5 +1,7 @@
 import os
 import uuid
+import string
+import random
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app, storage
 from werkzeug.utils import secure_filename
@@ -91,7 +93,12 @@ def regions():
 
     if request.method == "POST":
         try:
-            region_id = uuid.uuid4()
+            # region_id = uuid.uuid4()
+            N = 3
+            region_id = "".join(
+                random.choices(string.ascii_lowercase + string.digits, k=N)
+            )
+
             # ASSUME: request.json contains lat, lon, radius only
             regions_ref.document(region_id).set(request.json)
             return jsonify({"success": True}), 200
