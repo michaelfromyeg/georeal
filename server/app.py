@@ -100,7 +100,10 @@ def regions():
             )
 
             # ASSUME: request.json contains lat, lon, radius only
-            regions_ref.document(region_id).set(request.json)
+            region_body = request.json
+            region_body["regionId"] = region_id
+
+            regions_ref.document(region_id).set(region_body)
             return jsonify({"success": True}), 200
         except Exception as e:
             return f"An Error Occurred: {e}"
