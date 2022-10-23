@@ -1,0 +1,1 @@
+curl -F "file=@images/georeal-logo.png" -X "POST" localhost:5001/regions/my-region/photos
