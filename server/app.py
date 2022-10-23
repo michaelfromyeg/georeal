@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
+import uuid
 
 app = Flask(__name__)
 
@@ -50,22 +51,35 @@ def users(username: str):
 
 
 @app.route("/regions", methods=["GET", "POST"])
-def regions():
+def regions(lat: float, lon: float, radius: int):
     """
     A circular region on the map.
 
     GET /regions    - fetch all regions
     POST /regions   - create a single region (with lat, lon, radius); return region ID
     """
-
-    if request.method == "GET":
-        return [
+    """
+    return [
             {"lat": 1.02, "lon": 2.02, "radius": 3},
             {"lat": 3.02, "lon": 4.02, "radius": 3},
         ]
+    """
+
+    if request.method == "GET":
+        try:
+            all_regions = [region.to_dict() for region in regions_ref.stream()]
+            return jsonify(all_regions), 200
+        except Exception as e:
+            return f"An error occurred: {e}"
+
 
     if request.method == "POST":
-        region_id = "abc123"
+        try:
+            region_id = uuid.uuid4()
+            regions_ref.document(region_id).set(request.json)
+            return jsonify({"success": True}), 200
+        except Exception as e:
+            return f"An Error Occurred: {e}"
 
         # TODO: create region with generated region ID
 
