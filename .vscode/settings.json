@@ -1,5 +1,10 @@
 {
-    "python.analysis.extraPaths": ["./server"],
-    "python.defaultInterpreterPath": "${workspaceFolder}/server/env/bin/python",
-    "python.envFile": "${workspaceFolder}/server/env"
+    "files.insertFinalNewline": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.terminal.activateEnvironment": true
 }

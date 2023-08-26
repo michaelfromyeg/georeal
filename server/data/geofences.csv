@@ -1,0 +1,4 @@
+geofence_id,name,geojson,photo_filenames
+1,"Location A","{""type"": ""Feature"", ""geometry"": {""type"": ""Polygon"", ""coordinates"": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}, ""properties"": {""name"": ""Polygon""}}","photo1.jpg,photo2.jpg"
+2,"Location B","{""type"": ""Feature"", ""geometry"": {""type"": ""Polygon"", ""coordinates"": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}, ""properties"": {""name"": ""Polygon""}}","photo3.jpg,photo4.jpg"
+3,"Location C","{""type"": ""Feature"", ""geometry"": {""type"": ""Polygon"", ""coordinates"": [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]]]}, ""properties"": {""name"": ""Polygon""}}","photo5.jpg,photo6.jpg"

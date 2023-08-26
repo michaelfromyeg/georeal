@@ -1,3 +1,3 @@
 #!/bin/sh
 
-brew install python@3.10 docker
+brew install python@3.11 docker
