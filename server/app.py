@@ -5,7 +5,7 @@ import csv
 import os
 import subprocess
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from geojson import Feature, Polygon, loads
 from werkzeug.utils import secure_filename
@@ -161,6 +161,15 @@ def upload_photos(geofence_id):
         return jsonify({"message": "Photos uploaded successfully"}), 200
     else:
         return jsonify({"error": "No valid files were uploaded"}), 400
+
+
+@app.route("/uploads/<filename>", methods=["GET"])
+def get_image(filename):
+    """
+    Return an image.
+    """
+    image_path = f"{UPLOAD_FOLDER}/{filename}"
+    return send_file(image_path, mimetype="image/jpeg")
 
 
 if __name__ == "__main__":
