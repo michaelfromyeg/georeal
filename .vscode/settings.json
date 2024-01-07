@@ -6,5 +6,6 @@
         "source.organizeImports": "explicit"
     },
     "python.terminal.activateEnvInCurrentTerminal": true,
-    "python.terminal.activateEnvironment": true
+    "python.terminal.activateEnvironment": true,
+    "python.defaultInterpreterPath": "server/env/bin/python",
 }

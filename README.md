@@ -1,10 +1,6 @@
 # GeoReal
 
-DubHacks 2022 project.
-
-<p align="center">
-  <img width="150px" src="./images/georeal-logo.png">
-</p>
+BeReal, but space-based instead of time.
 
 ## About
 
@@ -13,6 +9,8 @@ Imagine BeReal. Except, instead of being based on a _time_ of day, it's based on
 Setup custom geo-fences around the globe and get prompted for an impromptu selfie when you stumble into one. See a collection of folks that have stood where you're standing!
 
 ## Usage
+
+Get the project running.
 
 ### Client
 

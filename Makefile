@@ -1,4 +1,7 @@
-.PHONY: run-server
+.PHONY: server
 
-run-server:
-	cd server && flask run
+server:
+	python -m server.server
+
+test:
+	python -m pytest
