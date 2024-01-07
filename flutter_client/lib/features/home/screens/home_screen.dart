@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/features/geo_sphere/custom_toast.dart';
 import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
-import 'package:georeal/features/geo_sphere/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/services/location_service.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
@@ -58,14 +58,19 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             const Expanded(child: CustomMap()),
             ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: ((context) {
-                        return const PhotoPrompt();
-                      }));
-                },
-                child: const Text("Press"))
+              onPressed: () {
+                /*
+                showDialog(
+                    context: context,
+                    builder: ((context) {
+                      return const PhotoPrompt();
+                    }));
+                    */
+                CustomToast.show(context,
+                    "You have entered a geo-sphere, press this button to add to its gallery!");
+              },
+              child: const Text("Press"),
+            ),
           ],
         ),
       ),
