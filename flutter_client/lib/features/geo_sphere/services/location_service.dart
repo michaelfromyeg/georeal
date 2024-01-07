@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:georeal/features/geo_sphere/geo_sphere_service.dart';
+import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:location/location.dart';
 
 class LocationService {

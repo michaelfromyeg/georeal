@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
-import '../../constants/global_variables.dart';
-import '../../models/geo_sphere_model.dart';
+import '../../../constants/global_variables.dart';
+import '../../../models/geo_sphere_model.dart';
 
 class GeoSphereService {
   final List<GeoSphere> _geoSpheres = [];

@@ -27,9 +27,11 @@ class _CustomMapState extends State<CustomMap> {
 
   Future<void> requestPermission() async {
     bool serviceEnabled = await location.serviceEnabled();
+    // Checks to see if location services are already enabled
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
+        // User does not enable locationServices
         return;
       }
     }

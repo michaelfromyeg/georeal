@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:location/location.dart';
 
-import 'geo_sphere_service.dart';
+import 'services/geo_sphere_service.dart';
 
 class GeoSphereViewModel extends ChangeNotifier {
   final GeoSphereService _geoSphereService;

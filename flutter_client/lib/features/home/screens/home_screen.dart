@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
-import 'package:georeal/features/home/services/location_service.dart';
+import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
+import 'package:georeal/features/geo_sphere/services/location_service.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   print("viewModel  ${geoSphereViewModel.geoSpheres}");
                   print("service  ${geoSphereService.geoSpheres}");
                 },
-                child: const Text("GeoSphers"))
+                child: const Text("GeoSpheres"))
           ],
         ),
       ),
