@@ -22,9 +22,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   File? image;
 
-  Future pickImage() async {
+  Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
       final imageTemporary = File(image.path);
@@ -75,14 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             const Expanded(child: CustomMap()),
             ElevatedButton(
-              onPressed: () => pickImage(),
+              onPressed: () => pickImage(ImageSource.gallery),
               child: const Text("Pick Gallery"),
             ),
             ElevatedButton(
-              onPressed: () {
-                print("viewModel  ${geoSphereViewModel.geoSpheres}");
-                print("service  ${geoSphereService.geoSpheres}");
-              },
+              onPressed: () => pickImage(ImageSource.camera),
               child: const Text("Pick Camera"),
             ),
           ],
