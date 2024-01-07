@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:location/location.dart';
 
+typedef LocationCallback = void Function();
+
 class LocationService {
   final Location location = Location();
   Timer? locationTimer;
 
   // Params: geoSphereViewModel:
-  Future<void> startLocationChecks(GeoSphereService geoSphereService) async {
+  Future<void> startLocationChecks(
+      GeoSphereService geoSphereService, LocationCallback callback) async {
     // Request background location permission
     if (await location.requestPermission() == PermissionStatus.granted) {
       locationTimer =
@@ -22,6 +25,7 @@ class LocationService {
 
         if (isInGeoSphere) {
           print("The current location is inside the geosphere.");
+          callback();
         } else {
           print("The current location is outside the geosphere.");
         }

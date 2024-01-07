@@ -19,6 +19,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   LocationService locationService = LocationService();
   bool isLocationServiceStarted = false;
+
+  void showCustomToast() {
+    print("Test");
+    CustomToast.show(context,
+        "You have entered a geo-sphere, press this button to add to its gallery!");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
     if (!isLocationServiceStarted) {
-      locationService.startLocationChecks(geoSphereService);
+      locationService.startLocationChecks(geoSphereService, showCustomToast);
       isLocationServiceStarted = true;
     }
     return Scaffold(
