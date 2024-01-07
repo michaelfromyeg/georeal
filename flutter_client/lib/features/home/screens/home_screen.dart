@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/services/location_service.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/map.dart';
@@ -20,20 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  File? image;
-
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-
-      final imageTemporary = File(image.path);
-      this.image = imageTemporary;
-    } on PlatformException catch (e) {
-      print("Failed to pick image: $e");
-    }
-  }
-
   LocationService locationService = LocationService();
   bool isLocationServiceStarted = false;
   @override
@@ -75,13 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             const Expanded(child: CustomMap()),
             ElevatedButton(
-              onPressed: () => pickImage(ImageSource.gallery),
-              child: const Text("Pick Gallery"),
-            ),
-            ElevatedButton(
-              onPressed: () => pickImage(ImageSource.camera),
-              child: const Text("Pick Camera"),
-            ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return const PhotoPrompt();
+                      }));
+                },
+                child: const Text("Press"))
           ],
         ),
       ),
