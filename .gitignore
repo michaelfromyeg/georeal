@@ -167,3 +167,33 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Additional Flutter/Dart Specific Ignores
+**/.generated/
+**/*.lock
+**/ios/Flutter/Generated.xcconfig
+**/android/app/debug.keystore
+**/.flutter-plugins
+
+# iOS/Android Specific Ignores
+**/ios/Pods/
+**/android/.gradle/
+**/android/build/
+
+# General Development Ignores
+.DS_Store
+thumbs.db
+*.log
+
+# IDE/Editor Specific Ignores
+.vscode/
