@@ -3,7 +3,7 @@ import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';
 
-import 'features/geo_sphere/geo_sphere_view_model.dart';
+import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
 // Replace with the actual path
 
 void main() {

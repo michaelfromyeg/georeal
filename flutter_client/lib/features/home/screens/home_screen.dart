@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/custom_toast.dart';
-import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/services/location_service.dart';
+import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/widgets/custom_toast.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
@@ -47,11 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
       locationService.startLocationChecks(geoSphereService, showCustomToast);
       isLocationServiceStarted = true;
     }
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(20.0),
               child: Align(
                 alignment: AlignmentDirectional.center,
@@ -61,23 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const AddGeoSphereWidget(),
-            const SizedBox(height: 20),
-            const Expanded(child: CustomMap()),
-            ElevatedButton(
-              onPressed: () {
-                /*
-                showDialog(
-                    context: context,
-                    builder: ((context) {
-                      return const PhotoPrompt();
-                    }));
-                    */
-                CustomToast.show(context,
-                    "You have entered a geo-sphere, press this button to add to its gallery!");
-              },
-              child: const Text("Press"),
-            ),
+            AddGeoSphereWidget(),
+            SizedBox(height: 20),
+            Expanded(child: CustomMap()),
           ],
         ),
       ),
