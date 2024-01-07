@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/add_geo_sphere/view/add_geo_sphere_modal.dart';
+import 'package:georeal/features/geo_sphere/add_geo_sphere_modal.dart';
 import 'package:georeal/global_variables.dart';
 
 class AddGeoSphereWidget extends StatelessWidget {

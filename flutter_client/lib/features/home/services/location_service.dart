@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:georeal/features/add_geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/geo_sphere_service.dart';
 import 'package:location/location.dart';
 
 class LocationService {
   final Location location = Location();
   Timer? locationTimer;
 
-  Future<void> startLocationChecks(
-      GeoSphereViewModel geoSphereViewModel) async {
+  // Params: geoSphereViewModel:
+  Future<void> startLocationChecks(GeoSphereService geoSphereService) async {
     // Request background location permission
     if (await location.requestPermission() == PermissionStatus.granted) {
       locationTimer =
@@ -17,7 +17,7 @@ class LocationService {
         print(
             "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
-        bool isInGeoSphere = geoSphereViewModel.isPointInGeoSphere(
+        bool isInGeoSphere = geoSphereService.isPointInGeoSphere(
             currentLocation.latitude!, currentLocation.longitude!);
 
         if (isInGeoSphere) {

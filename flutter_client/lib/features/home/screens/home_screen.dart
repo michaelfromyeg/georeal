@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/add_geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/geo_sphere_service.dart';
+import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
 import 'package:georeal/features/home/services/location_service.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
@@ -30,17 +31,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final geoSphereService =
+        Provider.of<GeoSphereService>(context, listen: false);
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
     if (!isLocationServiceStarted) {
-      locationService.startLocationChecks(geoSphereViewModel);
+      locationService.startLocationChecks(geoSphereService);
       isLocationServiceStarted = true;
     }
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(20.0),
               child: Align(
                 alignment: AlignmentDirectional.center,
@@ -50,42 +53,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            AddGeoSphereWidget(),
-            SizedBox(height: 20),
-/*
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                
-                Center(
-                  child: Container(
-                    height: 302,
-                    width: MediaQuery.of(context).size.width - 38,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white),
-                    ),
-                  ),
-                ),
-                /*
-                Center(
-                  child: SizedBox(
-                    height: 300,
-                    width: MediaQuery.of(context).size.width - 40,
-                    child: const ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      child: CustomMap(),
-                    ),
-                  ),
-                ),
-                */
-                
-              ],
-            ),
-            */
-            Expanded(child: CustomMap()),
+            const AddGeoSphereWidget(),
+            const SizedBox(height: 20),
+            const Expanded(child: CustomMap()),
+            ElevatedButton(
+                onPressed: () {
+                  print("viewModel  ${geoSphereViewModel.geoSpheres}");
+                  print("service  ${geoSphereService.geoSpheres}");
+                },
+                child: const Text("GeoSphers"))
           ],
         ),
       ),
