@@ -50,11 +50,10 @@ class CustomToast {
     );
 
     overlay.insert(overlayEntry);
-/*
+
     // Dismiss the toast after a certain duration
     Future.delayed(const Duration(seconds: 3), () {
       overlayEntry.remove();
     });
-    */
   }
 }
