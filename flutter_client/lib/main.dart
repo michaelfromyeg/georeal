@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/features/gallery/gallery_service.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,8 @@ import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
 // Replace with the actual path
 
 void main() {
-  GeoSphereService geoSphereService = GeoSphereService();
+  GalleryService galleryService = GalleryService();
+  GeoSphereService geoSphereService = GeoSphereService(galleryService);
   runApp(
     MultiProvider(
       providers: [
@@ -17,6 +19,9 @@ void main() {
         Provider<GeoSphereService>(
           create: (context) => geoSphereService,
         ),
+        Provider<GalleryService>(
+          create: (context) => galleryService,
+        )
       ],
       child: const MyApp(),
     ),

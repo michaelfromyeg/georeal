@@ -37,7 +37,9 @@ class CustomToast {
                       showDialog(
                           context: context,
                           builder: ((context) {
-                            return const PhotoPrompt();
+                            return PhotoPrompt(
+                              geoSphereId: geoSphere.galleryId,
+                            );
                           }));
                     },
                     child: const Text("Button"),

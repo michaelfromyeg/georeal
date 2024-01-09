@@ -5,9 +5,13 @@ import 'package:http/http.dart' as http;
 
 import '../../../constants/global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
+import '../../gallery/gallery_service.dart';
 
 class GeoSphereService {
+  final GalleryService _galleryService;
   final List<GeoSphere> _geoSpheres = [];
+
+  GeoSphereService(this._galleryService);
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
@@ -19,7 +23,10 @@ class GeoSphereService {
       radiusInMeters: radius,
       name: name,
     );
+
     _geoSpheres.add(newGeoSphere);
+
+    _galleryService.createGalleryForGeoSphere(newGeoSphere.galleryId);
   }
 
   // Calculates the angular distance between two points on the surface of a sphere
