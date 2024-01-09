@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/geo_sphere/widgets/photo_prompt.dart';
+import 'package:georeal/models/geo_sphere_model.dart';
 
 class CustomToast {
-  static void show(BuildContext context, String message) {
+  static void show(BuildContext context, String message, GeoSphere geoSphere) {
     final overlay = Overlay.of(context);
     final overlayEntry = OverlayEntry(
       builder: (context) => Positioned(

@@ -22,9 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLocationServiceStarted = false;
 
   void showCustomToast(GeoSphere geoSphere) {
-    print("Test");
-    CustomToast.show(context,
-        "You have entered ${geoSphere.name}, press this button to add to its gallery!");
+    CustomToast.show(
+      context,
+      "You have entered ${geoSphere.name}, press this button to add to its gallery!",
+      geoSphere,
+    );
   }
 
   @override
