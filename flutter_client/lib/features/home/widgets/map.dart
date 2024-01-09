@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/geo_sphere_view_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+
+import '../../geo_sphere/view_model/geo_sphere_view_model.dart';
 
 class CustomMap extends StatefulWidget {
   const CustomMap({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/view/friends_screen.dart';
+import 'package:georeal/features/geo_sphere/views/geo_spheres_view.dart';
 import 'package:georeal/features/home/screens/home_screen.dart';
 import 'package:georeal/global_variables.dart';
 
@@ -12,7 +12,10 @@ class HomeRouter extends StatefulWidget {
 
 class _HomeRouterState extends State<HomeRouter> {
   int _page = 0;
-  final screens = [const HomeScreen(), const FriendsScreen()];
+  final screens = [
+    const HomeScreen(),
+    const GeoSphereView(), /*FriendsScreen()*/
+  ];
 
   @override
   @override
@@ -33,7 +36,7 @@ class _HomeRouterState extends State<HomeRouter> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildBottomNavItem(Icons.home, 'Home', 0),
-              buildBottomNavItem(Icons.person, 'Friends', 1),
+              buildBottomNavItem(Icons.public, 'Geo Sphere', 1),
             ],
           ),
         ),
