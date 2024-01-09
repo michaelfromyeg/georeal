@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/features/geo_sphere/views/geo_sphere_gallery.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
@@ -96,7 +97,13 @@ class GeoSphereView extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      print(geoSphere.name);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              GeoSphereGallery(geoSphere: geoSphere),
+                        ),
+                      );
                     },
                   );
                 },
