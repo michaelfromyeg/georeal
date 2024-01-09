@@ -55,15 +55,15 @@ class GeoSphereService {
     return degrees * pi / 180;
   }
 
-  bool isPointInGeoSphere(double pointLat, double pointLon) {
+  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
     for (GeoSphere geoSphere in geoSpheres) {
       double distanceFromCenter = calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
       if (distanceFromCenter <= geoSphere.radiusInMeters) {
-        return true;
+        return geoSphere;
       }
     }
-    return false;
+    return null;
   }
 
   void postGeoSphere({

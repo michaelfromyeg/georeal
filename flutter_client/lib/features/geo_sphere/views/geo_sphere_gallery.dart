@@ -19,6 +19,11 @@ class GeoSphereGallery extends StatelessWidget {
             GalleryNavBar(
               name: geoSphere.name,
             ),
+            ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return null;
+                }),
           ],
         ),
       ),

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
+import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:location/location.dart';
 
-typedef LocationCallback = void Function();
+typedef LocationCallback = void Function(GeoSphere geoSphere);
 
 class LocationService {
   final Location location = Location();
@@ -20,12 +21,12 @@ class LocationService {
         print(
             "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
-        bool isInGeoSphere = geoSphereService.isPointInGeoSphere(
+        GeoSphere? isInGeoSphere = geoSphereService.isPointInGeoSphere(
             currentLocation.latitude!, currentLocation.longitude!);
 
-        if (isInGeoSphere) {
+        if (isInGeoSphere != null) {
           print("The current location is inside the geosphere.");
-          callback();
+          callback(isInGeoSphere);
         } else {
           print("The current location is outside the geosphere.");
         }

@@ -7,6 +7,7 @@ import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/geo_sphere_model.dart';
 import '../widgets/map.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   LocationService locationService = LocationService();
   bool isLocationServiceStarted = false;
 
-  void showCustomToast() {
+  void showCustomToast(GeoSphere geoSphere) {
     print("Test");
     CustomToast.show(context,
-        "You have entered a geo-sphere, press this button to add to its gallery!");
+        "You have entered ${geoSphere.name}, press this button to add to its gallery!");
   }
 
   @override
