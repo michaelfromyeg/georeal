@@ -44,6 +44,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "crypto",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/crypto-3.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "csslib",
       "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/csslib-1.0.0",
       "packageUri": "lib/",
@@ -126,6 +132,30 @@
       "rootUri": "file:///Users/oltimaloku/Documents/Edee-Care/edee_IDEA-main/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "geocoding",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_android",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_android-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_ios",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_ios-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_platform_interface",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "google_maps",
@@ -350,6 +380,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "sprintf",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/sprintf-7.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "stack_trace",
       "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/stack_trace-1.11.0",
       "packageUri": "lib/",
@@ -392,6 +428,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "uuid",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/uuid-4.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "vector_graphics",
       "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/vector_graphics-1.1.7",
       "packageUri": "lib/",
@@ -428,7 +470,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-01-07T07:14:23.841568Z",
+  "generated": "2024-01-09T02:09:40.958378Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }

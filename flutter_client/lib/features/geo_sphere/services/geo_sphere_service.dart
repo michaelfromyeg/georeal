@@ -5,9 +5,13 @@ import 'package:http/http.dart' as http;
 
 import '../../../constants/global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
+import '../../gallery/gallery_service.dart';
 
 class GeoSphereService {
+  final GalleryService _galleryService;
   final List<GeoSphere> _geoSpheres = [];
+
+  GeoSphereService(this._galleryService);
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
@@ -19,12 +23,15 @@ class GeoSphereService {
       radiusInMeters: radius,
       name: name,
     );
+
     _geoSpheres.add(newGeoSphere);
+
+    _galleryService.createGalleryForGeoSphere(newGeoSphere.galleryId);
   }
 
   // Calculates the angular distance between two points on the surface of a sphere
   // Haversine (or great circle)
-  double _haversineDistance(double startLatitude, double startLongitude,
+  double calculateDistance(double startLatitude, double startLongitude,
       double endLatitude, double endLongitude) {
     const earthRadiusInKM = 6371; // Earth radius in kilometers
 
@@ -55,15 +62,15 @@ class GeoSphereService {
     return degrees * pi / 180;
   }
 
-  bool isPointInGeoSphere(double pointLat, double pointLon) {
+  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
     for (GeoSphere geoSphere in geoSpheres) {
-      double distanceFromCenter = _haversineDistance(
+      double distanceFromCenter = calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
       if (distanceFromCenter <= geoSphere.radiusInMeters) {
-        return true;
+        return geoSphere;
       }
     }
-    return false;
+    return null;
   }
 
   void postGeoSphere({
