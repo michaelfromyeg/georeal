@@ -56,4 +56,12 @@ class GeoSphereViewModel extends ChangeNotifier {
       return 'Error occurred'; // Return this in case of an error
     }
   }
+
+  Future<double> getDistanceToGeoSphere(GeoSphere geoSphere) async {
+    Location location = Location();
+    LocationData currentLocation = await location.getLocation();
+
+    return _geoSphereService.calculateDistance(currentLocation.latitude!,
+        currentLocation.longitude!, geoSphere.latitude, geoSphere.longitude);
+  }
 }

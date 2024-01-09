@@ -24,7 +24,7 @@ class GeoSphereService {
 
   // Calculates the angular distance between two points on the surface of a sphere
   // Haversine (or great circle)
-  double _haversineDistance(double startLatitude, double startLongitude,
+  double calculateDistance(double startLatitude, double startLongitude,
       double endLatitude, double endLongitude) {
     const earthRadiusInKM = 6371; // Earth radius in kilometers
 
@@ -57,7 +57,7 @@ class GeoSphereService {
 
   bool isPointInGeoSphere(double pointLat, double pointLon) {
     for (GeoSphere geoSphere in geoSpheres) {
-      double distanceFromCenter = _haversineDistance(
+      double distanceFromCenter = calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
       if (distanceFromCenter <= geoSphere.radiusInMeters) {
         return true;

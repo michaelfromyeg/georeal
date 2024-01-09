@@ -39,27 +39,55 @@ class GeoSphereView extends StatelessWidget {
                               children: [
                                 //const SizedBox(width: 8),
                                 Text(
-                                  "${geoSphere.name},",
-                                  style: GlobalVariables.headerStyleRegular,
+                                  geoSphere.name,
+                                  style: GlobalVariables.headerStyle,
+                                ),
+                                Row(
+                                  children: [
+                                    FutureBuilder<String>(
+                                      future:
+                                          geoSphereViewModel.getNeighborhood(
+                                              geoSphere.latitude,
+                                              geoSphere.longitude),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<String> snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const CircularProgressIndicator(); // Show loading indicator while waiting
+                                        } else if (snapshot.hasError) {
+                                          return const Text(
+                                              'Error'); // Show error text on error
+                                        } else {
+                                          return Text(snapshot.data ??
+                                              'Unknown'); // Show neighborhood or 'Unknown'
+                                        }
+                                      },
+                                    ),
+                                    const Text(","),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    FutureBuilder<double>(
+                                      future: geoSphereViewModel
+                                          .getDistanceToGeoSphere(geoSphere),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const CircularProgressIndicator(); // Show loading indicator while waiting
+                                        } else if (snapshot.hasError) {
+                                          return const Text(
+                                              'Error'); // Show error text on error
+                                        } else {
+                                          return Text(
+                                              '${snapshot.data.toString()} km' ??
+                                                  'Unknown'); // Show neighborhood or 'Unknown'
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
                                 //const SizedBox(width: 8),
-                                FutureBuilder<String>(
-                                  future: geoSphereViewModel.getNeighborhood(
-                                      geoSphere.latitude, geoSphere.longitude),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<String> snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const CircularProgressIndicator(); // Show loading indicator while waiting
-                                    } else if (snapshot.hasError) {
-                                      return const Text(
-                                          'Error'); // Show error text on error
-                                    } else {
-                                      return Text(snapshot.data ??
-                                          'Unknown'); // Show neighborhood or 'Unknown'
-                                    }
-                                  },
-                                ),
                               ],
                             ),
                           ),
