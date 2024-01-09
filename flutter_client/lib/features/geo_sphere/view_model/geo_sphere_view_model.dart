@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geocode;
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:location/location.dart';
@@ -37,5 +38,22 @@ class GeoSphereViewModel extends ChangeNotifier {
     double longitude = locationData.longitude!;
     _geoSphereService.createGeoSphere(latitude, longitude, radius, name);
     notifyListeners();
+  }
+
+  Future<String> getNeighborhood(double latitude, double longitude) async {
+    try {
+      List<geocode.Placemark> placemarks =
+          await geocode.placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        geocode.Placemark place = placemarks[0];
+        return place.subLocality ??
+            'Unknown'; // Returns the neighborhood or 'Unknown' if null
+      }
+      return 'No neighborhood found'; // Return this if placemarks list is empty
+    } catch (e) {
+      print("Error occurred: $e");
+      return 'Error occurred'; // Return this in case of an error
+    }
   }
 }

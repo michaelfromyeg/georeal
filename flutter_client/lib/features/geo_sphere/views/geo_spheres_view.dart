@@ -19,26 +19,57 @@ class GeoSphereView extends StatelessWidget {
               "Geo spheres in your area",
               style: GlobalVariables.headerStyle,
             ),
+            const Divider(),
             Expanded(
               child: ListView.builder(
                 itemCount: geoSphereViewModel.geoSpheres.length,
                 itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 8, 8),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.abc),
-                            const SizedBox(
-                              width: 8,
+                  var geoSphere = geoSphereViewModel.geoSpheres[index];
+                  return GestureDetector(
+                    // This container helps with more accurate gesture detection
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.transparent)),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //const SizedBox(width: 8),
+                                Text(
+                                  "${geoSphere.name},",
+                                  style: GlobalVariables.headerStyleRegular,
+                                ),
+                                //const SizedBox(width: 8),
+                                FutureBuilder<String>(
+                                  future: geoSphereViewModel.getNeighborhood(
+                                      geoSphere.latitude, geoSphere.longitude),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const CircularProgressIndicator(); // Show loading indicator while waiting
+                                    } else if (snapshot.hasError) {
+                                      return const Text(
+                                          'Error'); // Show error text on error
+                                    } else {
+                                      return Text(snapshot.data ??
+                                          'Unknown'); // Show neighborhood or 'Unknown'
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                            Text(geoSphereViewModel.geoSpheres[index].name),
-                          ],
-                        ),
+                          ),
+                          const Divider(),
+                        ],
                       ),
-                      const Divider(),
-                    ],
+                    ),
+                    onTap: () {
+                      print(geoSphere.name);
+                    },
                   );
                 },
               ),

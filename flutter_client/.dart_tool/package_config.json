@@ -128,6 +128,30 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "geocoding",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_android",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_android-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_ios",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_ios-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "geocoding_platform_interface",
+      "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/geocoding_platform_interface-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "google_maps",
       "rootUri": "file:///Users/oltimaloku/.pub-cache/hosted/pub.dev/google_maps-6.3.0",
       "packageUri": "lib/",
@@ -428,7 +452,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-01-07T07:14:23.841568Z",
+  "generated": "2024-01-09T00:58:02.356739Z",
   "generator": "pub",
   "generatorVersion": "3.0.6"
 }
