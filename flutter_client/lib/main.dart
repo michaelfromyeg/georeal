@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/gallery/gallery_service.dart';
+import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';

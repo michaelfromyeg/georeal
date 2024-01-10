@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/widgets/gallery_navbar.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../gallery/gallery_service.dart'; // Import GalleryService
+import '../../geo_sphere/widgets/gallery_navbar.dart';
+import '../services/gallery_service.dart'; // Import GalleryService
 
 class GeoSphereGallery extends StatelessWidget {
   final GeoSphere geoSphere;

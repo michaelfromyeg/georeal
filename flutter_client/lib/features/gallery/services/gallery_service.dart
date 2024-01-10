@@ -1,4 +1,4 @@
-import '../../models/gallery_model.dart';
+import '../../../models/gallery_model.dart';
 
 class GalleryService {
   final Map<String, Gallery> _galleries = {};
