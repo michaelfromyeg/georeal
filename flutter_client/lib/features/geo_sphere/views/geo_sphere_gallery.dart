@@ -22,10 +22,7 @@ class GeoSphereGallery extends StatelessWidget {
     final galleryService = Provider.of<GalleryService>(context, listen: false);
     List<String> photoPaths = galleryService
         .getPhotosFromGallery(geoSphere.galleryId); // Fetch photo paths
-    for (var photoPath in photoPaths) {
-      print(photoPath);
-    }
-    print("Photo: $photoPaths");
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -39,8 +36,9 @@ class GeoSphereGallery extends StatelessWidget {
                 itemCount: photoPaths.length,
                 itemBuilder: (context, index) {
                   String photoPath = photoPaths[index];
-                  return Image.file(File(
-                      photoPath)); // Display the image (assuming these are network images)
+                  return Image.file(
+                    File(photoPath),
+                  ); // Display the image (assuming these are network images)
                 },
               ),
             ),
