@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/add_geo_sphere_modal.dart';
 import 'package:georeal/global_variables.dart';
+
+import '../../geo_sphere/widgets/add_geo_sphere_modal.dart';
 
 class AddGeoSphereWidget extends StatelessWidget {
   const AddGeoSphereWidget({super.key});

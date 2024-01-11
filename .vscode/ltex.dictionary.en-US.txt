@@ -1,3 +1,0 @@
-GeoReal
-DubHacks
-BeReal
