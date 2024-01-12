@@ -11,6 +11,9 @@ tests/
 uploads/
 
 .editorconfig
+.env
+.env.example
 .gitignore
 .markdownlint.json
+LICENSE
 log.log
