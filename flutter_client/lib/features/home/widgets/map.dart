@@ -1,11 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 import '../../geo_sphere/view_model/geo_sphere_view_model.dart';
+import '../../location/location_view_model.dart';
 
 class CustomMap extends StatefulWidget {
   const CustomMap({Key? key}) : super(key: key);
@@ -14,54 +13,17 @@ class CustomMap extends StatefulWidget {
   State<CustomMap> createState() => _CustomMapState();
 }
 
-Location location = Location();
-
 class _CustomMapState extends State<CustomMap> {
-  LocationData? _currentLocation;
-
-  @override
-  void initState() {
-    super.initState();
-    requestPermission();
-    getLocation();
-  }
-
-  Future<void> requestPermission() async {
-    bool serviceEnabled = await location.serviceEnabled();
-    // Checks to see if location services are already enabled
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        // User does not enable locationServices
-        return;
-      }
-    }
-
-    PermissionStatus permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-  }
-
-  Future<void> getLocation() async {
-    LocationData locationData = await location.getLocation();
-    setState(() {
-      _currentLocation = locationData;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<GeoSphereViewModel>();
-    Set<Circle> circles = viewModel.geoSpheres.map(
+    final geoSphereViewModel = context.watch<GeoSphereViewModel>();
+    final locationViewModel = context.watch<LocationViewModel>();
+    final LocationData? currentLocation = locationViewModel.currentLocation;
+
+    Set<Circle> circles = geoSphereViewModel.geoSpheres.map(
       (geoSphere) {
         return Circle(
-          circleId: CircleId(
-            geoSphere.name,
-          ),
+          circleId: CircleId(geoSphere.name),
           center: LatLng(geoSphere.latitude, geoSphere.longitude),
           radius: geoSphere.radiusInMeters,
           strokeWidth: 2,
@@ -70,7 +32,7 @@ class _CustomMapState extends State<CustomMap> {
       },
     ).toSet();
 
-    Set<Marker> markers = viewModel.geoSpheres.map(
+    Set<Marker> markers = geoSphereViewModel.geoSpheres.map(
       (geoSphere) {
         return Marker(
             markerId: MarkerId(geoSphere.name),
@@ -79,14 +41,15 @@ class _CustomMapState extends State<CustomMap> {
             onTap: () {});
       },
     ).toSet();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: _currentLocation == null
+      body: currentLocation == null
           ? const Center(child: CircularProgressIndicator())
           : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(
-                    _currentLocation!.latitude!, _currentLocation!.longitude!),
+                    currentLocation.latitude!, currentLocation.longitude!),
                 zoom: 13.5,
               ),
               mapToolbarEnabled: false,

@@ -105,7 +105,5 @@ class GeoSphereViewModel extends ChangeNotifier {
         }
       }
     });
-
-    // TODO: Handle the location data as required
   }
 }
