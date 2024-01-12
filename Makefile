@@ -1,4 +1,4 @@
-.PHONY: server
+.PHONY: server build up logs down kill test prune
 
 server:
 	@echo "Running the server locally..."
@@ -10,7 +10,7 @@ build:
 
 up:
 	@echo "Booting up the server..."
-	@docker run -d --name georeal-server-instance georeal-server
+	@docker run -p 5000:5000 -d --name georeal-server-instance georeal-server
 
 logs:
 	@echo "Showing the server logs..."
@@ -28,3 +28,7 @@ kill:
 test:
 	@echo "Running the tests..."
 	@python -m pytest
+
+prune:
+	@echo "Pruning the docker system..."
+	@docker system prune -f

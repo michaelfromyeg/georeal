@@ -5,10 +5,14 @@ WORKDIR /app
 COPY . .
 COPY --chmod=+x ./scripts/server-entrypoint.sh .
 
-RUN pip install --upgrade pip && \
+RUN apt-get update && \
+    apt-get install -y git && \
+    pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements/prod.txt && \
     adduser --disabled-password --gecos '' thekid && \
-    chown -R thekid:thekid /app
+    chown -R thekid:thekid /app && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 USER thekid
 

@@ -43,12 +43,16 @@ if FLASK_ENV == "development":
     logger.info("Enabling CORS for development")
     CORS(app)
 else:
-    logger.info("Enabling CORS for production")
-    CORS(
-        app,
-        resources={r"/*": {"origins": "https://bereal.michaeldemar.co"}},
-        supports_credentials=True,
-    )
+    logger.info("CORS not yet setup for production; would enable")
+
+    CORS(app)
+
+    # TODO(michaelfromyeg): add cors settings for production environment
+    # CORS(
+    #     app,
+    #     resources={r"/*": {"origins": "https://bereal.michaeldemar.co"}},
+    #     supports_credentials=True,
+    # )
 
 
 class Geofence(db.Model):  # type: ignore
@@ -208,10 +212,10 @@ def get_image(filename: str) -> tuple[Response, int]:
 
 if __name__ == "__main__":
     logger.info(
-        "Starting BeReal server on %s:%d... in debug=%s mode",
+        "Starting GeoReal server on %s:%d... in debug=%s mode",
         HOST,
         PORT,
-        FLASK_ENV == "development",
+        FLASK_ENV,
     )
 
-    app.run(host=HOST, port=PORT, debug=FLASK_ENV == "development")
+    app.run(host=HOST, port=PORT, debug=FLASK_ENV != "production")
