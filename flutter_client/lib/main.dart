@@ -5,16 +5,23 @@ import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';
 
 import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'features/location/location_view_model.dart';
 // Replace with the actual path
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   GalleryService galleryService = GalleryService();
   GeoSphereService geoSphereService = GeoSphereService(galleryService);
+  LocationViewModel locationViewModel = LocationViewModel();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => GeoSphereViewModel(geoSphereService),
+          create: (_) => locationViewModel,
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              GeoSphereViewModel(geoSphereService, locationViewModel),
         ),
         Provider<GeoSphereService>(
           create: (context) => geoSphereService,
