@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/views/geo_sphere_gallery.dart';
+import 'package:georeal/features/gallery/views/geo_sphere_gallery.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 

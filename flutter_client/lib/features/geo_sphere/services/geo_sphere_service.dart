@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../constants/global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
-import '../../gallery/gallery_service.dart';
+import '../../gallery/services/gallery_service.dart';
 
 class GeoSphereService {
   final GalleryService _galleryService;

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../gallery/gallery_service.dart';
+import '../../gallery/services/gallery_service.dart';
 
 class PhotoPrompt extends StatefulWidget {
   final String geoSphereId;

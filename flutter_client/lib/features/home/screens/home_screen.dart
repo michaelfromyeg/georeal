@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
-import 'package:georeal/features/geo_sphere/services/location_service.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
 import 'package:georeal/features/geo_sphere/widgets/custom_toast.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
+import 'package:georeal/features/location/location_service.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    locationService.stopLocationChecks();
+    //locationService.stopLocationChecks();
     super.dispose();
   }
 
@@ -47,8 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
     if (!isLocationServiceStarted) {
-      locationService.startLocationChecks(geoSphereService, showCustomToast);
+      print("Working");
+      geoSphereViewModel.startLocationChecks(showCustomToast);
       isLocationServiceStarted = true;
+    } else {
+      print("hellohihi");
     }
     return const Scaffold(
       body: SafeArea(
