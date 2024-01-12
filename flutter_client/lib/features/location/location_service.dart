@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:location/location.dart';
 
@@ -11,6 +10,7 @@ class LocationService {
   Timer? locationTimer;
 
   // Params: geoSphereViewModel:
+  /*
   Future<void> startLocationChecks(
       GeoSphereService geoSphereService, LocationCallback callback) async {
     // Request background location permission
@@ -41,4 +41,5 @@ class LocationService {
   void stopLocationChecks() {
     locationTimer?.cancel();
   }
+  */
 }
