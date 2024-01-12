@@ -1,11 +1,19 @@
-FROM python:3.11-stretch
+FROM python:3.11-slim
 
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-
-COPY . /app
 WORKDIR /app
 
-RUN pip install -r requirements/prod.txt
+COPY . .
+COPY --chmod=+x ./scripts/server-entrypoint.sh .
 
-CMD ["flask", "run"]
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements/prod.txt && \
+    adduser --disabled-password --gecos '' thekid && \
+    chown -R thekid:thekid /app
+
+USER thekid
+
+ENV FLASK_APP=georeal.server
+
+EXPOSE 5000
+
+ENTRYPOINT ["/app/server-entrypoint.sh"]

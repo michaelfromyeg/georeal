@@ -1,17 +1,23 @@
 """
 The server for the geofencing app.
 """
-import csv
-import os
-from typing import Any
+from gevent import monkey
 
-from flask import Flask, Response, jsonify, request, send_file
-from flask_sqlalchemy import SQLAlchemy
-from geojson import Feature, Polygon
-from werkzeug.utils import secure_filename
+monkey.patch_all()
 
-from .logger import logger
-from .utils import (
+import csv  # noqa: E402
+import os  # noqa: E402
+from typing import Any  # noqa: E402
+
+from flask import Flask, Response, jsonify, request, send_file  # noqa: E402
+from flask_cors import CORS  # noqa: E402
+from flask_migrate import Migrate  # noqa: E402
+from flask_sqlalchemy import SQLAlchemy  # noqa: E402
+from geojson import Feature, Polygon  # noqa: E402
+from werkzeug.utils import secure_filename  # noqa: E402
+
+from .logger import logger  # noqa: E402
+from .utils import (  # noqa: E402
     DATA_PATH,
     FLASK_ENV,
     GIT_COMMIT_HASH,
@@ -29,6 +35,20 @@ app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 app.config["UPLOAD_FOLDER"] = UPLOAD_PATH
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+logger.info("Running in %s mode", FLASK_ENV)
+
+if FLASK_ENV == "development":
+    logger.info("Enabling CORS for development")
+    CORS(app)
+else:
+    logger.info("Enabling CORS for production")
+    CORS(
+        app,
+        resources={r"/*": {"origins": "https://bereal.michaeldemar.co"}},
+        supports_credentials=True,
+    )
 
 
 class Geofence(db.Model):  # type: ignore

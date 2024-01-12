@@ -1,7 +1,30 @@
 .PHONY: server
 
 server:
-	python -m server.server
+	@echo "Running the server locally..."
+	@python -m georeal.server
+
+build:
+	@echo "Building the server..."
+	@docker build -t georeal-server .
+
+up:
+	@echo "Booting up the server..."
+	@docker run -d --name georeal-server-instance georeal-server
+
+logs:
+	@echo "Showing the server logs..."
+	@docker logs --follow georeal-server-instance
+
+down:
+	@echo "Shutting down the server..."
+	@docker stop georeal-server-instance
+	@docker rm georeal-server-instance
+
+kill:
+	@echo "Killing the server..."
+	@docker kill georeal-server-instance
 
 test:
-	python -m pytest
+	@echo "Running the tests..."
+	@python -m pytest

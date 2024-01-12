@@ -7,7 +7,7 @@ from typing import Any, Generator
 import pytest
 from geojson import Point
 
-from server.server import Geofence, app, db
+from georeal.server import Geofence, app, db
 
 
 @pytest.fixture

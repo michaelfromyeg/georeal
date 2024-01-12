@@ -1,0 +1,16 @@
+.mypy_cache/
+.pytest_cache/
+.vscode/
+
+data/
+env/
+flutter_client/
+images/
+instance/
+tests/
+uploads/
+
+.editorconfig
+.gitignore
+.markdownlint.json
+log.log
