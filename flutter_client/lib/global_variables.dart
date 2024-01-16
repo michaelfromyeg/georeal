@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GlobalVariables {
+  static const String google_api_key =
+      'AIzaSyBeghIHy3KuYoSFcZ0rzxFv-H32jNwYesI';
+  static const String uri = 'http://localhost:3000';
   // COLORS
 
   static const accentColor = Colors.red;
