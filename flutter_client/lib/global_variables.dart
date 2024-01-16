@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GlobalVariables {
   static const String google_api_key =
       'AIzaSyBeghIHy3KuYoSFcZ0rzxFv-H32jNwYesI';
-  static const String uri = 'http://localhost:3000';
+  static const String uri = 'https://api.georeal.michaeldemar.co';
   // COLORS
 
   static const accentColor = Colors.red;

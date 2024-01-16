@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../../../constants/global_variables.dart';
+import '../../../global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
 import '../../gallery/services/gallery_service.dart';
 
@@ -24,6 +24,7 @@ class GeoSphereService {
     );
 
     _geoSpheres.add(newGeoSphere);
+    postGeoSphere(geoSphere: newGeoSphere);
 
     _galleryService.createGalleryForGeoSphere(newGeoSphere.galleryId);
   }
@@ -32,7 +33,7 @@ class GeoSphereService {
     required GeoSphere geoSphere,
   }) async {
     try {
-      print("geosphere ${geoSphere.toGeoJsonString()}");
+      print("geosphere: ${geoSphere.toGeoJsonString()}");
       http.Response res = await http.post(
         Uri.parse('${GlobalVariables.uri}/geofences'),
         body: json
@@ -41,6 +42,13 @@ class GeoSphereService {
           'Content-Type': 'application/json; charset=UTF-8'
         },
       );
+      if (res.statusCode == 201) {
+        // Handle the successful response here, e.g., updating UI or local data
+        print('Geosphere created successfully');
+      } else {
+        // Handle the failure case
+        print('Failed to create geosphere. Status code: ${res.statusCode}');
+      }
     } catch (e) {
       throw Exception("Error occured: $e");
     }
