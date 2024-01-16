@@ -47,11 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
     if (!isLocationServiceStarted) {
-      print("Working");
+      // print("Working");
       geoSphereViewModel.startLocationChecks(showCustomToast);
       isLocationServiceStarted = true;
     } else {
-      print("hellohihi");
+      // handle
     }
     return const Scaffold(
       body: SafeArea(

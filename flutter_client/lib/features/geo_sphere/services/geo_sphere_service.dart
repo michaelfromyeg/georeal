@@ -10,7 +10,9 @@ class GeoSphereService {
   final GalleryService _galleryService;
   final List<GeoSphere> _geoSpheres = [];
 
-  GeoSphereService(this._galleryService);
+  GeoSphereService(this._galleryService) {
+    getAllGeoSpheres();
+  }
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
@@ -51,6 +53,27 @@ class GeoSphereService {
       }
     } catch (e) {
       throw Exception("Error occured: $e");
+    }
+  }
+
+  Future<void> getAllGeoSpheres() async {
+    try {
+      var response =
+          await http.get(Uri.parse('${GlobalVariables.uri}/geofences'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> geofencesData = json.decode(response.body);
+        // Process the data
+        // Assuming GeoSphere.fromMap() is a constructor that creates a GeoSphere from a Map
+        _geoSpheres.clear();
+        for (var geofenceData in geofencesData) {
+          _geoSpheres.add(GeoSphere.fromMap(geofenceData));
+        }
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (e) {
+      throw Exception("Error occurred: $e");
     }
   }
 }
