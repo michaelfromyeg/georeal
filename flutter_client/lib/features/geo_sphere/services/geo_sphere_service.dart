@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
@@ -27,50 +26,6 @@ class GeoSphereService {
     _geoSpheres.add(newGeoSphere);
 
     _galleryService.createGalleryForGeoSphere(newGeoSphere.galleryId);
-  }
-
-  // Calculates the angular distance between two points on the surface of a sphere
-  // Haversine (or great circle)
-  double calculateDistance(double startLatitude, double startLongitude,
-      double endLatitude, double endLongitude) {
-    const earthRadiusInKM = 6371; // Earth radius in kilometers
-
-    // Differences in coordinates converted to radians
-    var deltaLatitudeRadians = _degreesToRadians(endLatitude - startLatitude);
-    var deltaLongitudeRadians =
-        _degreesToRadians(endLongitude - startLongitude);
-
-    // Convert starting and ending latitudes from degrees to radians
-    startLatitude = _degreesToRadians(startLatitude);
-    endLatitude = _degreesToRadians(endLatitude);
-
-    // Haversine formula calculation
-    var haversineOfCentralAngle =
-        sin(deltaLatitudeRadians / 2) * sin(deltaLatitudeRadians / 2) +
-            sin(deltaLongitudeRadians / 2) *
-                sin(deltaLongitudeRadians / 2) *
-                cos(startLatitude) *
-                cos(endLatitude);
-    var centralAngle = 2 *
-        atan2(sqrt(haversineOfCentralAngle), sqrt(1 - haversineOfCentralAngle));
-
-    // Return distance using the Earth's radius
-    return earthRadiusInKM * centralAngle;
-  }
-
-  double _degreesToRadians(double degrees) {
-    return degrees * pi / 180;
-  }
-
-  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
-    for (GeoSphere geoSphere in geoSpheres) {
-      double distanceFromCenter = calculateDistance(
-          geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
-      if (distanceFromCenter <= geoSphere.radiusInMeters) {
-        return geoSphere;
-      }
-    }
-    return null;
   }
 
   void postGeoSphere({

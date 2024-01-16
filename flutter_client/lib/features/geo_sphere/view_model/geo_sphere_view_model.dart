@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geocode;
@@ -71,13 +72,57 @@ class GeoSphereViewModel extends ChangeNotifier {
 
     if (currentLocation?.latitude != null &&
         currentLocation?.longitude != null) {
-      return _geoSphereService.calculateDistance(currentLocation!.latitude!,
+      return _calculateDistance(currentLocation!.latitude!,
           currentLocation.longitude!, geoSphere.latitude, geoSphere.longitude);
     } else {
       // If location is still null, return a default value
 
       return double.infinity;
     }
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * pi / 180;
+  }
+
+  // Calculates the angular distance between two points on the surface of a sphere
+  // Haversine (or great circle)
+  double _calculateDistance(double startLatitude, double startLongitude,
+      double endLatitude, double endLongitude) {
+    const earthRadiusInKM = 6371; // Earth radius in kilometers
+
+    // Differences in coordinates converted to radians
+    var deltaLatitudeRadians = _degreesToRadians(endLatitude - startLatitude);
+    var deltaLongitudeRadians =
+        _degreesToRadians(endLongitude - startLongitude);
+
+    // Convert starting and ending latitudes from degrees to radians
+    startLatitude = _degreesToRadians(startLatitude);
+    endLatitude = _degreesToRadians(endLatitude);
+
+    // Haversine formula calculation
+    var haversineOfCentralAngle =
+        sin(deltaLatitudeRadians / 2) * sin(deltaLatitudeRadians / 2) +
+            sin(deltaLongitudeRadians / 2) *
+                sin(deltaLongitudeRadians / 2) *
+                cos(startLatitude) *
+                cos(endLatitude);
+    var centralAngle = 2 *
+        atan2(sqrt(haversineOfCentralAngle), sqrt(1 - haversineOfCentralAngle));
+
+    // Return distance using the Earth's radius
+    return earthRadiusInKM * centralAngle;
+  }
+
+  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
+    for (GeoSphere geoSphere in geoSpheres) {
+      double distanceFromCenter = _calculateDistance(
+          geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
+      if (distanceFromCenter <= geoSphere.radiusInMeters) {
+        return geoSphere;
+      }
+    }
+    return null;
   }
 
   Future<void> startLocationChecks(LocationCallback callback) async {
@@ -93,7 +138,7 @@ class GeoSphereViewModel extends ChangeNotifier {
           print(
               "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
-          GeoSphere? isInGeoSphere = _geoSphereService.isPointInGeoSphere(
+          GeoSphere? isInGeoSphere = isPointInGeoSphere(
               currentLocation.latitude!, currentLocation.longitude!);
 
           if (isInGeoSphere != null) {
