@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/foundation.dart';
 import 'package:location/location.dart';
 
@@ -28,7 +30,9 @@ class LocationViewModel extends ChangeNotifier {
       permissionGranted = await _location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) return;
     }
-
+    print("before initBackgroundFetch");
+    initBackgroundFetch();
+    print("after initBackgroundFetch");
     _updateLocation();
     _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateLocation();
@@ -36,6 +40,31 @@ class LocationViewModel extends ChangeNotifier {
 
     _locationTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
       // _checkGeoSphere();
+    });
+  }
+
+  void initBackgroundFetch() {
+    BackgroundFetch.configure(
+        BackgroundFetchConfig(
+          minimumFetchInterval:
+              15, // <-- Set the minimum fetch interval in minutes
+          stopOnTerminate: false,
+          startOnBoot: true,
+          enableHeadless: true,
+          requiresBatteryNotLow: false,
+          requiresCharging: false,
+          requiresStorageNotLow: false,
+          requiresDeviceIdle: false,
+          requiredNetworkType: NetworkType.NONE,
+        ), (String taskId) async {
+      // This is the fetch event callback, where you update your location
+      _updateLocation();
+      BackgroundFetch.finish(taskId);
+    }).then((int status) {
+      print('Background Fetch initialized with status: $status');
+      log("LOCATION HAS BEEN UPDATED");
+    }).catchError((e) {
+      print('Background Fetch failed to initialize: $e');
     });
   }
 

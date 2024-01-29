@@ -27,8 +27,11 @@ class _PhotoPromptState extends State<PhotoPrompt> {
       this.image = imageTemporary;
 
       // Save the image path to the gallery
-      Provider.of<GalleryService>(context, listen: false)
+      /* Provider.of<GalleryService>(context, listen: false)
           .addPhotoToGallery(widget.geoSphereId, image.path);
+          */
+      Provider.of<GalleryService>(context, listen: false)
+          .uploadPhoto(widget.geoSphereId, imageTemporary);
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }

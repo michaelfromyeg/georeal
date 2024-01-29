@@ -39,7 +39,7 @@ class GeoSphereViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         // location data is still not available
-        print("Location data is not available to create GeoSphere.");
+        //  print("Location data is not available to create GeoSphere.");
       }
     }
   }
@@ -129,24 +129,24 @@ class GeoSphereViewModel extends ChangeNotifier {
     // Request background location permission
     Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
       LocationData? currentLocation = _locationViewModel.currentLocation;
-      print(currentLocation);
+
       if (currentLocation == null) {
         print("current location is null");
       } else {
         if (currentLocation.latitude != null &&
             currentLocation.longitude != null) {
-          print(
-              "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
+          // print(
+          //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
           GeoSphere? isInGeoSphere = isPointInGeoSphere(
               currentLocation.latitude!, currentLocation.longitude!);
 
           if (isInGeoSphere != null) {
-            print("The current location is inside the geosphere.");
+            //  print("The current location is inside the geosphere.");
             callback(isInGeoSphere);
           }
         } else {
-          print("The current location is outside the geosphere.");
+          //   print("The current location is outside the geosphere.");
         }
       }
     });

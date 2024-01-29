@@ -7,7 +7,7 @@ class GeoSphere {
   double longitude;
   double radiusInMeters;
   String name;
-  final String galleryId;
+  final String geoSphereId;
 
   // constructor
   GeoSphere({
@@ -15,7 +15,7 @@ class GeoSphere {
     required this.longitude,
     required this.radiusInMeters,
     required this.name,
-  }) : galleryId = const Uuid().v4();
+  }) : geoSphereId = const Uuid().v4();
 
   factory GeoSphere.fromMap(Map<String, dynamic> map) {
     var geojson = map['geojson'] ?? {};
@@ -42,6 +42,7 @@ class GeoSphere {
       "properties": {
         "name": name,
         "radius": radiusInMeters,
+        "geoSphereId": geoSphereId,
       },
     };
   }

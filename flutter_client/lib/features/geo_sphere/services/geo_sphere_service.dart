@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
@@ -28,14 +29,16 @@ class GeoSphereService {
     _geoSpheres.add(newGeoSphere);
     postGeoSphere(geoSphere: newGeoSphere);
 
-    _galleryService.createGalleryForGeoSphere(newGeoSphere.galleryId);
+    _galleryService.createGalleryForGeoSphere(newGeoSphere.geoSphereId);
   }
 
   void postGeoSphere({
     required GeoSphere geoSphere,
   }) async {
     try {
-      print("geosphere: ${geoSphere.toGeoJsonString()}");
+      log(geoSphere.geoSphereId);
+      log(geoSphere.toGeoJsonString());
+
       http.Response res = await http.post(
         Uri.parse('${GlobalVariables.uri}/geofences'),
         body: json

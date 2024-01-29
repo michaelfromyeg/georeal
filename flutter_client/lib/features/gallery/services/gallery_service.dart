@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
+import '../../../global_variables.dart';
 import '../../../models/gallery_model.dart';
 
 class GalleryService {
@@ -13,6 +18,25 @@ class GalleryService {
       gallery.photoPaths.add(photoPath);
     } else {
       print("Gallery with this id does not exist!");
+    }
+  }
+
+  Future<void> uploadPhoto(String geoSphereId, File photo) async {
+    var uri = Uri.parse('${GlobalVariables.uri}/geofences/1/upload');
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('photo', photo.path));
+
+    try {
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        print('Photo uploaded successfully');
+      } else {
+        print('Failed to upload photo. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception("Error occurred: $e");
     }
   }
 

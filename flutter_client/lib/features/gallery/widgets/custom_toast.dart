@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/widgets/photo_prompt.dart';
+import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 
 class CustomToast {
@@ -38,7 +38,7 @@ class CustomToast {
                           context: context,
                           builder: ((context) {
                             return PhotoPrompt(
-                              geoSphereId: geoSphere.galleryId,
+                              geoSphereId: geoSphere.geoSphereId,
                             );
                           }));
                     },

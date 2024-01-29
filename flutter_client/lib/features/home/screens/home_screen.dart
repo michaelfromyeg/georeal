@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
-import 'package:georeal/features/geo_sphere/widgets/custom_toast.dart';
 import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
 import 'package:georeal/features/location/location_service.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/geo_sphere_model.dart';
+import '../../gallery/widgets/custom_toast.dart';
 import '../widgets/map.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,11 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLocationServiceStarted = false;
 
   void showCustomToast(GeoSphere geoSphere) {
-    CustomToast.show(
-      context,
-      "You have entered ${geoSphere.name}, press this button to add to its gallery!",
-      geoSphere,
-    );
+    if (mounted) {
+      CustomToast.show(
+        context,
+        "You have entered ${geoSphere.name}, press this button to add to its gallery!",
+        geoSphere,
+      );
+    }
   }
 
   @override

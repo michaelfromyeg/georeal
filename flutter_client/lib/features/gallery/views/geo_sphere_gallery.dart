@@ -29,7 +29,7 @@ class GeoSphereGallery extends StatelessWidget {
 
     final galleryService = Provider.of<GalleryService>(context, listen: false);
     List<String> photoPaths = galleryService
-        .getPhotosFromGallery(geoSphere.galleryId); // Fetch photo paths
+        .getPhotosFromGallery(geoSphere.geoSphereId); // Fetch photo paths
 
     return Scaffold(
       body: SafeArea(
