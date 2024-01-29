@@ -86,7 +86,7 @@ class GeoSphereViewModel extends ChangeNotifier {
       LocationData? currentLocation = _locationViewModel.currentLocation;
       print(currentLocation);
       if (currentLocation == null) {
-        print("current location is null");
+        print("Current location is null; are permissions set appropriately?");
       } else {
         if (currentLocation.latitude != null &&
             currentLocation.longitude != null) {

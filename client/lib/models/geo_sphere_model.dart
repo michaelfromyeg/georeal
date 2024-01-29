@@ -9,7 +9,6 @@ class GeoSphere {
   String name;
   final String galleryId;
 
-  // constructor
   GeoSphere({
     required this.latitude,
     required this.longitude,

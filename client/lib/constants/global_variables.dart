@@ -1,6 +1,6 @@
-// ignore: constant_identifier_names
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class GlobalVariables {
-  static const String google_api_key =
-      'AIzaSyBeghIHy3KuYoSFcZ0rzxFv-H32jNwYesI';
-  static const String uri = 'http://localhost:3000';
+  static String google_api_key = dotenv.env['GOOGLE_API_KEY']!;
+  static String uri = dotenv.env['SERVER_URI']!;
 }

@@ -14,10 +14,10 @@ class GeoSphereGallery extends StatelessWidget {
   // Add GalleryService
 
   const GeoSphereGallery({
-    Key? key,
+    super.key,
     required this.geoSphere,
     // Add GalleryService to the constructor
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

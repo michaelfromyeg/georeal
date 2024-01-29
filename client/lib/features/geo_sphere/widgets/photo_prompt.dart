@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../../gallery/services/gallery_service.dart';
@@ -47,7 +48,14 @@ class _PhotoPromptState extends State<PhotoPrompt> {
               child: const Text("Pick Gallery"),
             ),
             ElevatedButton(
-              onPressed: () => pickImage(ImageSource.camera),
+              onPressed: () async {
+                var status = await Permission.camera.request();
+                if (status.isGranted) {
+                  pickImage(ImageSource.camera);
+                } else {
+                  print("bruh");
+                }
+              },
               child: const Text("Pick Camera"),
             ),
           ],
