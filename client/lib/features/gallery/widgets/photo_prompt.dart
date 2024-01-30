@@ -28,11 +28,12 @@ class _PhotoPromptState extends State<PhotoPrompt> {
       this.image = imageTemporary;
 
       // Save the image path to the gallery
-      /* Provider.of<GalleryService>(context, listen: false)
-          .addPhotoToGallery(widget.geoSphereId, image.path);
-          */
       Provider.of<GalleryService>(context, listen: false)
-          .uploadPhoto(widget.geoSphereId, imageTemporary);
+          .addPhotoToGallery(widget.geoSphereId, image.path);
+
+      /*
+      Provider.of<GalleryService>(context, listen: false)
+          .uploadPhoto(widget.geoSphereId, imageTemporary);*/
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }
@@ -52,11 +53,16 @@ class _PhotoPromptState extends State<PhotoPrompt> {
             ),
             ElevatedButton(
               onPressed: () async {
-                var status = await Permission.camera.request();
-                if (status.isGranted) {
+                if (Platform.isAndroid) {
+                  var status = await Permission.camera.request();
+                  if (status.isGranted) {
+                    pickImage(ImageSource.camera);
+                  } else {
+                    print("bruh");
+                  }
+                } else if (Platform.isIOS) {
+                  // TODO: Implement iOS camera permission
                   pickImage(ImageSource.camera);
-                } else {
-                  print("bruh");
                 }
               },
               child: const Text("Pick Camera"),
