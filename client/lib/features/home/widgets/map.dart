@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import services for rootBundle
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,19 @@ class CustomMap extends StatefulWidget {
 }
 
 class _CustomMapState extends State<CustomMap> {
+  GoogleMapController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMapStyle();
+  }
+
+  Future<void> _loadMapStyle() async {
+    String style = await rootBundle.loadString('assets/map/simple_style.json');
+    _controller?.setMapStyle(style);
+  }
+
   @override
   Widget build(BuildContext context) {
     final geoSphereViewModel = context.watch<GeoSphereViewModel>();
@@ -47,6 +61,10 @@ class _CustomMapState extends State<CustomMap> {
       body: currentLocation == null
           ? const Center(child: CircularProgressIndicator())
           : GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _controller = controller;
+                _loadMapStyle();
+              },
               initialCameraPosition: CameraPosition(
                 target: LatLng(
                     currentLocation.latitude!, currentLocation.longitude!),
@@ -54,6 +72,7 @@ class _CustomMapState extends State<CustomMap> {
               ),
               mapToolbarEnabled: false,
               myLocationEnabled: true,
+              myLocationButtonEnabled: false,
               circles: circles,
               markers: markers,
             ),

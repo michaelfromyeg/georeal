@@ -21,6 +21,7 @@ class _HomeRouterState extends State<HomeRouter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {}),
       backgroundColor: GlobalVariables.backgroundColor,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -32,11 +33,26 @@ class _HomeRouterState extends State<HomeRouter> {
           ),
         ),
         child: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildBottomNavItem(Icons.home, 'Home', 0),
-              buildBottomNavItem(Icons.public, 'Geo Sphere', 1),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _page = 0;
+                  });
+                },
+                icon: const Icon(Icons.home),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _page = 1;
+                  });
+                },
+                icon: const Icon(Icons.location_on_sharp),
+              ),
             ],
           ),
         ),
