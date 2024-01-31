@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:georeal/constants/env_variables.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
 import '../../gallery/services/gallery_service.dart';
 
@@ -40,7 +40,7 @@ class GeoSphereService {
       log(geoSphere.toGeoJsonString());
 
       http.Response res = await http.post(
-        Uri.parse('${GlobalVariables.uri}/geofences'),
+        Uri.parse('${EnvVariables.uri}/geofences'),
         body: json
             .encode({'name': geoSphere.name, 'geojson': geoSphere.toGeoJson()}),
         headers: <String, String>{
@@ -61,8 +61,7 @@ class GeoSphereService {
 
   Future<void> getAllGeoSpheres() async {
     try {
-      var response =
-          await http.get(Uri.parse('${GlobalVariables.uri}/geofences'));
+      var response = await http.get(Uri.parse('${EnvVariables.uri}/geofences'));
 
       if (response.statusCode == 200) {
         List<dynamic> geofencesData = json.decode(response.body);

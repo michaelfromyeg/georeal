@@ -1,7 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:georeal/constants/env_variables.dart';
 import 'package:georeal/features/geo_sphere/views/geo_spheres_view.dart';
 import 'package:georeal/features/home/screens/home_screen.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:http/http.dart' as http;
+
+Future<void> checkServerStatus() async {
+  try {
+    print("[georeal] Checking server");
+    final response = await http.get(Uri.parse(EnvVariables.uri));
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      print('[georeal] Server status: ${data['status']}');
+    } else {
+      print('[georeal] Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('[georeal] Error checking server status: $e');
+  }
+}
 
 class HomeRouter extends StatefulWidget {
   const HomeRouter({super.key});
@@ -11,10 +31,16 @@ class HomeRouter extends StatefulWidget {
 }
 
 class _HomeRouterState extends State<HomeRouter> {
+  @override
+  void initState() {
+    super.initState();
+    checkServerStatus();
+  }
+
   int _page = 0;
   final screens = [
     const HomeScreen(),
-    const GeoSphereView(), /*FriendsScreen()*/
+    const GeoSphereView(), /* FriendsScreen() */
   ];
 
   @override
