@@ -3,6 +3,8 @@ import 'package:georeal/features/geo_sphere/views/geo_spheres_view.dart';
 import 'package:georeal/features/home/screens/home_screen.dart';
 import 'package:georeal/global_variables.dart';
 
+import 'features/geo_sphere/widgets/add_geo_sphere_modal.dart';
+
 class HomeRouter extends StatefulWidget {
   const HomeRouter({super.key});
 
@@ -21,77 +23,56 @@ class _HomeRouterState extends State<HomeRouter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
-      backgroundColor: GlobalVariables.backgroundColor,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: 0.5,
-              color: Colors.grey,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
             ),
-          ),
-        ),
-        child: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _page = 0;
-                  });
-                },
-                icon: const Icon(Icons.home),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _page = 1;
-                  });
-                },
-                icon: const Icon(Icons.location_on_sharp),
-              ),
-            ],
-          ),
-        ),
+            builder: (context) => Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: const AddGeoSphereModal(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
-      body: screens[_page],
-    );
-  }
-
-  Widget buildBottomNavItem(IconData icon, String label, int index) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _page = index;
-        });
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      backgroundColor: const Color.fromRGBO(29, 44, 77, 1),
+      bottomNavigationBar: BottomAppBar(
+        color: GlobalVariables.primaryColor,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(
-              icon,
-              color: _page == index
-                  ? GlobalVariables.secondaryColor
-                  : GlobalVariables.primaryColor,
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _page = 0;
+                });
+              },
+              icon: const Icon(Icons.home),
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: _page == index
-                    ? GlobalVariables.secondaryColor
-                    : GlobalVariables.primaryColor,
-                fontSize: 10,
-              ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _page = 1;
+                });
+              },
+              icon: const Icon(Icons.location_on_sharp),
             ),
           ],
         ),
       ),
+      body: screens[_page],
     );
   }
 }

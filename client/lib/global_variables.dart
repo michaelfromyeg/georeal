@@ -6,9 +6,9 @@ class GlobalVariables {
   static const String uri = 'https://api.georeal.michaeldemar.co';
   // COLORS
   static const accentColor = Colors.red;
-  static const backgroundColor = Color.fromRGBO(255, 255, 255, 1);
+  static const backgroundColor = Color.fromRGBO(51, 46, 107, 1);
   static const foregroundColor = Color.fromRGBO(17, 45, 78, 1);
-  static const primaryColor = Color.fromRGBO(219, 226, 239, 1);
+  static const primaryColor = Color.fromRGBO(2, 11, 30, 1);
   static const secondaryColor = Color.fromRGBO(63, 114, 175, 1);
 
   // FONTS
