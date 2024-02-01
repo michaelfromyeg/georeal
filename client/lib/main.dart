@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
 import 'features/location/location_view_model.dart';
-// Replace with the actual path
 
 Future main() async {
   await dotenv.load();

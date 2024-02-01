@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 
+/// Toast that notifies the user when they enter a GeoSphere
+
 class CustomToast {
   static void show(BuildContext context, String message, GeoSphere geoSphere) {
     final overlay = Overlay.of(context);

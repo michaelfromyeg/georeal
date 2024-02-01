@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import services for rootBundle
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 import '../../geo_sphere/view_model/geo_sphere_view_model.dart';
 import '../../location/location_view_model.dart';
+
+/// CustomMap is a widget that displays a Google Map
 
 class CustomMap extends StatefulWidget {
   const CustomMap({super.key});

@@ -3,6 +3,8 @@ import 'package:georeal/global_variables.dart';
 
 import '../../geo_sphere/widgets/add_geo_sphere_modal.dart';
 
+/// AddGeoSphereWiget opens a bottom modal which allows the user to create a geo sphere
+
 class AddGeoSphereWidget extends StatelessWidget {
   const AddGeoSphereWidget({super.key});
 

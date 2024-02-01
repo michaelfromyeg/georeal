@@ -7,29 +7,21 @@ import 'package:provider/provider.dart';
 
 import '../services/gallery_service.dart';
 
-// Import GalleryService
+/// Gallery view for a specific GeoSphere
 
 class GeoSphereGallery extends StatelessWidget {
   final GeoSphere geoSphere;
-  // Add GalleryService
 
   const GeoSphereGallery({
     super.key,
     required this.geoSphere,
-    // Add GalleryService to the constructor
   });
 
   @override
   Widget build(BuildContext context) {
-    // Dummy photo path (replace with an actual path of a local image)
-    //const String dummyPhotoPath = 'assets/images/profile_photo.jpg';
-
-    // Create a list of 9 dummy photo paths
-    // List<String> photoPaths = List.filled(9, dummyPhotoPath);
-
     final galleryService = Provider.of<GalleryService>(context, listen: false);
-    List<String> photoPaths = galleryService
-        .getPhotosFromGallery(geoSphere.geoSphereId); // Fetch photo paths
+    List<String> photoPaths =
+        galleryService.getPhotosFromGallery(geoSphere.geoSphereId);
 
     return Scaffold(
       body: SafeArea(

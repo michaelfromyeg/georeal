@@ -7,6 +7,8 @@ import '../../../global_variables.dart';
 import '../../../models/geo_sphere_model.dart';
 import '../../gallery/services/gallery_service.dart';
 
+/// handles http requests for the GeoSpheres
+
 class GeoSphereService {
   final GalleryService _galleryService;
   final List<GeoSphere> _geoSpheres = [];

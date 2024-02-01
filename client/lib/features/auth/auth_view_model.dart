@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// handles all data and logic for the authentication process
+
 enum Auth {
   signin,
   signup,

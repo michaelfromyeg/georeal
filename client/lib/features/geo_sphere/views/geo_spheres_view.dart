@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../view_model/geo_sphere_view_model.dart';
 
+/// View that displays all the geo spheres in the area
+
 class GeoSphereView extends StatelessWidget {
   const GeoSphereView({super.key});
 
@@ -27,7 +29,6 @@ class GeoSphereView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var geoSphere = geoSphereViewModel.geoSpheres[index];
                   return GestureDetector(
-                    // This container helps with more accurate gesture detection
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.transparent)),
@@ -38,7 +39,6 @@ class GeoSphereView extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //const SizedBox(width: 8),
                                 Text(
                                   geoSphere.name,
                                   style: GlobalVariables.headerStyle,
@@ -54,13 +54,12 @@ class GeoSphereView extends StatelessWidget {
                                           AsyncSnapshot<String> snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const CircularProgressIndicator(); // Show loading indicator while waiting
+                                          return const CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
-                                          return const Text(
-                                              'Error'); // Show error text on error
+                                          return const Text('Error');
                                         } else {
-                                          return Text(snapshot.data ??
-                                              'Unknown'); // Show neighborhood or 'Unknown'
+                                          return Text(
+                                              snapshot.data ?? 'Unknown');
                                         }
                                       },
                                     ),
@@ -75,20 +74,18 @@ class GeoSphereView extends StatelessWidget {
                                           AsyncSnapshot<double> snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const CircularProgressIndicator(); // Show loading indicator while waiting
+                                          return const CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
-                                          return const Text(
-                                              'Error'); // Show error text on error
+                                          return const Text('Error');
                                         } else {
                                           return Text(
                                               '${snapshot.data.toString()} km' ??
-                                                  'Unknown'); // Show neighborhood or 'Unknown'
+                                                  'Unknown');
                                         }
                                       },
                                     ),
                                   ],
                                 ),
-                                //const SizedBox(width: 8),
                               ],
                             ),
                           ),
@@ -96,6 +93,7 @@ class GeoSphereView extends StatelessWidget {
                         ],
                       ),
                     ),
+                    // Takes you to the gallery of the selected geo sphere
                     onTap: () {
                       Navigator.push(
                         context,

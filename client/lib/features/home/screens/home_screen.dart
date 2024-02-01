@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
-import 'package:georeal/features/location/location_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/geo_sphere_model.dart';
 import '../../gallery/widgets/custom_toast.dart';
 import '../widgets/map.dart';
+
+/// HomeScreen is the main screen of the app which contains the Map
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,10 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  LocationService locationService = LocationService();
   bool isLocationServiceStarted = false;
 
   void showCustomToast(GeoSphere geoSphere) {
+    // checking mounted here ensures that home screen is still
+    // in widget tree before showing the toast
     if (mounted) {
       CustomToast.show(
         context,
@@ -30,47 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    //locationService.stopLocationChecks();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final geoSphereService =
-        Provider.of<GeoSphereService>(context, listen: false);
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
+    // TODO: move this to a seperate method in the geo sphere view model
     if (!isLocationServiceStarted) {
-      // print("Working");
       geoSphereViewModel.startLocationChecks(showCustomToast);
       isLocationServiceStarted = true;
     } else {
-      // handle
+      // TODO: Handle
     }
     return const Scaffold(
       body: Column(
         children: [
-          /*
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Align(
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                "Geo-Real",
-                style: GlobalVariables.headerStyle,
-              ),
-            ),
+          Expanded(
+            child: CustomMap(),
           ),
-          AddGeoSphereWidget(),
-          SizedBox(height: 20),
-          */
-          Expanded(child: CustomMap()),
         ],
       ),
     );

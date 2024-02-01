@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import '../../gallery/services/gallery_service.dart';
 
+/// Prompt to add a photo to a GeoSphere
+
 class PhotoPrompt extends StatefulWidget {
   final String geoSphereId;
   const PhotoPrompt({super.key, required this.geoSphereId});

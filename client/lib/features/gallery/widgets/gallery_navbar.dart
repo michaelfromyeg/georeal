@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Navigation bar for the Gallery screen
+
 class GalleryNavBar extends StatelessWidget {
   final String name;
   const GalleryNavBar({super.key, required this.name});

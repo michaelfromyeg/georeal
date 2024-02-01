@@ -5,6 +5,8 @@ import 'package:georeal/global_variables.dart';
 
 import 'features/geo_sphere/widgets/add_geo_sphere_modal.dart';
 
+/// HomeRouter serves as the main navigation hub of the app
+
 class HomeRouter extends StatefulWidget {
   const HomeRouter({super.key});
 

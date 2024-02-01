@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import '../../../global_variables.dart';
 import '../../../models/gallery_model.dart';
 
+/// Handles http requests for the Gallery
+
 class GalleryService {
   final Map<String, Gallery> _galleries = {};
 

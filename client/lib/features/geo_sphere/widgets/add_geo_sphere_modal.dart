@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../view_model/geo_sphere_view_model.dart';
 
+/// Modal that allows user to create a new GeoSphere
+
 class AddGeoSphereModal extends StatefulWidget {
   static const routeName = 'addGeoSphere';
   const AddGeoSphereModal({super.key});

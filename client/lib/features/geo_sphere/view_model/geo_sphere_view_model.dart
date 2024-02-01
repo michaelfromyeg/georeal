@@ -9,6 +9,8 @@ import 'package:location/location.dart';
 
 import '../../location/location_view_model.dart';
 
+/// Handles data and logic for the GeoSpheres
+
 typedef LocationCallback = void Function(GeoSphere geoSphere);
 
 class GeoSphereViewModel extends ChangeNotifier {
