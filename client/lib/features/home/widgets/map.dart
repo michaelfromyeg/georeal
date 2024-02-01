@@ -43,7 +43,7 @@ class _CustomMapState extends State<CustomMap> {
           center: LatLng(geoSphere.latitude, geoSphere.longitude),
           radius: geoSphere.radiusInMeters,
           strokeWidth: 2,
-          fillColor: const Color.fromRGBO(90, 118, 226, 0.494),
+          fillColor: const Color.fromARGB(124, 90, 226, 142),
         );
       },
     ).toSet();

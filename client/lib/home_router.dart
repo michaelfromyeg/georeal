@@ -16,6 +16,13 @@ class HomeRouter extends StatefulWidget {
 
 class _HomeRouterState extends State<HomeRouter> {
   int _page = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _page = index;
+    });
+  }
+
   final screens = [
     const HomeScreen(),
     const GeoSphereView(), /*FriendsScreen()*/
@@ -25,6 +32,7 @@ class _HomeRouterState extends State<HomeRouter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
@@ -48,33 +56,53 @@ class _HomeRouterState extends State<HomeRouter> {
         },
         child: const Icon(Icons.add),
       ),
-      backgroundColor: const Color.fromRGBO(29, 44, 77, 1),
       bottomNavigationBar: BottomAppBar(
-        color: GlobalVariables.primaryColor,
+        height: 64,
+        color: const Color.fromARGB(255, 0, 0, 18),
         shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _page = 0;
-                });
-              },
-              icon: const Icon(Icons.home),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _page = 1;
-                });
-              },
-              icon: const Icon(Icons.location_on_sharp),
-            ),
+            buildBottomNavItem(Icons.home, 'Home', 0),
+            buildBottomNavItem(Icons.language, 'GeoSpheres', 1),
           ],
         ),
       ),
       body: screens[_page],
+    );
+  }
+
+  Widget buildBottomNavItem(IconData icon, String label, int index) {
+    // Inkwell adds touch interactivity to the icon
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _page = index;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color:
+                  _page == index ? GlobalVariables.secondaryColor : Colors.grey,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                color: _page == index
+                    ? GlobalVariables.secondaryColor
+                    : Colors.grey,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
