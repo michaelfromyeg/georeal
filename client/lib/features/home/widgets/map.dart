@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+import '../../gallery/views/geo_sphere_gallery.dart';
 import '../../geo_sphere/view_model/geo_sphere_view_model.dart';
 import '../../location/location_view_model.dart';
 
@@ -39,6 +42,17 @@ class _CustomMapState extends State<CustomMap> {
     Set<Circle> circles = geoSphereViewModel.geoSpheres.map(
       (geoSphere) {
         return Circle(
+          consumeTapEvents: true,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return GeoSphereGallery(geoSphere: geoSphere);
+                },
+              ),
+            );
+          },
           circleId: CircleId(geoSphere.name),
           center: LatLng(geoSphere.latitude, geoSphere.longitude),
           radius: geoSphere.radiusInMeters,
@@ -51,10 +65,29 @@ class _CustomMapState extends State<CustomMap> {
     Set<Marker> markers = geoSphereViewModel.geoSpheres.map(
       (geoSphere) {
         return Marker(
-            markerId: MarkerId(geoSphere.name),
-            position: LatLng(geoSphere.latitude, geoSphere.longitude),
-            infoWindow: InfoWindow(title: geoSphere.name),
-            onTap: () {});
+          markerId: MarkerId(geoSphere.name),
+          position: LatLng(geoSphere.latitude, geoSphere.longitude),
+          infoWindow: InfoWindow(title: geoSphere.name),
+          draggable: true,
+          onDragStart: (LatLng position) {
+            // TODO: Move geo sphere when dragged to new location
+            log("Dragging started at position: $position");
+          },
+          onDragEnd: (LatLng newPosition) {
+            // TODO: Move geo sphere when dragged to new location
+            log("Dragging ended at position: $newPosition");
+          },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return GeoSphereGallery(geoSphere: geoSphere);
+                },
+              ),
+            );
+          },
+        );
       },
     ).toSet();
 
