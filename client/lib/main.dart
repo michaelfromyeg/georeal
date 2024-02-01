@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:georeal/features/auth/auth_screen.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
-import 'package:georeal/home_router.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
@@ -20,6 +21,9 @@ Future main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserViewModel(),
+        ),
         ChangeNotifierProvider(
           create: (_) => locationViewModel,
         ),
@@ -50,7 +54,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const HomeRouter(),
+      home: const AuthScreen(),
     );
   }
 }

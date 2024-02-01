@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
+import 'package:georeal/home_router.dart';
 
 /// handles all data and logic for the authentication process
 
@@ -27,11 +29,22 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> authenticate() async {
+  Future<void> authenticate(BuildContext context) async {
     if (_authMode == Auth.signin) {
-      // Handle sign in
     } else {
-      // Handle sign up
+      UserViewModel user = UserViewModel();
+      Map<String, dynamic> userData = {
+        'name': _nameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      };
+      user.setUser(userData);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                const HomeRouter()), // Assuming HomeRouter is your home widget
+      );
     }
   }
 

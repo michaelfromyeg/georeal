@@ -68,7 +68,8 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: viewModel.authenticate,
+                                onPressed: () =>
+                                    viewModel.authenticate(context),
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,
@@ -126,7 +127,8 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: viewModel.authenticate,
+                                onPressed: () =>
+                                    viewModel.authenticate(context),
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,
