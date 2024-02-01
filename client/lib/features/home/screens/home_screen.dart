@@ -41,11 +41,56 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       // TODO: Handle
     }
-    return const Scaffold(
-      body: Column(
+    return Scaffold(
+      body: Stack(
         children: [
-          Expanded(
-            child: CustomMap(),
+          const Column(
+            children: [
+              Expanded(
+                child: CustomMap(),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Consumer<GeoSphereViewModel>(
+              builder: (context, geoSphereViewModel, child) {
+                return SafeArea(
+                  child: GestureDetector(
+                    child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(
+                                      0.15), // Shadow color with opacity
+                                  spreadRadius: 4, // Spread radius
+                                  blurRadius: 10, // Blur radius
+                                  offset: const Offset(0,
+                                      4), // Changes position of shadow, horizontal, vertical
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.location_on,
+                            size: 30,
+                            color: geoSphereViewModel.inGeoSphere
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ]),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

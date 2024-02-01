@@ -14,6 +14,7 @@ import '../../location/location_view_model.dart';
 typedef LocationCallback = void Function(GeoSphere geoSphere);
 
 class GeoSphereViewModel extends ChangeNotifier {
+  bool inGeoSphere = false;
   final GeoSphereService _geoSphereService;
   final LocationViewModel _locationViewModel;
 
@@ -151,11 +152,13 @@ class GeoSphereViewModel extends ChangeNotifier {
               currentLocation.latitude!, currentLocation.longitude!);
 
           if (isInGeoSphere != null) {
-            //  print("The current location is inside the geosphere.");
+            inGeoSphere = true;
             callback(isInGeoSphere);
+            notifyListeners();
           }
         } else {
-          //   print("The current location is outside the geosphere.");
+          inGeoSphere = false;
+          notifyListeners();
         }
       }
     });
