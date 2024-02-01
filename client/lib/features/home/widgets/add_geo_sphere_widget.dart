@@ -40,6 +40,8 @@ class AddGeoSphereWidget extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 showModalBottomSheet(
+                  useSafeArea: true,
+                  isScrollControlled: true,
                   context: context,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(

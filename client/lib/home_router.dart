@@ -42,6 +42,8 @@ class _HomeRouterState extends State<HomeRouter> {
         ),
         onPressed: () {
           showModalBottomSheet(
+            useSafeArea: true,
+            isScrollControlled: true,
             context: context,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
