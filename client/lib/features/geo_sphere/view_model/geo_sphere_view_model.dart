@@ -11,7 +11,7 @@ import '../../location/location_view_model.dart';
 
 /// Handles data and logic for the GeoSpheres
 
-typedef LocationCallback = void Function(GeoSphere geoSphere);
+typedef LocationCallback = void Function(List<GeoSphere> geoSphere);
 
 class GeoSphereViewModel extends ChangeNotifier {
   bool inGeoSphere = false;
@@ -124,43 +124,49 @@ class GeoSphereViewModel extends ChangeNotifier {
     return earthRadiusInKM * centralAngle;
   }
 
-  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
+  // Returns the GeoSphere that contains the coordinate
+  List<GeoSphere> isPointInGeoSphere(double pointLat, double pointLon) {
+    List<GeoSphere> containingGeoSpheres = [];
+
     for (GeoSphere geoSphere in geoSpheres) {
       double distanceFromCenter = _calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
       if (distanceFromCenter <= geoSphere.radiusInMeters) {
-        return geoSphere;
+        containingGeoSpheres.add(geoSphere);
       }
     }
-    return null;
+    return containingGeoSpheres;
   }
 
   Future<void> startLocationChecks(LocationCallback callback) async {
     // Request background location permission
-    Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
-      LocationData? currentLocation = _locationViewModel.currentLocation;
+    Timer.periodic(
+      const Duration(seconds: 10),
+      (Timer timer) async {
+        LocationData? currentLocation = _locationViewModel.currentLocation;
 
-      if (currentLocation == null) {
-        print("Current location is null; are permissions set appropriately?");
-      } else {
-        if (currentLocation.latitude != null &&
-            currentLocation.longitude != null) {
-          // print(
-          //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
+        if (currentLocation == null) {
+          print("Current location is null; are permissions set appropriately?");
+        } else {
+          if (currentLocation.latitude != null &&
+              currentLocation.longitude != null) {
+            // print(
+            //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
-          GeoSphere? isInGeoSphere = isPointInGeoSphere(
-              currentLocation.latitude!, currentLocation.longitude!);
+            List<GeoSphere> isInGeoSphere = isPointInGeoSphere(
+                currentLocation.latitude!, currentLocation.longitude!);
 
-          if (isInGeoSphere != null) {
-            inGeoSphere = true;
-            callback(isInGeoSphere);
+            if (isInGeoSphere.isNotEmpty) {
+              inGeoSphere = true;
+              callback(isInGeoSphere);
+              notifyListeners();
+            }
+          } else {
+            inGeoSphere = false;
             notifyListeners();
           }
-        } else {
-          inGeoSphere = false;
-          notifyListeners();
         }
-      }
-    });
+      },
+    );
   }
 }
