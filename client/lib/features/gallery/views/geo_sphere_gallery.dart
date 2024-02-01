@@ -28,7 +28,7 @@ class GeoSphereGallery extends StatelessWidget {
         child: Column(
           children: [
             GalleryNavBar(
-              name: geoSphere.name,
+              geoSphere: geoSphere,
             ),
             Expanded(
               // Wrap ListView.builder with Expanded

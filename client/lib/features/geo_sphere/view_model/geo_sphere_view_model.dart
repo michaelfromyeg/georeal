@@ -46,6 +46,13 @@ class GeoSphereViewModel extends ChangeNotifier {
     }
   }
 
+  void deleteGeoSphere(GeoSphere geoSphereToDelete) {
+    // Assuming _geoSpheres is a List<GeoSphere>
+    geoSpheres
+        .removeWhere((geoSphere) => geoSphere.name == geoSphereToDelete.name);
+    notifyListeners();
+  }
+
   Future<String> getNeighborhood(double latitude, double longitude) async {
     try {
       List<geocode.Placemark> placemarks =
