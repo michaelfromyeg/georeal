@@ -67,8 +67,8 @@ class _HomeRouterState extends State<HomeRouter> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildBottomNavItem(Icons.home, 'Home', 0),
-            buildBottomNavItem(Icons.language, 'GeoSpheres', 1),
+            buildBottomNavItem(Icons.map_outlined, 'Map', 0),
+            buildBottomNavItem(Icons.language, 'Spaces', 1),
           ],
         ),
       ),
