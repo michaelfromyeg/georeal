@@ -5,7 +5,8 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/foundation.dart';
 import 'package:location/location.dart';
 
-// Resposible for managing location state and handling periodic updates
+/// Resposible for managing location state and handling periodic updates
+
 class LocationViewModel extends ChangeNotifier {
   final Location _location = Location();
   LocationData? _currentLocation;
@@ -30,9 +31,9 @@ class LocationViewModel extends ChangeNotifier {
       permissionGranted = await _location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) return;
     }
-    print("before initBackgroundFetch");
+
     initBackgroundFetch();
-    print("after initBackgroundFetch");
+
     _updateLocation();
     _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateLocation();

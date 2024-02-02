@@ -1,14 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
+import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
-import 'package:georeal/features/home/widgets/add_geo_sphere_widget.dart';
-import 'package:georeal/features/location/location_service.dart';
-import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/geo_sphere_model.dart';
-import '../../gallery/widgets/custom_toast.dart';
+import '../../view_models/user_view_model.dart';
 import '../widgets/map.dart';
+
+/// HomeScreen is the main screen of the app which contains the Map
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,62 +19,104 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  LocationService locationService = LocationService();
   bool isLocationServiceStarted = false;
+  List<GeoSphere> geoSpheres = [];
 
-  void showCustomToast(GeoSphere geoSphere) {
+  void showCustomToast(List<GeoSphere> geoSpheres) {
+    // checking mounted here ensures that home screen is still
+    // in widget tree before showing the toast
+    this.geoSpheres = geoSpheres;
+    /*
     if (mounted) {
       CustomToast.show(
         context,
-        "You have entered ${geoSphere.name}, press this button to add to its gallery!",
-        geoSphere,
+        "You have entered ${geoSpheres.last.name}, press this button to add to its gallery!",
+        geoSpheres.last,
       );
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    //locationService.stopLocationChecks();
-    super.dispose();
+    */
   }
 
   @override
   Widget build(BuildContext context) {
-    final geoSphereService =
-        Provider.of<GeoSphereService>(context, listen: false);
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    log('email: ${userViewModel.user.email}');
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
+    // TODO: move this to a seperate method in the geo sphere view model
     if (!isLocationServiceStarted) {
-      // print("Working");
       geoSphereViewModel.startLocationChecks(showCustomToast);
+      log("Start location checks");
       isLocationServiceStarted = true;
     } else {
-      // handle
+      // TODO: Handle
     }
-    return const Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Align(
-                alignment: AlignmentDirectional.center,
-                child: Text(
-                  "Geo-Real",
-                  style: GlobalVariables.headerStyle,
-                ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          const Column(
+            children: [
+              Expanded(
+                child: CustomMap(),
               ),
+            ],
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Consumer<GeoSphereViewModel>(
+              builder: (context, geoSphereViewModel, child) {
+                return SafeArea(
+                  child: GestureDetector(
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.camera_alt_outlined,
+                          size: 28,
+                          color: geoSphereViewModel.inGeoSphere
+                              ? Colors.green
+                              : Colors.red,
+                        ),
+                      ],
+                    ),
+                    onTap: () => {
+                      log("$geoSpheres"),
+                      log("Tapped on camera button: ${geoSphereViewModel.inGeoSphere}"),
+                      if (geoSphereViewModel.inGeoSphere)
+                        {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return PhotoPrompt(
+                                    geoSphereId: geoSpheres.last.geoSphereId);
+                              })
+                        }
+                      else
+                        {}
+                    },
+                  ),
+                );
+              },
             ),
-            AddGeoSphereWidget(),
-            SizedBox(height: 20),
-            Expanded(child: CustomMap()),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import '../../../models/geo_sphere_model.dart';
 import '../../gallery/services/gallery_service.dart';
 
+/// handles http requests for the GeoSpheres
+
 class GeoSphereService {
   final GalleryService _galleryService;
   final List<GeoSphere> _geoSpheres = [];
@@ -40,7 +42,9 @@ class GeoSphereService {
       log(geoSphere.toGeoJsonString());
 
       http.Response res = await http.post(
+
         Uri.parse('${EnvVariables.uri}/geofences'),
+
         body: json
             .encode({'name': geoSphere.name, 'geojson': geoSphere.toGeoJson()}),
         headers: <String, String>{
@@ -61,7 +65,10 @@ class GeoSphereService {
 
   Future<void> getAllGeoSpheres() async {
     try {
+
+
       var response = await http.get(Uri.parse('${EnvVariables.uri}/geofences'));
+
 
       if (response.statusCode == 200) {
         List<dynamic> geofencesData = json.decode(response.body);

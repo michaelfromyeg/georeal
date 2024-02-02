@@ -23,6 +23,10 @@ Future<void> checkServerStatus() async {
   }
 }
 
+import 'features/geo_sphere/widgets/add_geo_sphere_modal.dart';
+
+/// HomeRouter serves as the main navigation hub of the app
+
 class HomeRouter extends StatefulWidget {
   const HomeRouter({super.key});
 
@@ -38,6 +42,13 @@ class _HomeRouterState extends State<HomeRouter> {
   }
 
   int _page = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _page = index;
+    });
+  }
+
   final screens = [
     const HomeScreen(),
     const GeoSphereView(), /* FriendsScreen() */
@@ -47,24 +58,44 @@ class _HomeRouterState extends State<HomeRouter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: GlobalVariables.backgroundColor,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              width: 0.5,
-              color: Colors.grey,
-            ),
-          ),
+      extendBody: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: const Color.fromARGB(255, 3, 179, 0),
+        backgroundColor: const Color.fromARGB(255, 10, 10, 10),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
         ),
-        child: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildBottomNavItem(Icons.home, 'Home', 0),
-              buildBottomNavItem(Icons.public, 'Geo Sphere', 1),
-            ],
-          ),
+        onPressed: () {
+          showModalBottomSheet(
+            useSafeArea: true,
+            isScrollControlled: true,
+            context: context,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+            ),
+            builder: (context) => Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: const AddGeoSphereModal(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 64,
+        color: const Color.fromARGB(255, 10, 10, 10),
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            buildBottomNavItem(Icons.map_outlined, 'Map', 0),
+            buildBottomNavItem(Icons.language, 'Spaces', 1),
+          ],
         ),
       ),
       body: screens[_page],
@@ -72,6 +103,7 @@ class _HomeRouterState extends State<HomeRouter> {
   }
 
   Widget buildBottomNavItem(IconData icon, String label, int index) {
+    // Inkwell adds touch interactivity to the icon
     return InkWell(
       onTap: () {
         setState(() {
@@ -79,23 +111,22 @@ class _HomeRouterState extends State<HomeRouter> {
         });
       },
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              color: _page == index
-                  ? GlobalVariables.secondaryColor
-                  : GlobalVariables.primaryColor,
+              color:
+                  _page == index ? GlobalVariables.secondaryColor : Colors.grey,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
                 color: _page == index
                     ? GlobalVariables.secondaryColor
-                    : GlobalVariables.primaryColor,
+                    : Colors.grey,
                 fontSize: 10,
               ),
             ),

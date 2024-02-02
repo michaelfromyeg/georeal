@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
 import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';
 
 import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
 import 'features/location/location_view_model.dart';
-// Replace with the actual path
 
 Future main() async {
   await dotenv.load();
@@ -21,6 +21,9 @@ Future main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserViewModel(),
+        ),
         ChangeNotifierProvider(
           create: (_) => locationViewModel,
         ),
@@ -45,10 +48,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: HomeRouter(),
+      home: const HomeRouter(),
     );
   }
 }

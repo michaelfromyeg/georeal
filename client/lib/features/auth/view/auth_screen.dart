@@ -3,7 +3,9 @@ import 'package:georeal/features/auth/widgets/auth_text_field.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
-import 'auth_view_model.dart'; // Import the AuthViewModel
+import '../view_model/auth_view_model.dart';
+
+/// Authentication screen
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -66,7 +68,8 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: viewModel.authenticate,
+                                onPressed: () =>
+                                    viewModel.authenticate(context),
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,
@@ -124,7 +127,8 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: viewModel.authenticate,
+                                onPressed: () =>
+                                    viewModel.authenticate(context),
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,

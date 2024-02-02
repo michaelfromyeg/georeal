@@ -9,9 +9,12 @@ import 'package:location/location.dart';
 
 import '../../location/location_view_model.dart';
 
-typedef LocationCallback = void Function(GeoSphere geoSphere);
+/// Handles data and logic for the GeoSpheres
+
+typedef LocationCallback = void Function(List<GeoSphere> geoSphere);
 
 class GeoSphereViewModel extends ChangeNotifier {
+  bool inGeoSphere = false;
   final GeoSphereService _geoSphereService;
   final LocationViewModel _locationViewModel;
 
@@ -42,6 +45,13 @@ class GeoSphereViewModel extends ChangeNotifier {
         //  print("Location data is not available to create GeoSphere.");
       }
     }
+  }
+
+  void deleteGeoSphere(GeoSphere geoSphereToDelete) {
+    // Assuming _geoSpheres is a List<GeoSphere>
+    geoSpheres
+        .removeWhere((geoSphere) => geoSphere.name == geoSphereToDelete.name);
+    notifyListeners();
   }
 
   Future<String> getNeighborhood(double latitude, double longitude) async {
@@ -114,41 +124,49 @@ class GeoSphereViewModel extends ChangeNotifier {
     return earthRadiusInKM * centralAngle;
   }
 
-  GeoSphere? isPointInGeoSphere(double pointLat, double pointLon) {
+  // Returns the GeoSphere that contains the coordinate
+  List<GeoSphere> isPointInGeoSphere(double pointLat, double pointLon) {
+    List<GeoSphere> containingGeoSpheres = [];
+
     for (GeoSphere geoSphere in geoSpheres) {
       double distanceFromCenter = _calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
       if (distanceFromCenter <= geoSphere.radiusInMeters) {
-        return geoSphere;
+        containingGeoSpheres.add(geoSphere);
       }
     }
-    return null;
+    return containingGeoSpheres;
   }
 
   Future<void> startLocationChecks(LocationCallback callback) async {
     // Request background location permission
-    Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
-      LocationData? currentLocation = _locationViewModel.currentLocation;
+    Timer.periodic(
+      const Duration(seconds: 10),
+      (Timer timer) async {
+        LocationData? currentLocation = _locationViewModel.currentLocation;
 
-      if (currentLocation == null) {
-        print("Current location is null; are permissions set appropriately?");
-      } else {
-        if (currentLocation.latitude != null &&
-            currentLocation.longitude != null) {
-          // print(
-          //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
-
-          GeoSphere? isInGeoSphere = isPointInGeoSphere(
-              currentLocation.latitude!, currentLocation.longitude!);
-
-          if (isInGeoSphere != null) {
-            //  print("The current location is inside the geosphere.");
-            callback(isInGeoSphere);
-          }
+        if (currentLocation == null) {
+          print("Current location is null; are permissions set appropriately?");
         } else {
-          //   print("The current location is outside the geosphere.");
+          if (currentLocation.latitude != null &&
+              currentLocation.longitude != null) {
+            // print(
+            //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
+
+            List<GeoSphere> currentGeoSpheres = isPointInGeoSphere(
+                currentLocation.latitude!, currentLocation.longitude!);
+
+            if (currentGeoSpheres.isNotEmpty) {
+              inGeoSphere = true;
+              callback(currentGeoSpheres);
+              notifyListeners();
+            }
+          } else {
+            inGeoSphere = false;
+            notifyListeners();
+          }
         }
-      }
-    });
+      },
+    );
   }
 }

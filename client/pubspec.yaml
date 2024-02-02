@@ -99,3 +99,5 @@ flutter:
   assets:
     - assets/images/profile_photo.jpg
     - .env
+    - assets/map/style.json
+    - assets/map/simple_style.json

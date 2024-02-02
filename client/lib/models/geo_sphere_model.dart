@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:uuid/uuid.dart';
 
+/// Represents a GeoSphere object
+
 class GeoSphere {
   double latitude;
   double longitude;
