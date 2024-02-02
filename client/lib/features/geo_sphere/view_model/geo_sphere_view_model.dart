@@ -153,12 +153,12 @@ class GeoSphereViewModel extends ChangeNotifier {
             // print(
             //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
 
-            List<GeoSphere> isInGeoSphere = isPointInGeoSphere(
+            List<GeoSphere> currentGeoSpheres = isPointInGeoSphere(
                 currentLocation.latitude!, currentLocation.longitude!);
 
-            if (isInGeoSphere.isNotEmpty) {
+            if (currentGeoSpheres.isNotEmpty) {
               inGeoSphere = true;
-              callback(isInGeoSphere);
+              callback(currentGeoSpheres);
               notifyListeners();
             }
           } else {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GlobalVariables {
-  static const String google_api_key =
-      'AIzaSyBeghIHy3KuYoSFcZ0rzxFv-H32jNwYesI';
-  static const String uri = 'https://api.georeal.michaeldemar.co';
+  static String get URI => dotenv.env['SERVER_URI'] ?? 'http://localhost:3000';
+  static String get GOOGLE_API_KEY => dotenv.env['GOOGLE_API_KEY'] ?? '';
   // COLORS
   static const accentColor = Colors.red;
   static const backgroundColor = Color.fromRGBO(255, 255, 255, 1);

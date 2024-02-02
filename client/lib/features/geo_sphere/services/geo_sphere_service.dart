@@ -42,7 +42,7 @@ class GeoSphereService {
       log(geoSphere.toGeoJsonString());
 
       http.Response res = await http.post(
-        Uri.parse('${GlobalVariables.uri}/geofences'),
+        Uri.parse('${GlobalVariables.URI}/geofences'),
         body: json
             .encode({'name': geoSphere.name, 'geojson': geoSphere.toGeoJson()}),
         headers: <String, String>{
@@ -64,7 +64,7 @@ class GeoSphereService {
   Future<void> getAllGeoSpheres() async {
     try {
       var response =
-          await http.get(Uri.parse('${GlobalVariables.uri}/geofences'));
+          await http.get(Uri.parse('${GlobalVariables.URI}/geofences'));
 
       if (response.statusCode == 200) {
         List<dynamic> geofencesData = json.decode(response.body);

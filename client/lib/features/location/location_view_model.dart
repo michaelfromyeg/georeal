@@ -31,9 +31,9 @@ class LocationViewModel extends ChangeNotifier {
       permissionGranted = await _location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) return;
     }
-    print("before initBackgroundFetch");
+
     initBackgroundFetch();
-    print("after initBackgroundFetch");
+
     _updateLocation();
     _locationTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
       _updateLocation();

@@ -6,6 +6,7 @@ import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dar
 import 'package:provider/provider.dart';
 
 import '../../../models/geo_sphere_model.dart';
+import '../../view_models/user_view_model.dart';
 import '../widgets/map.dart';
 
 /// HomeScreen is the main screen of the app which contains the Map
@@ -38,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userViewModel = Provider.of<UserViewModel>(context, listen: false);
+    log('email: ${userViewModel.user.email}');
     final geoSphereViewModel =
         Provider.of<GeoSphereViewModel>(context, listen: false);
     // TODO: move this to a seperate method in the geo sphere view model

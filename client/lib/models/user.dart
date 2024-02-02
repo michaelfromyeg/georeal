@@ -6,11 +6,12 @@ class User {
   String email;
   String password;
 
-  User(
-      {required this.id,
-      required this.name,
-      required this.email,
-      required this.password});
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.password,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

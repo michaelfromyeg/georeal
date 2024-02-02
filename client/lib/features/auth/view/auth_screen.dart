@@ -3,7 +3,7 @@ import 'package:georeal/features/auth/widgets/auth_text_field.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
-import 'auth_view_model.dart';
+import '../view_model/auth_view_model.dart';
 
 /// Authentication screen
 
