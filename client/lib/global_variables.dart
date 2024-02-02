@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GlobalVariables {
+
   static String get URI => dotenv.env['SERVER_URI'] ?? 'http://localhost:3000';
   static String get GOOGLE_API_KEY => dotenv.env['GOOGLE_API_KEY'] ?? '';
+
   // COLORS
   static const accentColor = Colors.red;
   static const backgroundColor = Color.fromRGBO(255, 255, 255, 1);
