@@ -24,8 +24,7 @@ class GalleryService {
   }
 
   Future<void> uploadPhoto(String geoSphereId, File photo) async {
-
-    var uri = Uri.parse('${EnvVariables.uri}/geofences'),
+    var uri = Uri.parse('${EnvVariables.uri}/geofences');
 
     var request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('photo', photo.path));
