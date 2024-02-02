@@ -17,10 +17,11 @@ class GeoSphereViewModel extends ChangeNotifier {
   bool inGeoSphere = false;
   final GeoSphereService _geoSphereService;
   final LocationViewModel _locationViewModel;
+  final List<GeoSphere> _geoSpheres = [];
 
   GeoSphereViewModel(this._geoSphereService, this._locationViewModel);
 
-  List<GeoSphere> get geoSpheres => _geoSphereService.geoSpheres;
+  List<GeoSphere> get geoSpheres => _geoSpheres;
 
   Future<void> setAndCreateGeoSphere(double radius, String name) async {
     LocationData? locationData = _locationViewModel.currentLocation;
@@ -29,16 +30,27 @@ class GeoSphereViewModel extends ChangeNotifier {
     if (locationData != null &&
         locationData.latitude != null &&
         locationData.longitude != null) {
-      _geoSphereService.createGeoSphere(
-          locationData.latitude!, locationData.longitude!, radius, name);
+      GeoSphere newGeoSphere = GeoSphere(
+          latitude: locationData.latitude!,
+          longitude: locationData.longitude!,
+          radiusInMeters: radius,
+          name: name);
+      _geoSpheres.add(newGeoSphere);
+      GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
       notifyListeners();
     } else {
       locationData = await _locationViewModel.fetchLocation();
       if (locationData != null &&
           locationData.latitude != null &&
           locationData.longitude != null) {
-        _geoSphereService.createGeoSphere(
-            locationData.latitude!, locationData.longitude!, radius, name);
+        GeoSphere newGeoSphere = GeoSphere(
+            latitude: locationData.latitude!,
+            longitude: locationData.longitude!,
+            radiusInMeters: radius,
+            name: name);
+        _geoSpheres.add(newGeoSphere);
+        GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
+
         notifyListeners();
       } else {
         // location data is still not available
