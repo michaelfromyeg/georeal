@@ -21,7 +21,8 @@ class PhotoPrompt extends StatefulWidget {
 class _PhotoPromptState extends State<PhotoPrompt> {
   File? image;
 
-  Future pickImage(ImageSource source, BuildContext context) async {
+  Future pickImage(
+      ImageSource source, GalleryViewModel galleryViewModel) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
@@ -30,8 +31,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
       this.image = imageTemporary;
       log("beofre");
       // Save the image path to the gallery
-      Provider.of<GalleryViewModel>(context, listen: false)
-          .addPhotoToGallery(widget.geoSphereId, image.path);
+      galleryViewModel.addPhotoToGallery(widget.geoSphereId, image.path);
       log("after");
       /*
       Provider.of<GalleryService>(context, listen: false)
@@ -43,6 +43,8 @@ class _PhotoPromptState extends State<PhotoPrompt> {
 
   @override
   Widget build(BuildContext context) {
+    final galleryViewModel =
+        Provider.of<GalleryViewModel>(context, listen: false);
     return AlertDialog(
       title: const Text("Add a photo!"),
       content: SizedBox(
@@ -50,7 +52,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
         child: Column(
           children: [
             ElevatedButton(
-              onPressed: () => pickImage(ImageSource.gallery, context),
+              onPressed: () => pickImage(ImageSource.gallery, galleryViewModel),
               child: const Text("Pick Gallery"),
             ),
             ElevatedButton(
@@ -58,13 +60,13 @@ class _PhotoPromptState extends State<PhotoPrompt> {
                 if (Platform.isAndroid) {
                   var status = await Permission.camera.request();
                   if (status.isGranted) {
-                    pickImage(ImageSource.camera, context);
+                    pickImage(ImageSource.camera, galleryViewModel);
                   } else {
                     print("bruh");
                   }
                 } else if (Platform.isIOS) {
                   // TODO: Implement iOS camera permission
-                  pickImage(ImageSource.camera, context);
+                  pickImage(ImageSource.camera, galleryViewModel);
                 }
               },
               child: const Text("Pick Camera"),

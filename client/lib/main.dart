@@ -37,7 +37,7 @@ Future main() async {
         Provider<GalleryService>(
           create: (context) => galleryService,
         ),
-        Provider<GalleryViewModel>(
+        ChangeNotifierProvider(
           create: (context) => GalleryViewModel(),
         ),
       ],
