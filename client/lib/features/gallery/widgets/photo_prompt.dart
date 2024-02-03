@@ -8,11 +8,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/geo_sphere_model.dart';
+import '../views/geo_sphere_gallery.dart';
+
 /// Prompt to add a photo to a GeoSphere
 
 class PhotoPrompt extends StatefulWidget {
-  final String geoSphereId;
-  const PhotoPrompt({super.key, required this.geoSphereId});
+  final GeoSphere geosphere;
+  const PhotoPrompt({super.key, required this.geosphere});
 
   @override
   State<PhotoPrompt> createState() => _PhotoPromptState();
@@ -31,11 +34,17 @@ class _PhotoPromptState extends State<PhotoPrompt> {
       this.image = imageTemporary;
       log("beofre");
       // Save the image path to the gallery
-      galleryViewModel.addPhotoToGallery(widget.geoSphereId, image.path);
+      galleryViewModel.addPhotoToGallery(
+          widget.geosphere.geoSphereId, image.path);
       log("after");
       /*
       Provider.of<GalleryService>(context, listen: false)
           .uploadPhoto(widget.geoSphereId, imageTemporary);*/
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => GeoSphereGallery(geoSphere: widget.geosphere),
+        ),
+      );
     } on PlatformException catch (e) {
       print("Failed to pick image: $e");
     }

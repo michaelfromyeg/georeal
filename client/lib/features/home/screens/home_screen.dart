@@ -67,8 +67,8 @@ class HomeScreen extends StatelessWidget {
                               context: context,
                               builder: (context) {
                                 return PhotoPrompt(
-                                    geoSphereId: geoSphereViewModel
-                                        .geoSpheres.last.geoSphereId);
+                                    geosphere:
+                                        geoSphereViewModel.geoSpheres.last);
                               })
                         }
                       else

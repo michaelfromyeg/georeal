@@ -40,7 +40,7 @@ class CustomToast {
                           context: context,
                           builder: ((context) {
                             return PhotoPrompt(
-                              geoSphereId: geoSphere.geoSphereId,
+                              geosphere: geoSphere,
                             );
                           }));
                     },
