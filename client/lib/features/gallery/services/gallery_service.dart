@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 /// Handles http requests for the Gallery
 
 class GalleryService {
-  Future<void> uploadPhoto(String geoSphereId, File photo) async {
+  static Future<void> uploadPhoto(String geoSphereId, File photo) async {
     var uri = Uri.parse('${EnvVariables.uri}/geofences');
 
     var request = http.MultipartRequest('POST', uri)
