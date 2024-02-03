@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
+import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
 import 'package:georeal/features/view_models/user_view_model.dart';
 import 'package:georeal/home_router.dart';
@@ -15,7 +16,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   GalleryService galleryService = GalleryService();
-  GeoSphereService geoSphereService = GeoSphereService(galleryService);
+  GeoSphereService geoSphereService = GeoSphereService();
   LocationViewModel locationViewModel = LocationViewModel();
 
   runApp(
@@ -36,7 +37,10 @@ Future main() async {
         ),
         Provider<GalleryService>(
           create: (context) => galleryService,
-        )
+        ),
+        Provider<GalleryViewModel>(
+          create: (context) => GalleryViewModel(),
+        ),
       ],
       child: const MyApp(),
     ),

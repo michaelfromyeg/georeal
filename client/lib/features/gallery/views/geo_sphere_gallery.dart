@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/gallery/widgets/gallery_navbar.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:provider/provider.dart';
-
-import '../services/gallery_service.dart';
 
 /// Gallery view for a specific GeoSphere
 
@@ -19,9 +18,9 @@ class GeoSphereGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final galleryService = Provider.of<GalleryService>(context, listen: false);
+    final galleryViewModel = context.watch<GalleryViewModel>();
     List<String> photoPaths =
-        galleryService.getPhotosFromGallery(geoSphere.geoSphereId);
+        galleryViewModel.getPhotosFromGallery(geoSphere.geoSphereId);
 
     return Scaffold(
       body: SafeArea(

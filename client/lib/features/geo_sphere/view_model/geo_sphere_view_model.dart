@@ -31,10 +31,11 @@ class GeoSphereViewModel extends ChangeNotifier {
         locationData.latitude != null &&
         locationData.longitude != null) {
       GeoSphere newGeoSphere = GeoSphere(
-          latitude: locationData.latitude!,
-          longitude: locationData.longitude!,
-          radiusInMeters: radius,
-          name: name);
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!,
+        radiusInMeters: radius,
+        name: name,
+      );
       _geoSpheres.add(newGeoSphere);
       GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
       notifyListeners();
@@ -44,10 +45,12 @@ class GeoSphereViewModel extends ChangeNotifier {
           locationData.latitude != null &&
           locationData.longitude != null) {
         GeoSphere newGeoSphere = GeoSphere(
-            latitude: locationData.latitude!,
-            longitude: locationData.longitude!,
-            radiusInMeters: radius,
-            name: name);
+          latitude: locationData.latitude!,
+          longitude: locationData.longitude!,
+          radiusInMeters: radius,
+          name: name,
+        );
+
         _geoSpheres.add(newGeoSphere);
         GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
 
