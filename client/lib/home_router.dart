@@ -40,7 +40,8 @@ class _HomeRouterState extends State<HomeRouter> {
       extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        foregroundColor: const Color.fromARGB(255, 3, 179, 0),
+        foregroundColor:
+            GlobalVariables.secondaryColor, //Color.fromARGB(255, 3, 179, 0),
         backgroundColor: const Color.fromARGB(255, 10, 10, 10),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
@@ -69,12 +70,14 @@ class _HomeRouterState extends State<HomeRouter> {
         height: 64,
         color: const Color.fromARGB(255, 10, 10, 10),
         shape: const CircularNotchedRectangle(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildBottomNavItem(Icons.map_outlined, 'Map', 0),
-            buildBottomNavItem(Icons.language, 'Spaces', 1),
-          ],
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildBottomNavItem(Icons.map_outlined, 'Map', 0),
+              buildBottomNavItem(Icons.language, 'Spaces', 1),
+            ],
+          ),
         ),
       ),
       body: screens[_page],

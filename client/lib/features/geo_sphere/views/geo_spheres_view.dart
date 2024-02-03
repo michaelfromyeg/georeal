@@ -15,7 +15,7 @@ class GeoSphereView extends StatelessWidget {
     //final geoSphereViewModel =
     //    Provider.of<GeoSphereViewModel>(context, listen: false);
     return Scaffold(
-      backgroundColor: GlobalVariables.backgroundColor,
+      backgroundColor: const Color.fromARGB(255, 18, 18, 26),
       body: SafeArea(
         child: Column(
           children: [
