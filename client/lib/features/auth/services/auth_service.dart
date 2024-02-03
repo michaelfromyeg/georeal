@@ -1,9 +1,9 @@
-import 'package:georeal/global_variables.dart';
+import 'package:georeal/constants/env_variables.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
   static Future<void> login(String email, String password) async {
-    var uri = Uri.parse('${GlobalVariables.URI}/auth/login');
+    var uri = Uri.parse('${EnvVariables.uri}/auth/login');
     var response = await http.post(
       uri,
       body: {
@@ -21,7 +21,7 @@ class AuthService {
 
   static Future<void> register(
       String name, String email, String password) async {
-    var uri = Uri.parse('${GlobalVariables.URI}/auth/register');
+    var uri = Uri.parse('${EnvVariables.uri}/auth/register');
     var response = await http.post(
       uri,
       body: {
