@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as log;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -15,11 +16,11 @@ typedef LocationCallback = void Function(List<GeoSphere> geoSphere);
 
 class GeoSphereViewModel extends ChangeNotifier {
   bool inGeoSphere = false;
-  final GeoSphereService _geoSphereService;
+
   final LocationViewModel _locationViewModel;
   final List<GeoSphere> _geoSpheres = [];
 
-  GeoSphereViewModel(this._geoSphereService, this._locationViewModel);
+  GeoSphereViewModel(this._locationViewModel);
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
@@ -57,13 +58,11 @@ class GeoSphereViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         // location data is still not available
-        //  print("Location data is not available to create GeoSphere.");
       }
     }
   }
 
   void deleteGeoSphere(GeoSphere geoSphereToDelete) {
-    // Assuming _geoSpheres is a List<GeoSphere>
     geoSpheres
         .removeWhere((geoSphere) => geoSphere.name == geoSphereToDelete.name);
     notifyListeners();
@@ -76,10 +75,9 @@ class GeoSphereViewModel extends ChangeNotifier {
 
       if (placemarks.isNotEmpty) {
         geocode.Placemark place = placemarks[0];
-        return place.subLocality ??
-            'Unknown'; // Returns the neighborhood or 'Unknown' if null
+        return place.subLocality ?? 'Unknown';
       }
-      return 'No neighborhood found'; // Return this if placemarks list is empty
+      return 'No neighborhood found';
     } catch (e) {
       print("Error occurred: $e");
       return 'Error occurred'; // Return this in case of an error
@@ -153,7 +151,7 @@ class GeoSphereViewModel extends ChangeNotifier {
     return containingGeoSpheres;
   }
 
-  Future<void> startLocationChecks(LocationCallback callback) async {
+  Future<void> startLocationChecks() async {
     // Request background location permission
     Timer.periodic(
       const Duration(seconds: 10),
@@ -161,19 +159,16 @@ class GeoSphereViewModel extends ChangeNotifier {
         LocationData? currentLocation = _locationViewModel.currentLocation;
 
         if (currentLocation == null) {
-          print("Current location is null; are permissions set appropriately?");
+          log.log(
+              "Current location is null; are permissions set appropriately?");
         } else {
           if (currentLocation.latitude != null &&
               currentLocation.longitude != null) {
-            // print(
-            //   "Current Location: ${currentLocation.latitude}, ${currentLocation.longitude}");
-
             List<GeoSphere> currentGeoSpheres = isPointInGeoSphere(
                 currentLocation.latitude!, currentLocation.longitude!);
 
             if (currentGeoSpheres.isNotEmpty) {
               inGeoSphere = true;
-              callback(currentGeoSpheres);
               notifyListeners();
             }
           } else {

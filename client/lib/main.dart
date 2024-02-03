@@ -18,6 +18,8 @@ Future main() async {
   GalleryService galleryService = GalleryService();
   GeoSphereService geoSphereService = GeoSphereService();
   LocationViewModel locationViewModel = LocationViewModel();
+  GeoSphereViewModel geoSphereViewModel = GeoSphereViewModel(locationViewModel);
+  geoSphereViewModel.startLocationChecks();
 
   runApp(
     MultiProvider(
@@ -28,10 +30,7 @@ Future main() async {
         ChangeNotifierProvider(
           create: (_) => locationViewModel,
         ),
-        ChangeNotifierProvider(
-          create: (context) =>
-              GeoSphereViewModel(geoSphereService, locationViewModel),
-        ),
+        ChangeNotifierProvider(create: (context) => geoSphereViewModel),
         Provider<GeoSphereService>(
           create: (context) => geoSphereService,
         ),
