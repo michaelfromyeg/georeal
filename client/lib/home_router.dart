@@ -40,9 +40,8 @@ class _HomeRouterState extends State<HomeRouter> {
       extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        foregroundColor:
-            GlobalVariables.secondaryColor, //Color.fromARGB(255, 3, 179, 0),
-        backgroundColor: const Color.fromARGB(255, 10, 10, 10),
+        foregroundColor: Colors.black, //Color.fromARGB(255, 3, 179, 0),
+        backgroundColor: GlobalVariables.secondaryColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
         ),
@@ -68,7 +67,7 @@ class _HomeRouterState extends State<HomeRouter> {
       ),
       bottomNavigationBar: BottomAppBar(
         height: 64,
-        color: const Color.fromARGB(255, 10, 10, 10),
+        color: const Color.fromARGB(255, 12, 12, 12),
         shape: const CircularNotchedRectangle(),
         child: Container(
           child: Row(
