@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/geo_sphere_model.dart';
@@ -22,9 +23,18 @@ class GalleryNavBar extends StatelessWidget {
             Navigator.pop(context);
           },
           iconSize: 24,
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+          ),
         ),
-        Text(geoSphere.name, style: const TextStyle(fontSize: 20)),
+        Text(
+          geoSphere.name,
+          style: const TextStyle(
+              fontSize: 20,
+              color: GlobalVariables.secondaryColor,
+              fontWeight: FontWeight.bold),
+        ),
         IconButton(
           onPressed: () async {
             final confirmDelete = await showDialog(
@@ -57,7 +67,10 @@ class GalleryNavBar extends StatelessWidget {
             }
           },
           iconSize: 24,
-          icon: const Icon(Icons.delete_rounded),
+          icon: const Icon(
+            Icons.delete_rounded,
+            color: Colors.white,
+          ),
         ),
       ],
     );

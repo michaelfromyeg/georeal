@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/gallery/widgets/gallery_navbar.dart';
+import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class GeoSphereGallery extends StatelessWidget {
         galleryViewModel.getPhotosFromGallery(geoSphere.geoSphereId);
 
     return Scaffold(
+      backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
