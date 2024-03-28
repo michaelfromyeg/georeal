@@ -19,17 +19,24 @@ class GeoSphere {
   }) : geoSphereId = const Uuid().v4();
 
   factory GeoSphere.fromMap(Map<String, dynamic> map) {
-    var geojson = map['geojson'] ?? {};
-    var geometry = geojson['geometry'] ?? {};
-    var properties = geojson['properties'] ?? {};
+    var geojson = map['geojson'] as Map<String, dynamic>? ?? {};
+    var geometry = geojson['geometry'] as Map<String, dynamic>? ?? {};
+    var coordinates = geometry['coordinates'] as List<dynamic>? ?? [0.0, 0.0];
+    var properties = geojson['properties'] as Map<String, dynamic>? ?? {};
+
+    // Extracting name from the top level of the input map
+    String name = map['name']?.toString() ??
+        properties['name']?.toString() ??
+        'Unknown Name';
+    double latitude = coordinates.isNotEmpty ? coordinates[1].toDouble() : 0.0;
+    double longitude = coordinates.isNotEmpty ? coordinates[0].toDouble() : 0.0;
+    double radiusInMeters = properties['radius']?.toDouble() ?? 0.0;
 
     return GeoSphere(
-      latitude:
-          geometry['coordinates'] != null ? geometry['coordinates'][1] : 0.0,
-      longitude:
-          geometry['coordinates'] != null ? geometry['coordinates'][0] : 0.0,
-      radiusInMeters: properties['radius'] ?? 0.0,
-      name: properties['name'] ?? '',
+      latitude: latitude,
+      longitude: longitude,
+      radiusInMeters: radiusInMeters,
+      name: name, // Use the correctly extracted name
     );
   }
 

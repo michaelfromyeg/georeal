@@ -20,10 +20,19 @@ class GeoSphereViewModel extends ChangeNotifier {
   final LocationViewModel _locationViewModel;
   final List<GeoSphere> _geoSpheres = [];
 
-  GeoSphereViewModel(this._locationViewModel);
+  GeoSphereViewModel(this._locationViewModel) {
+    fetchGeoSpheres();
+  }
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
+  Future<void> fetchGeoSpheres() async {
+    List<GeoSphere> geoSpheres = await GeoSphereService.getAllGeoSpheres();
+    _geoSpheres.addAll(geoSpheres);
+    notifyListeners();
+  }
+
+/*
   Future<void> setAndCreateGeoSphere(double radius, String name) async {
     LocationData? locationData = _locationViewModel.currentLocation;
 
@@ -60,6 +69,23 @@ class GeoSphereViewModel extends ChangeNotifier {
         // location data is still not available
       }
     }
+  }
+*/
+  Future<void> setAndCreateGeoSphere(double radius, String name) async {
+    // Static latitude and longitude values
+    double dummyLatitude = 49.257471832085294;
+    double dummyLongitude = -123.15328134664118;
+
+    GeoSphere newGeoSphere = GeoSphere(
+      latitude: dummyLatitude,
+      longitude: dummyLongitude,
+      radiusInMeters: radius,
+      name: name,
+    );
+
+    _geoSpheres.add(newGeoSphere);
+    GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
+    notifyListeners();
   }
 
   void deleteGeoSphere(GeoSphere geoSphereToDelete) {
