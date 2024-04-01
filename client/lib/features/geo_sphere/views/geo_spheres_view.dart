@@ -17,7 +17,7 @@ class GeoSphereView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "GeoSpheres in your area",
+          "Places in your area",
           style: TextStyle(
               color: GlobalVariables.secondaryColor,
               fontWeight: FontWeight.bold),

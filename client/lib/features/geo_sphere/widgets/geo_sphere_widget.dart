@@ -70,7 +70,8 @@ class GeoSphereWidget extends StatelessWidget {
                         return const Text('Error');
                       } else {
                         return Text(
-                          '${snapshot.data.toString()} km' ?? 'Unknown',
+                          '${snapshot.data!.toStringAsFixed(1)} km' ??
+                              'Unknown',
                           style: const TextStyle(color: Colors.white),
                         );
                       }
