@@ -13,8 +13,10 @@ class GeoSphereService {
     required GeoSphere geoSphere,
   }) async {
     try {
-      log(geoSphere.geoSphereId);
-      log(geoSphere.toGeoJsonString());
+      log('Making request to ${EnvVariables.uri}/geofences with body: ${json.encode({
+            'name': geoSphere.name,
+            'geojson': geoSphere.toGeoJson()
+          })}');
 
       http.Response res = await http.post(
         Uri.parse('${EnvVariables.uri}/geofences'),
@@ -26,28 +28,39 @@ class GeoSphereService {
       );
       if (res.statusCode == 201) {
         // Handle the successful response here, e.g., updating UI or local data
-        print('Geosphere created successfully');
+        log('Geosphere created successfully');
       } else {
         // Handle the failure case
-        print('Failed to create geosphere. Status code: ${res.statusCode}');
+        log('Making request to ${EnvVariables.uri}/geofences with body: ${json.encode({
+              'name': geoSphere.name,
+              'geojson': geoSphere.toGeoJson()
+            })}');
+        log('Failed to create geosphere. Status code: ${res.statusCode} ${res.body}');
       }
     } catch (e) {
       throw Exception("Error occured: $e");
     }
   }
 
-  static Future<void> getAllGeoSpheres() async {
+  static Future<List<GeoSphere>> getAllGeoSpheres() async {
     try {
       var response = await http.get(Uri.parse('${EnvVariables.uri}/geofences'));
 
       if (response.statusCode == 200) {
         List<dynamic> geofencesData = json.decode(response.body);
-
+        List<GeoSphere> geoSpheres = [];
         for (var geofenceData in geofencesData) {
-          // TODO: handle geosjson data
+          log(geofencesData.toString());
+          geoSpheres.add(GeoSphere.fromMap(geofenceData));
         }
+
+        for (var geoSphere in geoSpheres) {
+          log(geoSphere.toGeoJsonString());
+        }
+        return geoSpheres;
       } else {
-        print('Request failed with status: ${response.statusCode}.');
+        log('Request failed with status: ${response.statusCode}.');
+        return [];
       }
     } catch (e) {
       throw Exception("Error occurred: $e");

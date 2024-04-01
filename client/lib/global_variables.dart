@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GlobalVariables {
-  static String get URI => dotenv.env['SERVER_URI'] ?? 'http://localhost:3000';
+  //static String get URI => dotenv.env['SERVER_URI'] ?? 'http://localhost:5000';
+  static String get URI => 'http://localhost:5000';
+
   static String get GOOGLE_API_KEY => dotenv.env['GOOGLE_API_KEY'] ?? '';
 
   // COLORS

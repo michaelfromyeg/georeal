@@ -17,15 +17,8 @@ from geojson import Feature, Polygon  # noqa: E402
 from werkzeug.utils import secure_filename  # noqa: E402
 
 from .logger import logger  # noqa: E402
-from .utils import (  # noqa: E402
-    DATA_PATH,
-    FLASK_ENV,
-    GIT_COMMIT_HASH,
-    HOST,
-    PORT,
-    UPLOAD_PATH,
-    allowed_file,
-)
+from .utils import (DATA_PATH, FLASK_ENV, GIT_COMMIT_HASH, HOST,  # noqa: E402
+                    PORT, UPLOAD_PATH, allowed_file)
 
 DATABASE_URI = "sqlite:///geofences.db"
 
