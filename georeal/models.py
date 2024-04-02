@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# Association table for friends relationship
 friends = db.Table('friends',
     db.Column('friend_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('friended_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -16,7 +15,6 @@ class User(db.Model):
     last_location = db.relationship('Location', backref='user', lazy=True, uselist=False)
     places = db.relationship('Place', backref='creator', lazy=True)
     posts = db.relationship('Post', backref='author', lazy=True)
-    # Define the relationship for friends
     friends = db.relationship('User', secondary=friends,
                               primaryjoin=(friends.c.friend_id == id),
                               secondaryjoin=(friends.c.friended_id == id),
@@ -27,7 +25,7 @@ class Place(db.Model):
     name = db.Column(db.String(100), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    radius = db.Column(db.Float, nullable=False)  # Radius in meters
+    radius = db.Column(db.Float, nullable=False) 
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     posts = db.relationship('Post', backref='place', lazy=True)
 

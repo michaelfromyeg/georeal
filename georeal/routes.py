@@ -8,7 +8,6 @@ from .extensions import bcrypt
 from .models import User, db
 from .utils import GIT_COMMIT_HASH, allowed_file, logger
 
-# Create a Blueprint named 'api'
 api = Blueprint('api', __name__)
 
 
