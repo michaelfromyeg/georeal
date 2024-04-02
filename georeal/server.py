@@ -9,10 +9,10 @@ import csv  # noqa: E402
 from typing import Any  # noqa: E402
 
 from flask import Flask
-from flask_bcrypt import Bcrypt
 from flask_cors import CORS  # noqa: E402
 from flask_migrate import Migrate  # noqa: E402
 
+from .extensions import bcrypt
 from .logger import logger  # noqa: E402
 from .models import db
 from .utils import (DATA_PATH, FLASK_ENV, GIT_COMMIT_HASH, HOST,  # noqa: E402
@@ -32,7 +32,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_PATH
 db.init_app(app)
 
 migrate = Migrate(app, db)
-bcrypt = Bcrypt(app)
+bcrypt.init_app(app)
 
 logger.info("Running in %s mode", FLASK_ENV)
 

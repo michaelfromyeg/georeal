@@ -1,10 +1,10 @@
 import os
 
 from flask import Blueprint, Response, jsonify, request, send_file
-from flask_bcrypt import bcrypt
 from geojson import Feature, Polygon
 from werkzeug.utils import secure_filename
 
+from .extensions import bcrypt
 from .models import User, db
 from .utils import GIT_COMMIT_HASH, allowed_file, logger
 
@@ -19,10 +19,10 @@ def register():
     email = data.get('email')
     plain_password = data.get('password')
     
-    # Hash the password
+    # Hash password
     pw_hash = bcrypt.generate_password_hash(plain_password).decode('utf-8')
     
-    # Check if the user already exists
+    # Check if the user already exists by email or username
     user = User.query.filter((User.username == username) | (User.email == email)).first()
     if user:
         return jsonify({'message': 'User already exists'}), 400
@@ -36,20 +36,18 @@ def register():
 @api.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    username_or_email = data.get('username')
+    email = data.get('email')  
     plain_password = data.get('password')
     
-    # Attempt to retrieve the user by username or email
-    user = User.query.filter((User.username == username_or_email) | (User.email == username_or_email)).first()
+    user = User.query.filter_by(email=email).first()  
     if user and bcrypt.check_password_hash(user.password_hash, plain_password):
-        # Successfully authenticated
+        # Success
         return jsonify({'message': 'Login successful'}), 200
     else:
-        # Authentication failed
-        return jsonify({'message': 'Invalid username, email, or password'}), 401
+        return jsonify({'message': 'Invalid email or password'}), 401  # Adjusted error message
 
 
-class Geofence(db.Model):  # type: ignore
+class Geofence(db.Model): 
     """
     The model for a region on the map.
     """

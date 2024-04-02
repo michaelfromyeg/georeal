@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:georeal/constants/env_variables.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
   static Future<void> login(String email, String password) async {
-    var uri = Uri.parse('${EnvVariables.uri}/auth/login');
+    var uri = Uri.parse('${EnvVariables.uri}/login');
     var response = await http.post(
       uri,
-      body: {
+      headers: {
+        'Content-Type': 'application/json', // Specify content type as JSON
+      },
+      body: json.encode({
         'email': email,
         'password': password,
-      },
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -21,14 +26,18 @@ class AuthService {
 
   static Future<void> register(
       String name, String email, String password) async {
-    var uri = Uri.parse('${EnvVariables.uri}/auth/register');
+    var uri = Uri.parse('${EnvVariables.uri}/register');
     var response = await http.post(
       uri,
-      body: {
-        'name': name,
+      headers: {
+        'Content-Type': 'application/json', // Specify content type as JSON
+      },
+      body: json.encode({
+        'username':
+            name, // Make sure to use 'username' as the key if that's what your Flask route expects
         'email': email,
         'password': password,
-      },
+      }),
     );
 
     if (response.statusCode == 200) {
