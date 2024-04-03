@@ -7,7 +7,6 @@ class UserViewModel extends ChangeNotifier {
     id: '',
     name: '',
     email: '',
-    password: '',
   );
 
   User get user => _user;

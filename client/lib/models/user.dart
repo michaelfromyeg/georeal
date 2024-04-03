@@ -4,13 +4,11 @@ class User {
   String id;
   String name;
   String email;
-  String password;
 
   User({
     required this.id,
     required this.name,
     required this.email,
-    required this.password,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +16,6 @@ class User {
       'id': id,
       'name': name,
       'email': email,
-      'password': password,
     };
   }
 
@@ -27,7 +24,6 @@ class User {
       id: map['_id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      password: map['password'] ?? '',
     );
   }
 

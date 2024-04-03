@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/auth/widgets/auth_text_field.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/home_router.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/auth_view_model.dart';
@@ -16,6 +18,18 @@ class AuthScreen extends StatelessWidget {
       create: (context) => AuthViewModel(),
       child: Consumer<AuthViewModel>(
         builder: (context, viewModel, child) {
+          viewModel.onAuthSuccess = () {
+            Provider.of<UserViewModel>(context, listen: false).setUser({
+              'name': viewModel.nameController.text,
+              'email': viewModel.emailController.text,
+            });
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeRouter(),
+              ),
+            );
+          };
           return Scaffold(
             body: SafeArea(
               child: Center(
@@ -68,8 +82,22 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: () =>
-                                    viewModel.authenticate(context),
+                                onPressed: () async {
+                                  final success = await viewModel.login();
+
+                                  if (success) {
+                                  } else {
+                                    if (viewModel.errorMessage != null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content:
+                                              Text(viewModel.errorMessage!),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,
@@ -127,8 +155,28 @@ class AuthScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
-                                onPressed: () =>
-                                    viewModel.authenticate(context),
+                                onPressed: () async {
+                                  final success = await viewModel.register(
+                                      Provider.of<UserViewModel>(context));
+                                  if (success) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomeRouter(),
+                                        ));
+                                  } else {
+                                    if (viewModel.errorMessage != null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content:
+                                              Text(viewModel.errorMessage!),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 40),
                                   foregroundColor: Colors.white,
