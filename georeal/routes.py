@@ -46,7 +46,51 @@ def login():
             'username': user.username, 
         }), 200
     else:
-        return jsonify({'message': 'Invalid email or password'}), 401  
+        return jsonify({'message': 'Invalid email or password'}), 401
+
+@api.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    users_list = []
+    for user in users:
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        }
+        users_list.append(user_data)
+
+    return jsonify(users_list), 200
+
+@api.route('/add_friend', methods=['POST'])
+def add_friend():
+    data = request.get_json()
+    username = data.get('username')
+    friend_username = data.get('friend_username')
+    
+    if not username or not friend_username:
+        return jsonify({'message': 'Missing username or friend_username'}), 400
+
+    if username == friend_username:
+        return jsonify({'message': 'Cannot friend yourself'}), 400
+    
+    user = User.query.filter_by(username=username).first()
+    friend = User.query.filter_by(username=friend_username).first()
+    
+    if not user or not friend:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Check if the friendship already exists
+    if user.friends.filter_by(username=friend_username).first() is not None:
+        return jsonify({'message': 'Already friends'}), 409
+
+    # Add the friend relationship
+    user.friends.append(friend)
+    friend.friends.append(user)  # Assuming friendships are bidirectional
+
+    db.session.commit()
+
+    return jsonify({'message': f'{username} and {friend_username} are now friends'}), 200
 
 
 class Geofence(db.Model): 
