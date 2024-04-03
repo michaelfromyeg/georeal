@@ -41,9 +41,12 @@ def login():
     user = User.query.filter_by(email=email).first()  
     if user and bcrypt.check_password_hash(user.password_hash, plain_password):
         # Success
-        return jsonify({'message': 'Login successful'}), 200
+        return jsonify({
+            'message': 'Login successful',
+            'username': user.username, 
+        }), 200
     else:
-        return jsonify({'message': 'Invalid email or password'}), 401  # Adjusted error message
+        return jsonify({'message': 'Invalid email or password'}), 401  
 
 
 class Geofence(db.Model): 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/auth/services/auth_service.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
 
 /// handles all data and logic for the authentication process
 
@@ -9,20 +10,22 @@ enum Auth {
 }
 
 class AuthViewModel with ChangeNotifier {
-  bool _loading = false;
   Auth _authMode = Auth.signin;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? _errorMessage;
+  VoidCallback? onAuthSuccess;
 
   Auth get authMode => _authMode;
-  bool get loading => _loading;
+
+  String? get errorMessage => _errorMessage;
   TextEditingController get nameController => _nameController;
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
 
-  void setLoading(bool value) {
-    _loading = value;
+  void setErrorMessage(String? message) {
+    _errorMessage = message;
     notifyListeners();
   }
 
@@ -35,21 +38,41 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> authenticate(BuildContext context) async {
-    setLoading(true);
-    if (_authMode == Auth.signin) {
+  Future<bool> login() async {
+    try {
       var response = await AuthService.login(
         _emailController.text,
         _passwordController.text,
       );
-    } else {
-      var response = await AuthService.register(
+      _nameController.text = response['username'];
+      onAuthSuccess?.call();
+      return true;
+    } catch (e) {
+      setErrorMessage(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> register(UserViewModel user) async {
+    try {
+      await AuthService.register(
         _nameController.text,
         _emailController.text,
         _passwordController.text,
       );
+      onAuthSuccess?.call();
+      return true;
+    } catch (e) {
+      setErrorMessage(e.toString());
+      return false;
     }
-    setLoading(false);
+  }
+
+  void _setUser(UserViewModel user) {
+    user.setUser({
+      'name': _nameController.text,
+      'email': _emailController.text,
+    });
   }
 
   @override
