@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:georeal/features/auth/view/auth_screen.dart';
+import 'package:georeal/features/friends/view/friend_view_model.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
@@ -40,6 +41,7 @@ Future main() async {
         ChangeNotifierProvider(
           create: (context) => GalleryViewModel(),
         ),
+        ChangeNotifierProvider(create: (context) => FriendViewModel()),
       ],
       child: const MyApp(),
     ),

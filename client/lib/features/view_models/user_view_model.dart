@@ -5,7 +5,7 @@ import '../../models/user.dart';
 class UserViewModel extends ChangeNotifier {
   User _user = User(
     id: '',
-    name: '',
+    username: '',
     email: '',
   );
 

@@ -80,13 +80,11 @@ def add_friend():
     if not user or not friend:
         return jsonify({'message': 'User not found'}), 404
 
-    # Check if the friendship already exists
     if user.friends.filter_by(username=friend_username).first() is not None:
         return jsonify({'message': 'Already friends'}), 409
 
-    # Add the friend relationship
     user.friends.append(friend)
-    friend.friends.append(user)  # Assuming friendships are bidirectional
+    friend.friends.append(user) 
 
     db.session.commit()
 

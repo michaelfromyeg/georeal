@@ -14,73 +14,71 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const Column(
-            children: [
-              Expanded(
-                child: CustomMap(),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Consumer<GeoSphereViewModel>(
-              builder: (context, geoSphereViewModel, child) {
-                return SafeArea(
-                  child: GestureDetector(
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                spreadRadius: 4,
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.camera_alt_outlined,
-                          size: 28,
-                          color: geoSphereViewModel.inGeoSphere
-                              ? Colors.green
-                              : Colors.red,
-                        ),
-                      ],
-                    ),
-                    onTap: () => {
-                      log('${geoSphereViewModel.inGeoSphere}'),
-                      if (geoSphereViewModel.inGeoSphere)
-                        {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return PhotoPrompt(
-                                    geosphere:
-                                        geoSphereViewModel.geoSpheres.last);
-                              })
-                        }
-                      else
-                        {}
-                    },
-                  ),
-                );
-              },
+    return Stack(
+      children: [
+        const Column(
+          children: [
+            Expanded(
+              child: CustomMap(),
             ),
+          ],
+        ),
+        Positioned(
+          top: 10,
+          left: 10,
+          child: Consumer<GeoSphereViewModel>(
+            builder: (context, geoSphereViewModel, child) {
+              return SafeArea(
+                child: GestureDetector(
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              spreadRadius: 4,
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.camera_alt_outlined,
+                        size: 28,
+                        color: geoSphereViewModel.inGeoSphere
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ],
+                  ),
+                  onTap: () => {
+                    log('${geoSphereViewModel.inGeoSphere}'),
+                    if (geoSphereViewModel.inGeoSphere)
+                      {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PhotoPrompt(
+                                  geosphere:
+                                      geoSphereViewModel.geoSpheres.last);
+                            })
+                      }
+                    else
+                      {}
+                  },
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

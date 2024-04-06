@@ -9,7 +9,7 @@ class GlobalVariables {
 
   // COLORS
   static const accentColor = Colors.red;
-  static const backgroundColor = Color.fromRGBO(12, 12, 12, 1);
+  static const backgroundColor = Color.fromRGBO(14, 21, 33, 1);
   static const foregroundColor = Color.fromRGBO(33, 33, 33, 1);
   static const primaryColor = Color.fromRGBO(2, 11, 30, 1);
   static const secondaryColor = Color.fromRGBO(63, 114, 175, 1);
