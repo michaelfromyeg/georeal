@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/global_variables.dart';
 
 class AuthTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -14,20 +15,29 @@ class AuthTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white,
+          fillColor: GlobalVariables.backgroundColor,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: const BorderSide(
+              color: GlobalVariables.secondaryColor,
+            ),
+          ),
           hintText: hintText,
+          hintStyle:
+              const TextStyle(color: Colors.white), // Adjust opacity as needed
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: const BorderSide(
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: const BorderSide(
-                color: Color.fromARGB(55, 0, 0, 0),
+                color: Color.fromARGB(255, 255, 255, 255),
               ))),
       validator: (value) {
         if (value == null || value.isEmpty) {

@@ -29,4 +29,24 @@ class UserService {
       throw Exception('Failed to load users: $e');
     }
   }
+
+  static Future<User> getUserByUsername(String username) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${EnvVariables.uri}/users/$username'),
+      );
+
+      if (response.statusCode == 200) {
+        log('User fetched: ${response.body}');
+        final userJson = json.decode(response.body);
+        return User.fromMap(userJson);
+      } else {
+        throw Exception(
+            'Failed to load user with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to load user: $e');
+    }
+  }
 }

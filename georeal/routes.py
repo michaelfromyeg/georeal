@@ -17,15 +17,16 @@ def register():
     username = data.get('username')
     email = data.get('email')
     plain_password = data.get('password')
-    
+    print(username, email, plain_password)
     # Hash password
     pw_hash = bcrypt.generate_password_hash(plain_password).decode('utf-8')
-    
+    print("ok")
     # Check if the user already exists by email or username
     user = User.query.filter((User.username == username) | (User.email == email)).first()
     if user:
+        print("User already exists")
         return jsonify({'message': 'User already exists'}), 400
-
+    
     new_user = User(username=username, email=email, password_hash=pw_hash)
     db.session.add(new_user)
     db.session.commit()
@@ -61,6 +62,19 @@ def get_users():
         users_list.append(user_data)
 
     return jsonify(users_list), 200
+
+@api.route('/users/<username>', methods=['GET'])
+def get_user_by_username(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    user_data = {
+        'id': user.id,
+        'username': user.username,
+        'email': user.email
+    }
+    return jsonify(user_data), 200
 
 @api.route('/add_friend', methods=['POST'])
 def add_friend():

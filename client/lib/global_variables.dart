@@ -12,13 +12,13 @@ class GlobalVariables {
   static const backgroundColor = Color.fromRGBO(14, 21, 33, 1);
   static const foregroundColor = Color.fromRGBO(33, 33, 33, 1);
   static const primaryColor = Color.fromRGBO(2, 11, 30, 1);
-  static const secondaryColor = Color.fromRGBO(63, 114, 175, 1);
+  static const secondaryColor = Color.fromRGBO(73, 140, 221, 1);
 
   // FONTS
   static const headerStyle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: Colors.black,
+    color: Colors.white,
   );
   static const headerStyleRegular = TextStyle(
     fontSize: 24,
@@ -28,7 +28,7 @@ class GlobalVariables {
   static const bodyStyle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,
-    color: Colors.black,
+    color: Colors.white,
   );
   static const bodyStyleRegular = TextStyle(
     fontSize: 16,

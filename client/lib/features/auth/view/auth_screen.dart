@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:georeal/features/auth/widgets/auth_text_field.dart';
 import 'package:georeal/features/view_models/user_view_model.dart';
@@ -31,20 +33,32 @@ class AuthScreen extends StatelessWidget {
             );
           };
           return Scaffold(
+            backgroundColor: GlobalVariables.backgroundColor,
             body: SafeArea(
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          "Welcome to Geo Real",
+                          "Places",
                           style: GlobalVariables.headerStyle,
                         ),
                       ),
                     ),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Text(
+                        "Caputre the moment, map your memories",
+                        style: GlobalVariables.bodyStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    /*
                     const Padding(
                       padding: EdgeInsets.only(top: 20.0),
                       child: Icon(
@@ -52,16 +66,26 @@ class AuthScreen extends StatelessWidget {
                         size: 200,
                       ),
                     ),
+                    */
                     if (viewModel.authMode == Auth.signin)
                       Container(
                         child: Column(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 2),
+                                ),
+                                child: const Text(
                                   "Sign In",
-                                  style: GlobalVariables.headerStyle,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -99,9 +123,9 @@ class AuthScreen extends StatelessWidget {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(double.infinity, 40),
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.black,
+                                  minimumSize: const Size(double.infinity, 45),
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(20),
@@ -113,7 +137,11 @@ class AuthScreen extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: viewModel.toggleAuthMode,
-                              child: const Text("Sign up with a new account"),
+                              child: const Text(
+                                "Sign up with a new account",
+                                style: TextStyle(
+                                    color: GlobalVariables.secondaryColor),
+                              ),
                             ),
                           ],
                         ),
@@ -124,11 +152,9 @@ class AuthScreen extends StatelessWidget {
                           children: [
                             const Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  style: GlobalVariables.headerStyle,
-                                ),
+                              child: Text(
+                                "Sign Up",
+                                style: GlobalVariables.headerStyle,
                               ),
                             ),
                             Padding(
@@ -136,6 +162,13 @@ class AuthScreen extends StatelessWidget {
                               child: AuthTextField(
                                   controller: viewModel.nameController,
                                   hintText: "Name",
+                                  isTextHidden: false),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AuthTextField(
+                                  controller: viewModel.nameController,
+                                  hintText: "Username",
                                   isTextHidden: false),
                             ),
                             Padding(
@@ -156,8 +189,10 @@ class AuthScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  log('Registering');
                                   final success = await viewModel.register(
-                                      Provider.of<UserViewModel>(context));
+                                      Provider.of<UserViewModel>(context,
+                                          listen: false));
                                   if (success) {
                                     Navigator.pushReplacement(
                                         context,
@@ -178,9 +213,9 @@ class AuthScreen extends StatelessWidget {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(double.infinity, 40),
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.black,
+                                  minimumSize: const Size(double.infinity, 45),
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(20),
@@ -193,7 +228,10 @@ class AuthScreen extends StatelessWidget {
                             TextButton(
                               onPressed: viewModel.toggleAuthMode,
                               child: const Text(
-                                  "Sign in with an existing account"),
+                                "Sign in with an existing account",
+                                style: TextStyle(
+                                    color: GlobalVariables.secondaryColor),
+                              ),
                             ),
                           ],
                         ),

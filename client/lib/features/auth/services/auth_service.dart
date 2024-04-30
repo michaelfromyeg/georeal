@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:georeal/constants/env_variables.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +33,7 @@ class AuthService {
   static Future<void> register(
       String name, String email, String password) async {
     try {
+      log('Registering user...', name: 'AuthService');
       var uri = Uri.parse('${EnvVariables.uri}/register');
       var response = await http.post(
         uri,
