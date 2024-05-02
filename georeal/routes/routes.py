@@ -4,9 +4,9 @@ from flask import Blueprint, Response, jsonify, request, send_file
 from geojson import Feature, Polygon
 from werkzeug.utils import secure_filename
 
-from .extensions import bcrypt
-from .models import User, db
-from .utils import GIT_COMMIT_HASH, allowed_file, logger
+from ..extensions import bcrypt
+from ..models import User, db
+from ..utils import GIT_COMMIT_HASH, allowed_file, logger
 
 api = Blueprint('api', __name__)
 
@@ -76,33 +76,7 @@ def get_user_by_username(username):
     }
     return jsonify(user_data), 200
 
-@api.route('/add_friend', methods=['POST'])
-def add_friend():
-    data = request.get_json()
-    username = data.get('username')
-    friend_username = data.get('friend_username')
-    
-    if not username or not friend_username:
-        return jsonify({'message': 'Missing username or friend_username'}), 400
 
-    if username == friend_username:
-        return jsonify({'message': 'Cannot friend yourself'}), 400
-    
-    user = User.query.filter_by(username=username).first()
-    friend = User.query.filter_by(username=friend_username).first()
-    
-    if not user or not friend:
-        return jsonify({'message': 'User not found'}), 404
-
-    if user.friends.filter_by(username=friend_username).first() is not None:
-        return jsonify({'message': 'Already friends'}), 409
-
-    user.friends.append(friend)
-    friend.friends.append(user) 
-
-    db.session.commit()
-
-    return jsonify({'message': f'{username} and {friend_username} are now friends'}), 200
 
 
 class Geofence(db.Model): 

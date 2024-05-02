@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/friend_service.dart';
+import 'package:georeal/features/friends/services/friend_service.dart';
 import 'package:georeal/models/user.dart';
 
 class FriendViewModel extends ChangeNotifier {

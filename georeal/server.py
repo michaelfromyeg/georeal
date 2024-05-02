@@ -52,9 +52,13 @@ else:
     # )
 
 
-from .routes import api
+from .routes.auth import auth
+from .routes.friends import friends
+from .routes.routes import api
 
 app.register_blueprint(api)
+app.register_blueprint(friends)
+app.register_blueprint(auth)
 
 @app.cli.command("bootstrap")
 def bootstrap_table() -> None:

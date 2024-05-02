@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/friend_view_model.dart';
-import 'package:georeal/features/friends/user_search_widget.dart';
 import 'package:georeal/features/friends/view/user_profile_screen.dart';
+import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/features/friends/widgets/user_search_widget.dart';
 import 'package:provider/provider.dart';
 
 class FriendsScreen extends StatelessWidget {
@@ -69,13 +69,6 @@ class FriendsScreen extends StatelessWidget {
           Expanded(
             child: Consumer<FriendViewModel>(
               builder: (context, model, child) {
-                if (model.searchedUser != null) {
-                  Future.microtask(() => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              UserProfileScreen(user: model.searchedUser!))));
-                }
                 if (model.friends.isEmpty) {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -85,7 +78,13 @@ class FriendsScreen extends StatelessWidget {
                     itemCount: model.friends.length,
                     itemBuilder: (context, index) {
                       final friend = model.friends[index];
-                      return UserSearchWidget(username: friend.username);
+                      return UserSearchWidget(
+                          username: friend.username,
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfileScreen(
+                                      user: model.searchedUser!))));
                     },
                   );
                 }
