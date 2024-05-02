@@ -22,7 +22,7 @@ class AuthScreen extends StatelessWidget {
         builder: (context, viewModel, child) {
           viewModel.onAuthSuccess = () {
             Provider.of<UserViewModel>(context, listen: false).setUser({
-              'name': viewModel.nameController.text,
+              'username': viewModel.nameController.text,
               'email': viewModel.emailController.text,
             });
             Navigator.pushReplacement(

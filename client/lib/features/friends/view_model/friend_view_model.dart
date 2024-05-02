@@ -34,4 +34,14 @@ class FriendViewModel extends ChangeNotifier {
       log(e.toString());
     }
   }
+
+  void sendFriendRequest(String userId, String username) async {
+    log("test");
+    try {
+      await UserService.sendFriendRequest(userId, username);
+      log('Friend request sent to $username');
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

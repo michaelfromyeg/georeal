@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/features/view_models/user_view_model.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/user.dart';
+import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
   User user;
@@ -33,7 +36,14 @@ class UserProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                final username =
+                    Provider.of<UserViewModel>(context, listen: false)
+                        .user
+                        .username;
+                Provider.of<FriendViewModel>(context, listen: false)
+                    .sendFriendRequest(username, user.username);
+              },
               child: const Text("Add Friend"),
             ),
           ],

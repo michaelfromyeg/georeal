@@ -49,4 +49,29 @@ class UserService {
       throw Exception('Failed to load user: $e');
     }
   }
+
+  static Future<String> sendFriendRequest(
+      String senderUsername, String receiverUsername) async {
+    try {
+      var body = json.encode(
+          {'username': senderUsername, 'friend_username': receiverUsername});
+      log('Sending friend request with body: $body');
+      http.Response response = await http.post(
+        Uri.parse('${EnvVariables.uri}/friend_request'),
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        log('Friend request sent: ${response.body}');
+        return 'Friend request sent successfully';
+      } else {
+        log('Failed to send friend request with status code: ${response.statusCode}');
+        return 'Failed to send friend request';
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to send friend request: $e');
+    }
+  }
 }
