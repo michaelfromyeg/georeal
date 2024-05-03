@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
@@ -22,13 +23,8 @@ class UserSearchWidget extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const CircleAvatar(
+              const ProfilePhoto(
                 radius: 20,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.black,
-                ),
               ),
               const SizedBox(width: 10),
               Text(

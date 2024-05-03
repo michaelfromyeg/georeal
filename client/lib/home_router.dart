@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/features/friends/view/friends_screen.dart';
-import 'package:georeal/features/geo_sphere/views/geo_spheres_view.dart';
 import 'package:georeal/features/home/screens/home_screen.dart';
+import 'package:georeal/features/profile/views/profile_screen.dart';
 import 'package:georeal/global_variables.dart';
 
 /// HomeRouter serves as the main navigation hub of the app
@@ -30,7 +30,7 @@ class _HomeRouterState extends State<HomeRouter> {
   final screens = [
     const HomeScreen(),
     const FriendsScreen(),
-    const GeoSphereView(), /* FriendsScreen() */
+    const ProfileScreen(), /* FriendsScreen() */
   ];
 
   @override
@@ -76,7 +76,7 @@ class _HomeRouterState extends State<HomeRouter> {
             children: [
               buildBottomNavItem(Icons.map_outlined, 'Map', 0),
               buildBottomNavItem(Icons.search, 'Friends', 1),
-              buildBottomNavItem(Icons.language, 'Spaces', 2),
+              buildBottomNavItem(Icons.person, 'Profile', 2),
             ],
           ),
         ),
