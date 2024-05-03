@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:georeal/global_variables.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -92,9 +93,13 @@ class _CustomMapState extends State<CustomMap> {
     ).toSet();
 
     return Scaffold(
+      backgroundColor: GlobalVariables.backgroundColor,
       resizeToAvoidBottomInset: false,
       body: currentLocation == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: GlobalVariables.secondaryColor,
+            ))
           : GoogleMap(
               onMapCreated: (GoogleMapController controller) {
                 _controller = controller;

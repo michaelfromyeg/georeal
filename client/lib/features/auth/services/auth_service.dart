@@ -48,7 +48,8 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        return json.decode(response.body); // Return the user object (or token
+        return json.decode(response.body);
+      } else if (response.statusCode == 400) {
       } else {
         throw Exception('Failed to register. Please try again');
       }

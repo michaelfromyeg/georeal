@@ -4,7 +4,7 @@ from georeal.models import FriendRequest, User, db
 
 friends = Blueprint('friends', __name__)
 
-@friends.route('/friend_request', methods=['POST'])
+@friends.route('/friends/send_request', methods=['POST'])
 def send_friend_request():
     data = request.get_json()
     username = data.get('username')
