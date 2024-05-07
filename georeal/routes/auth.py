@@ -21,8 +21,9 @@ def register():
     if user:
         print("User already exists")
         return jsonify({'message': 'User already exists'}), 400
-    
+    print(1)
     new_user = User(username=username, email=email, password_hash=pw_hash)
+    print(2)
     db.session.add(new_user)
     db.session.commit()
     
