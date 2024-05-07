@@ -21,21 +21,42 @@ def get_all_users():
 # Get user details for a specific user
 @users.route('/user', methods=['GET'])
 def get_user_details():
-
     search_username = request.args.get('username')
+    querying_user_id = request.args.get('user_id', type=int)
+
     if not search_username:
         return jsonify({'error': 'Missing username parameter'}), 400
+    if not querying_user_id:
+        return jsonify({'error': 'Missing user ID parameter'}), 400
 
     user = User.query.filter_by(username=search_username).first()
     if not user:
         return jsonify({'error': 'User not found'}), 404
+
+    # Check friendship and friend request status
+    is_friend = False
+    friend_request_sent = None
+    if querying_user_id:
+        if user in User.query.get(querying_user_id).friends:
+            is_friend = True
+        else:
+            # Check for existing friend request in either direction
+            friend_request = FriendRequest.query.filter(
+                db.or_(
+                    db.and_(FriendRequest.sender_id == querying_user_id, FriendRequest.receiver_id == user.id),
+                    db.and_(FriendRequest.receiver_id == querying_user_id, FriendRequest.sender_id == user.id)
+                )
+            ).first()
+            friend_request_sent = 'sent' if friend_request and friend_request.sender_id == querying_user_id else 'received'
 
     user_details = {
         'user_id': user.id,
         'username': user.username,
         'num_places': user.num_places,
         'num_posts': user.num_posts,
-        'num_friends': user.num_friends
+        'num_friends': user.num_friends,
+        'is_friend': is_friend,
+        'friend_request_status': friend_request_sent
     }
 
     return jsonify(user_details), 200

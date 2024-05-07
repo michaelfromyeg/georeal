@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:georeal/features/auth/view/auth_screen.dart';
+import 'package:georeal/features/auth/view_model/auth_view_model.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
-import 'package:georeal/features/view_models/user_view_model.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:georeal/util/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +28,10 @@ Future main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UserViewModel(),
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthViewModel(),
         ),
         ChangeNotifierProvider(
           create: (_) => locationViewModel,
@@ -55,7 +59,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: theme,
+      theme: CustomTheme.theme,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home: const AuthScreen(),

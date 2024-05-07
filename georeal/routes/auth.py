@@ -27,7 +27,14 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     
-    return jsonify({'message': 'User created successfully'}), 201
+    return jsonify({
+        'id': new_user.id,
+        'username': new_user.username,
+        'email': new_user.email,
+        'num_places': new_user.num_places,
+        'num_posts': new_user.num_posts,
+        'num_friends': new_user.num_friends
+    }), 200
 
 @auth.route('/login', methods=['POST'])
 def login():
@@ -39,8 +46,12 @@ def login():
     if user and bcrypt.check_password_hash(user.password_hash, plain_password):
         # Success
         return jsonify({
-            'message': 'Login successful',
-            'username': user.username, 
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'num_places': user.num_places,
+            'num_posts': user.num_posts,
+            'num_friends': user.num_friends, 
         }), 200
     else:
         return jsonify({'message': 'Invalid email or password'}), 401

@@ -1,34 +1,40 @@
-import 'dart:convert';
-
 class User {
-  String id;
-  String username;
-  String email;
+  final int id;
+  final String username;
+  final String email;
+  final int numPlaces;
+  final int numPosts;
+  final int numFriends;
+  // Assuming lastLocation, places, posts, and friends are managed separately or not directly included in this model
 
   User({
     required this.id,
     required this.username,
     required this.email,
+    this.numPlaces = 0,
+    this.numPosts = 0,
+    this.numFriends = 0,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'username': username,
-      'email': email,
-    };
-  }
-
-  factory User.fromMap(Map<String, dynamic> map) {
+  factory User.fromMap(Map<String, dynamic> data) {
     return User(
-      id: map['_id'] ?? '',
-      username: map['username'] ?? '',
-      email: map['email'] ?? '',
+      id: data['id'],
+      username: data['username'],
+      email: data['email'],
+      numPlaces: data['num_places'] ?? 0,
+      numPosts: data['num_posts'] ?? 0,
+      numFriends: data['num_friends'] ?? 0,
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'username': username,
+      'email': email,
+      'num_places': numPlaces,
+      'num_posts': numPosts,
+      'num_friends': numFriends,
+    };
+  }
 }
