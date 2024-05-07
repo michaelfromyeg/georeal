@@ -19,6 +19,9 @@ class User(db.Model):
                               primaryjoin=(friends.c.friend_id == id),
                               secondaryjoin=(friends.c.friended_id == id),
                               backref=db.backref('friended', lazy='dynamic'), lazy='dynamic')
+    num_places = db.Column(db.Integer, default=0)
+    num_posts = db.Column(db.Integer, default=0)
+    num_friends = db.Column(db.Integer, default=0)
 
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key=True)
