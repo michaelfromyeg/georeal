@@ -115,4 +115,25 @@ class UserService {
       throw Exception('Failed to accept friend request: $e');
     }
   }
+
+  static Future<bool> rejectFriendRequest(int requestId) async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse(
+            '${EnvVariables.uri}/users/friend_requests/$requestId/reject'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        log('Friend request rejected: ${response.body}');
+        return true;
+      } else {
+        log('Failed to reject friend request with status code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to reject friend request: $e');
+    }
+  }
 }

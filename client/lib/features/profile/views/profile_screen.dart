@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
+import 'package:georeal/features/profile/views/friend_request_screen.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/providers/user_provider';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context, listen: false).user!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: GlobalVariables.backgroundColor,
@@ -16,49 +20,62 @@ class ProfileScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FriendRequestScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.mail),
+          ),
+        ],
       ),
       backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ProfilePhoto(radius: 30),
+                const ProfilePhoto(radius: 30),
                 Column(
                   children: [
                     Text(
-                      "147",
-                      style: TextStyle(
+                      user.numPosts.toString(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    Text("Memories"),
+                    const Text("Memories"),
                   ],
                 ),
                 Column(
                   children: [
                     Text(
-                      "7",
-                      style: TextStyle(
+                      user.numPlaces.toString(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    Text("Spaces"),
+                    const Text("Spaces"),
                   ],
                 ),
                 Column(
                   children: [
                     Text(
-                      "26",
-                      style: TextStyle(
+                      user.numFriends.toString(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    Text("Friends"),
+                    const Text("Friends"),
                   ],
                 ),
               ],

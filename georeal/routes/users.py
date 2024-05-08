@@ -80,7 +80,6 @@ def create_friend_request():
     sender = User.query.get(sender_id)
     receiver = User.query.get(receiver_id)
     if not sender or not receiver:
-        print("EHLLO")
         return jsonify({'error': 'Sender or receiver not found'}), 404
 
     existing_request = FriendRequest.query.filter(
@@ -145,4 +144,14 @@ def accept_friend_request(request_id):
         db.session.rollback()
         return jsonify({'error': 'Sender or receiver not found'}), 404
 
+@users.route('/users/friend_requests/<int:request_id>/reject', methods=['POST'])
+def reject_friend_request(request_id):
+    friend_request = FriendRequest.query.get(request_id)
 
+    if not friend_request:
+        return jsonify({'error': 'Friend request not found'}), 404
+
+    db.session.delete(friend_request)
+    db.session.commit()
+
+    return jsonify({'message': 'Friend request rejected'}), 200
