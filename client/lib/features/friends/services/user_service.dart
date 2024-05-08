@@ -54,16 +54,13 @@ class UserService {
     }
   }
 
-  static Future<String> sendFriendRequest(
-      String senderUsername, String receiverUsername) async {
+  static Future<String> sendFriendRequest(int senderId, int receiverId) async {
     try {
-      var body = json.encode(
-          {'username': senderUsername, 'friend_username': receiverUsername});
-      log('Sending friend request with body: $body');
+      log('Sending friend request from $senderId to $receiverId');
       http.Response response = await http.post(
-        Uri.parse('${EnvVariables.uri}/friend_request'),
+        Uri.parse(
+            '${EnvVariables.uri}/users/friend_request?sender_id=${Uri.encodeComponent(senderId.toString())}&receiver_id=${Uri.encodeComponent(receiverId.toString())}'),
         headers: {'Content-Type': 'application/json'},
-        body: body,
       );
 
       if (response.statusCode == 200) {

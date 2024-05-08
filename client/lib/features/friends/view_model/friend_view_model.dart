@@ -30,10 +30,9 @@ class FriendViewModel extends ChangeNotifier {
     }
   }
 
-  void sendFriendRequest(String senderUsername, String receiverUsername) async {
+  void sendFriendRequest(int senderId, int receiverId) async {
     try {
-      await UserService.sendFriendRequest(senderUsername, receiverUsername);
-      log('Friend request sent to $receiverUsername');
+      await UserService.sendFriendRequest(senderId, receiverId);
     } catch (e) {
       log(e.toString());
     }

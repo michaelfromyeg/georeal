@@ -1,11 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/features/friends/widgets/profile_layout.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/other_user.dart';
-import 'package:georeal/providers/user_provider';
-import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
   OtherUser user;
@@ -28,21 +25,10 @@ class UserProfileScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: GlobalVariables.backgroundColor,
-      body: SafeArea(
+      body: const SafeArea(
         child: Column(
           children: [
-            const ProfileLayout(),
-            ElevatedButton(
-              onPressed: () {
-                final username =
-                    Provider.of<UserProvider>(context, listen: false)
-                        .user
-                        ?.username;
-                Provider.of<FriendViewModel>(context, listen: false)
-                    .sendFriendRequest(username!, user.username);
-              },
-              child: const Text("Add Friend"),
-            ),
+            ProfileLayout(),
           ],
         ),
       ),

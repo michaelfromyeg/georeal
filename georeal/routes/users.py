@@ -65,6 +65,7 @@ def get_user_details():
 
     return jsonify(user_details), 200
 
+# Creates a friend request from sender to receiver
 @users.route('/users/friend_request', methods=['POST'])
 def create_friend_request():
     sender_id = request.args.get('sender_id')
@@ -75,10 +76,11 @@ def create_friend_request():
     
     if sender_id == receiver_id:
         return jsonify({'error': 'Cannot send a friend request to oneself'}), 400
-
+    
     sender = User.query.get(sender_id)
     receiver = User.query.get(receiver_id)
     if not sender or not receiver:
+        print("EHLLO")
         return jsonify({'error': 'Sender or receiver not found'}), 404
 
     existing_request = FriendRequest.query.filter(
@@ -93,7 +95,7 @@ def create_friend_request():
     db.session.add(new_request)
     db.session.commit()
 
-    return jsonify({'message': f'Friend request sent from {sender_id} to {receiver_id}'}), 201
+    return jsonify({'message': f'Friend request sent from {sender_id} to {receiver_id}'}), 200
 
 @users.route('/users/<int:user_id>/friend_requests', methods=['GET'])
 def get_all_friend_requests(user_id):

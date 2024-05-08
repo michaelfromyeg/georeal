@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class ProfileLayout extends StatefulWidget {
@@ -12,48 +13,52 @@ class ProfileLayout extends StatefulWidget {
 
 class _ProfileLayoutState extends State<ProfileLayout> {
   bool isRequested = false;
+
   @override
   Widget build(BuildContext context) {
+    final FriendViewModel viewModel =
+        Provider.of<FriendViewModel>(context, listen: false);
+
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ProfilePhoto(radius: 40),
+            const ProfilePhoto(radius: 40),
             Column(
               children: [
                 Text(
-                  "147",
-                  style: TextStyle(
+                  viewModel.selectedUser?.numPosts.toString() ?? "",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text("Memories"),
+                const Text("Memories"),
               ],
             ),
             Column(
               children: [
                 Text(
-                  "7",
-                  style: TextStyle(
+                  viewModel.selectedUser?.numPlaces.toString() ?? "",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text("Spaces"),
+                const Text("Spaces"),
               ],
             ),
             Column(
               children: [
                 Text(
-                  "26",
-                  style: TextStyle(
+                  viewModel.selectedUser?.numFriends.toString() ?? "",
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                Text("Friends"),
+                const Text("Friends"),
               ],
             ),
           ],
@@ -77,7 +82,12 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                     isRequested = !isRequested;
                     final viewModel =
                         Provider.of<FriendViewModel>(context, listen: false);
-                    // viewModel.sendFriendRequest(senderUsername, user)
+                    final senderUsername =
+                        Provider.of<UserProvider>(context, listen: false)
+                            .user!
+                            .id;
+                    viewModel.sendFriendRequest(
+                        senderUsername, viewModel.selectedUser!.id);
                   });
                 },
                 child: Container(
