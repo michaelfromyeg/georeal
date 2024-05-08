@@ -4,6 +4,7 @@ import 'package:georeal/features/auth/widgets/auth_text_field.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/home_router.dart';
 import 'package:georeal/models/user.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -168,6 +169,7 @@ class AuthScreen extends StatelessWidget {
     try {
       User? user = await action();
       if (context.mounted && user != null) {
+        Provider.of<UserProvider>(context, listen: false).setUser(user);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomeRouter()),
         );

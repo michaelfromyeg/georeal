@@ -8,6 +8,15 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: GlobalVariables.backgroundColor,
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
         child: Column(
@@ -15,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ProfilePhoto(radius: 40),
+                ProfilePhoto(radius: 30),
                 Column(
                   children: [
                     Text(

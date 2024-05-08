@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:georeal/constants/env_variables.dart';
-import 'package:georeal/models/user.dart';
+import 'package:georeal/models/friend_request.dart';
+import 'package:georeal/models/other_user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static Future<List<User>> getAllUsers() async {
+  static Future<List<OtherUser>> getAllUsers() async {
     try {
       final response = await http.get(Uri.parse('${EnvVariables.uri}/users'));
 
@@ -14,10 +15,10 @@ class UserService {
         log('Users fetched: ${response.body}');
         final List<dynamic> usersJson = json.decode(response.body);
         log('Users fetched2: $usersJson');
-        for (var user in usersJson) {
-          log('User: $user');
-        }
-        List<User> users = usersJson.map((user) => User.fromMap(user)).toList();
+
+        List<OtherUser> users =
+            usersJson.map((user) => OtherUser.fromMap(user)).toList();
+
         log('Users fetched3: $users');
         return users;
       } else {
@@ -30,16 +31,19 @@ class UserService {
     }
   }
 
-  static Future<User> getUserByUsername(String username) async {
+  static Future<OtherUser> getUserByUsername(
+      String username, int userId) async {
     try {
+      log('Fetching user with username: $username');
       final response = await http.get(
-        Uri.parse('${EnvVariables.uri}/users/$username'),
+        Uri.parse(
+            '${EnvVariables.uri}/user?username=${Uri.encodeComponent(username)}&user_id=${Uri.encodeComponent(userId.toString())}'),
+        headers: {"Accept": "application/json"},
       );
 
       if (response.statusCode == 200) {
-        log('User fetched: ${response.body}');
         final userJson = json.decode(response.body);
-        return User.fromMap(userJson);
+        return OtherUser.fromMap(userJson);
       } else {
         throw Exception(
             'Failed to load user with status code: ${response.statusCode}');
@@ -72,6 +76,46 @@ class UserService {
     } catch (e) {
       log(e.toString());
       throw Exception('Failed to send friend request: $e');
+    }
+  }
+
+  static Future<List<FriendRequest>> getAllFriendRequests(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${EnvVariables.uri}/users/$userId/friend_requests'),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> requestsJson = json.decode(response.body);
+        return requestsJson.map((data) => FriendRequest.fromMap(data)).toList();
+      } else {
+        throw Exception(
+            'Failed to load friend requests with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to load friend requests: $e');
+    }
+  }
+
+  static Future<bool> acceptFriendRequest(int requestId) async {
+    try {
+      http.Response response = await http.post(
+        Uri.parse(
+            '${EnvVariables.uri}/users/friend_requests/$requestId/accept'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        log('Friend request accepted: ${response.body}');
+        return true;
+      } else {
+        log('Failed to accept friend request with status code: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to accept friend request: $e');
     }
   }
 }

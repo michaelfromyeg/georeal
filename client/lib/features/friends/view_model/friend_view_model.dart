@@ -1,45 +1,39 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/services/friend_service.dart';
-import 'package:georeal/models/user.dart';
+import 'package:georeal/features/friends/services/user_service.dart';
+import 'package:georeal/models/other_user.dart';
 
 class FriendViewModel extends ChangeNotifier {
-  List<User> _users = [];
-  User? _searchedUser;
+  List<OtherUser> _searchedUsers = [];
+  OtherUser? _selectedUser;
 
-  List<User> get friends => _users;
-  User? get searchedUser => _searchedUser;
-
-  FriendViewModel() {
-    fetchUsers();
-  }
+  List<OtherUser> get searchedUsers => _searchedUsers;
+  OtherUser? get selectedUser => _selectedUser;
 
   void fetchUsers() async {
     try {
-      _users = await UserService.getAllUsers();
-      log('Users fetched: $_users');
+      _searchedUsers = await UserService.getAllUsers();
       notifyListeners();
     } catch (e) {
       log(e.toString());
     }
   }
 
-  void getUserByUsername(String username) async {
+  Future<void> getUserByUsername(String username, int userId) async {
     try {
-      _searchedUser = await UserService.getUserByUsername(username);
-      log('Users fetched: $_users');
+      _selectedUser = await UserService.getUserByUsername(username, userId);
+      log('User fetched: $_selectedUser');
       notifyListeners();
     } catch (e) {
       log(e.toString());
     }
   }
 
-  void sendFriendRequest(String userId, String username) async {
-    log("test");
+  void sendFriendRequest(String senderUsername, String receiverUsername) async {
     try {
-      await UserService.sendFriendRequest(userId, username);
-      log('Friend request sent to $username');
+      await UserService.sendFriendRequest(senderUsername, receiverUsername);
+      log('Friend request sent to $receiverUsername');
     } catch (e) {
       log(e.toString());
     }

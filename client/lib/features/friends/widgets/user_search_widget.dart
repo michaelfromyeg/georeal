@@ -1,14 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
+import 'package:georeal/features/friends/view/user_profile_screen.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class UserSearchWidget extends StatelessWidget {
   final String username;
-  final VoidCallback onTap;
-  const UserSearchWidget(
-      {super.key, required this.username, required this.onTap});
+
+  const UserSearchWidget({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +39,35 @@ class UserSearchWidget extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
+      onTap: () async {
         var viewModel = Provider.of<FriendViewModel>(context, listen: false);
-        viewModel.getUserByUsername(username);
-        onTap();
+        var userProvider = Provider.of<UserProvider>(context, listen: false);
+        if (userProvider.user == null) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('User data is not available.'),
+            duration: Duration(seconds: 2),
+          ));
+          return;
+        }
+        log('username: $username');
+        log('username: ${userProvider.user!.id}');
+        await viewModel.getUserByUsername(username, userProvider.user!.id);
+
+        if (viewModel.selectedUser == null) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Selected user data is not available.'),
+            duration: Duration(seconds: 2),
+          ));
+          return;
+        }
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                UserProfileScreen(user: viewModel.selectedUser!),
+          ),
+        );
       },
     );
   }

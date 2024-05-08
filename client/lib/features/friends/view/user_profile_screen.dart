@@ -1,13 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
-import 'package:georeal/features/view_models/user_view_model.dart';
+import 'package:georeal/features/friends/widgets/profile_layout.dart';
 import 'package:georeal/global_variables.dart';
-import 'package:georeal/models/user.dart';
+import 'package:georeal/models/other_user.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  User user;
+  OtherUser user;
   UserProfileScreen({
     super.key,
     required this.user,
@@ -16,33 +17,29 @@ class UserProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: GlobalVariables.backgroundColor,
+        title: Text(
+          user.username,
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
       backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                ),
-              ],
-            ),
-            Text(
-              user.username,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
-            ),
+            const ProfileLayout(),
             ElevatedButton(
               onPressed: () {
                 final username =
-                    Provider.of<UserViewModel>(context, listen: false)
+                    Provider.of<UserProvider>(context, listen: false)
                         .user
-                        .username;
+                        ?.username;
                 Provider.of<FriendViewModel>(context, listen: false)
-                    .sendFriendRequest(username, user.username);
+                    .sendFriendRequest(username!, user.username);
               },
               child: const Text("Add Friend"),
             ),

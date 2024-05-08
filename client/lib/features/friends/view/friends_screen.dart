@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:georeal/features/friends/view/user_profile_screen.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/features/friends/widgets/user_search_widget.dart';
 import 'package:provider/provider.dart';
@@ -69,22 +69,20 @@ class FriendsScreen extends StatelessWidget {
           Expanded(
             child: Consumer<FriendViewModel>(
               builder: (context, model, child) {
-                if (model.friends.isEmpty) {
+                if (model.searchedUsers.isEmpty) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CupertinoActivityIndicator(
+                      color: Colors.white,
+                    ),
                   );
                 } else {
                   return ListView.builder(
-                    itemCount: model.friends.length,
+                    itemCount: model.searchedUsers.length,
                     itemBuilder: (context, index) {
-                      final friend = model.friends[index];
+                      final friend = model.searchedUsers[index];
                       return UserSearchWidget(
-                          username: friend.username,
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserProfileScreen(
-                                      user: model.searchedUser!))));
+                        username: friend.username,
+                      );
                     },
                   );
                 }

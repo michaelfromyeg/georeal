@@ -11,8 +11,12 @@ def get_all_users():
     users_list = []
     for user in users:
         user_data = {
-            'id': user.id,
-            'username': user.username,
+            'user_id': user.id,
+    'username': user.username,
+    'num_places': user.num_places,
+    'num_posts': user.num_posts,
+    'num_friends': user.num_friends,
+    'is_friend': False,
         }
         users_list.append(user_data)
 
