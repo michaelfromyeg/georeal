@@ -12,7 +12,26 @@ class ProfileLayout extends StatefulWidget {
 }
 
 class _ProfileLayoutState extends State<ProfileLayout> {
-  bool isRequested = false;
+  bool _isRequested = false;
+  bool _isProcessing = false;
+
+  Future<void> _handleAddFriend() async {
+    setState(() => _isProcessing = true);
+    try {
+      final viewModel = Provider.of<FriendViewModel>(context, listen: false);
+      final senderUsername =
+          Provider.of<UserProvider>(context, listen: false).user?.id;
+      if (senderUsername != null && viewModel.selectedUser?.id != null) {
+        await viewModel.sendFriendRequest(
+            senderUsername, viewModel.selectedUser!.id);
+        setState(() => _isRequested = true);
+      } else {
+        // Handle error or invalid state
+      }
+    } finally {
+      setState(() => _isProcessing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +47,9 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             Column(
               children: [
                 Text(
-                  viewModel.selectedUser?.numPosts.toString() ?? "",
+                  viewModel.selectedUser?.numPosts.toString() ?? "0",
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const Text("Memories"),
               ],
@@ -40,11 +57,9 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             Column(
               children: [
                 Text(
-                  viewModel.selectedUser?.numPlaces.toString() ?? "",
+                  viewModel.selectedUser?.numPlaces.toString() ?? "0",
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const Text("Spaces"),
               ],
@@ -52,11 +67,9 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             Column(
               children: [
                 Text(
-                  viewModel.selectedUser?.numFriends.toString() ?? "",
+                  viewModel.selectedUser?.numFriends.toString() ?? "0",
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 const Text("Friends"),
               ],
@@ -68,53 +81,32 @@ class _ProfileLayoutState extends State<ProfileLayout> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
-                children: [
-                  Text(
-                    "First Name",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                ],
+              const Text(
+                "First Name",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isRequested = !isRequested;
-                    final viewModel =
-                        Provider.of<FriendViewModel>(context, listen: false);
-                    final senderUsername =
-                        Provider.of<UserProvider>(context, listen: false)
-                            .user!
-                            .id;
-                    viewModel.sendFriendRequest(
-                        senderUsername, viewModel.selectedUser!.id);
-                  });
-                },
+                onTap: _isRequested || _isProcessing ? null : _handleAddFriend,
                 child: Container(
                   width: 100,
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).hintColor,
-                    ),
+                    border: Border.all(color: Theme.of(context).hintColor),
                     borderRadius: BorderRadius.circular(5),
                     color: Theme.of(context).primaryColor,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: isRequested
-                        ? Center(
+                    child: _isProcessing
+                        ? const Center(
+                            child:
+                                CircularProgressIndicator(color: Colors.white))
+                        : Center(
                             child: Text(
-                              "Requested",
+                              _isRequested ? "Requested" : "Add Friend",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context)
                                       .scaffoldBackgroundColor),
-                            ),
-                          )
-                        : const Center(
-                            child: Text(
-                              "Add Friend",
-                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                   ),
