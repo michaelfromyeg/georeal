@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../models/gallery_model.dart';
 
 class GalleryViewModel extends ChangeNotifier {
-  final Map<String, Gallery> _galleries = {};
+  final Map<int, Gallery> _galleries = {};
 
   get galleries => _galleries;
 
-  void createGallery(String geoSphereId) {
+  void createGallery(int geoSphereId) {
     _galleries[geoSphereId] = Gallery(id: geoSphereId);
     notifyListeners();
   }
 
-  void addPhotoToGallery(String geoSphereId, String photoPath) {
+  void addPhotoToGallery(int geoSphereId, String photoPath) {
     final gallery = _galleries[geoSphereId];
     if (gallery != null) {
       gallery.photoPaths.add(photoPath);
@@ -25,7 +25,7 @@ class GalleryViewModel extends ChangeNotifier {
     }
   }
 
-  List<String> getPhotosFromGallery(String geoSphereId) {
+  List<String> getPhotosFromGallery(int geoSphereId) {
     return _galleries[geoSphereId]?.photoPaths ?? [];
   }
 }

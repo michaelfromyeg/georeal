@@ -9,58 +9,62 @@ import '../../../models/geo_sphere_model.dart';
 /// handles http requests for the GeoSpheres
 
 class GeoSphereService {
-  static void createGeoSphere({
-    required GeoSphere geoSphere,
+  static Future<GeoSphere> createGeoSphere({
+    required int userID,
+    required double radius,
+    required double latitude,
+    required double longitude,
+    required String name,
   }) async {
     try {
-      log('Making request to ${EnvVariables.uri}/geofences with body: ${json.encode({
-            'name': geoSphere.name,
-            'geojson': geoSphere.toGeoJson()
-          })}');
-
       http.Response res = await http.post(
         Uri.parse('${EnvVariables.uri}/geofences'),
-        body: json
-            .encode({'name': geoSphere.name, 'geojson': geoSphere.toGeoJson()}),
+        body: json.encode({
+          'name': name,
+          'latitude': latitude,
+          'longitude': longitude,
+          'radius': radius,
+          'creator_id': userID
+        }),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         },
       );
       if (res.statusCode == 201) {
-        // Handle the successful response here, e.g., updating UI or local data
-        log('Geosphere created successfully');
+        GeoSphere geoSphere = GeoSphere(
+            geoSphereId: json.decode(res.body)['id'],
+            longitude: longitude,
+            latitude: latitude,
+            radius: radius,
+            name: name,
+            creatorId: userID);
+        return geoSphere;
       } else {
-        // Handle the failure case
-        log('Making request to ${EnvVariables.uri}/geofences with body: ${json.encode({
-              'name': geoSphere.name,
-              'geojson': geoSphere.toGeoJson()
-            })}');
-        log('Failed to create geosphere. Status code: ${res.statusCode} ${res.body}');
+        throw Exception(
+            'Failed to create geosphere. Status code: ${res.statusCode}');
       }
     } catch (e) {
       throw Exception("Error occured: $e");
     }
   }
 
-  static Future<List<GeoSphere>> getAllGeoSpheres() async {
+  static Future<List<GeoSphere>?> getAllGeoSpheres() async {
     try {
       var response = await http.get(Uri.parse('${EnvVariables.uri}/geofences'));
 
       if (response.statusCode == 200) {
         List<dynamic> geofencesData = json.decode(response.body);
+        log(response.body.toString(), name: 'responsebody');
         List<GeoSphere> geoSpheres = [];
+        log(geofencesData.toString(), name: 'geofencesdata');
         for (var geofenceData in geofencesData) {
-          log(geofencesData.toString());
-          geoSpheres.add(GeoSphere.fromMap(geofenceData));
+          geoSpheres.add(GeoSphere.fromJson(geofenceData));
         }
-
-        for (var geoSphere in geoSpheres) {
-          log(geoSphere.toGeoJsonString());
-        }
+        log('GeoSpheres: ${geoSpheres.toString()}');
         return geoSpheres;
       } else {
         log('Request failed with status: ${response.statusCode}.');
-        return [];
+        return null;
       }
     } catch (e) {
       throw Exception("Error occurred: $e");

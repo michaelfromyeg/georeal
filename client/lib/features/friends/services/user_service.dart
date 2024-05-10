@@ -12,14 +12,11 @@ class UserService {
       final response = await http.get(Uri.parse('${EnvVariables.uri}/users'));
 
       if (response.statusCode == 200) {
-        log('Users fetched: ${response.body}');
         final List<dynamic> usersJson = json.decode(response.body);
-        log('Users fetched2: $usersJson');
 
         List<OtherUser> users =
             usersJson.map((user) => OtherUser.fromMap(user)).toList();
 
-        log('Users fetched3: $users');
         return users;
       } else {
         throw Exception(

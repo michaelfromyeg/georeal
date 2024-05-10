@@ -56,7 +56,7 @@ class _CustomMapState extends State<CustomMap> {
           },
           circleId: CircleId(geoSphere.name),
           center: LatLng(geoSphere.latitude, geoSphere.longitude),
-          radius: geoSphere.radiusInMeters,
+          radius: geoSphere.radius,
           strokeWidth: 2,
           fillColor: const Color.fromARGB(124, 90, 226, 142),
         );

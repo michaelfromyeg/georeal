@@ -24,7 +24,6 @@ class FriendViewModel extends ChangeNotifier {
   Future<void> getUserByUsername(String username, int userId) async {
     try {
       _selectedUser = await UserService.getUserByUsername(username, userId);
-      log('User fetched: $_selectedUser');
       notifyListeners();
     } catch (e) {
       log(e.toString());

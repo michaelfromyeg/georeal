@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
@@ -92,8 +93,14 @@ class _AddGeoSphereModalState extends State<AddGeoSphereModal> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await viewModel.setAndCreateGeoSphere(
-                          sliderValue, nameController.text);
+                      final user =
+                          Provider.of<UserProvider>(context, listen: false)
+                              .user;
+                      if (user != null) {
+                        await viewModel.setAndCreateGeoSphere(
+                            sliderValue, nameController.text, user.id);
+                      }
+
                       Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(

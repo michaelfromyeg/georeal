@@ -27,43 +27,46 @@ class GeoSphereViewModel extends ChangeNotifier {
   List<GeoSphere> get geoSpheres => _geoSpheres;
 
   Future<void> fetchGeoSpheres() async {
-    List<GeoSphere> geoSpheres = await GeoSphereService.getAllGeoSpheres();
-    _geoSpheres.addAll(geoSpheres);
-    notifyListeners();
+    List<GeoSphere>? geoSpheres = await GeoSphereService.getAllGeoSpheres();
+    if (geoSpheres != null) {
+      _geoSpheres.addAll(geoSpheres);
+      notifyListeners();
+    }
   }
 
-  Future<void> setAndCreateGeoSphere(double radius, String name) async {
+  Future<void> setAndCreateGeoSphere(
+      double radius, String name, int userID) async {
     LocationData? locationData = _locationViewModel.currentLocation;
 
     // Check if the location data is available and valid
     if (locationData != null &&
         locationData.latitude != null &&
         locationData.longitude != null) {
-      GeoSphere newGeoSphere = GeoSphere(
-        latitude: locationData.latitude!,
-        longitude: locationData.longitude!,
-        radiusInMeters: radius,
-        name: name,
-      );
-      _geoSpheres.add(newGeoSphere);
-      GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
-      notifyListeners();
+      GeoSphere? newGeoSphere = await GeoSphereService.createGeoSphere(
+          userID: userID,
+          radius: radius,
+          latitude: locationData.latitude!,
+          longitude: locationData.longitude!,
+          name: name);
+      if (newGeoSphere != null) {
+        _geoSpheres.add(newGeoSphere);
+        notifyListeners();
+      }
     } else {
       locationData = await _locationViewModel.fetchLocation();
       if (locationData != null &&
           locationData.latitude != null &&
           locationData.longitude != null) {
-        GeoSphere newGeoSphere = GeoSphere(
-          latitude: locationData.latitude!,
-          longitude: locationData.longitude!,
-          radiusInMeters: radius,
-          name: name,
-        );
-
-        _geoSpheres.add(newGeoSphere);
-        GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
-
-        notifyListeners();
+        GeoSphere? newGeoSphere = await GeoSphereService.createGeoSphere(
+            radius: radius,
+            userID: userID,
+            latitude: locationData.latitude!,
+            longitude: locationData.longitude!,
+            name: name);
+        if (newGeoSphere != null) {
+          _geoSpheres.add(newGeoSphere);
+          notifyListeners();
+        }
       } else {
         // location data is still not available
       }
@@ -170,7 +173,7 @@ class GeoSphereViewModel extends ChangeNotifier {
     for (GeoSphere geoSphere in geoSpheres) {
       double distanceFromCenter = _calculateDistance(
           geoSphere.latitude, geoSphere.longitude, pointLat, pointLon);
-      if (distanceFromCenter <= geoSphere.radiusInMeters) {
+      if (distanceFromCenter <= geoSphere.radius) {
         containingGeoSpheres.add(geoSphere);
       }
     }

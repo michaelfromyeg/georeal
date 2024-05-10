@@ -1,44 +1,47 @@
+// To parse this JSON data, do
+//
+//     final geofence = geofenceFromJson(jsonString);
+
 import 'dart:convert';
 
-import 'package:uuid/uuid.dart';
+GeoSphere geofenceFromJson(String str) => GeoSphere.fromJson(json.decode(str));
 
-/// Represents a GeoSphere object
+String geofenceToJson(GeoSphere data) => json.encode(data.toJson());
 
 class GeoSphere {
+  int geoSphereId;
+  int creatorId;
   double latitude;
   double longitude;
-  double radiusInMeters;
+  double radius;
   String name;
-  final String geoSphereId;
 
   GeoSphere({
+    required this.geoSphereId,
+    required this.creatorId,
     required this.latitude,
     required this.longitude,
-    required this.radiusInMeters,
+    required this.radius,
     required this.name,
-  }) : geoSphereId = const Uuid().v4();
+  });
 
-  factory GeoSphere.fromMap(Map<String, dynamic> map) {
-    var geojson = map['geojson'] as Map<String, dynamic>? ?? {};
-    var geometry = geojson['geometry'] as Map<String, dynamic>? ?? {};
-    var coordinates = geometry['coordinates'] as List<dynamic>? ?? [0.0, 0.0];
-    var properties = geojson['properties'] as Map<String, dynamic>? ?? {};
+  factory GeoSphere.fromJson(Map<String, dynamic> json) => GeoSphere(
+        geoSphereId: json["id"],
+        creatorId: json["creator_id"],
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
+        radius: json["radius"],
+        name: json["name"],
+      );
 
-    // Extracting name from the top level of the input map
-    String name = map['name']?.toString() ??
-        properties['name']?.toString() ??
-        'Unknown Name';
-    double latitude = coordinates.isNotEmpty ? coordinates[1].toDouble() : 0.0;
-    double longitude = coordinates.isNotEmpty ? coordinates[0].toDouble() : 0.0;
-    double radiusInMeters = properties['radius']?.toDouble() ?? 0.0;
-
-    return GeoSphere(
-      latitude: latitude,
-      longitude: longitude,
-      radiusInMeters: radiusInMeters,
-      name: name, // Use the correctly extracted name
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        "geoSphereId": geoSphereId,
+        "creatorId": creatorId,
+        "latitude": latitude,
+        "longitude": longitude,
+        "radius": radius,
+        "name": name,
+      };
 
   Map<String, dynamic> toGeoJson() {
     return {
@@ -49,7 +52,7 @@ class GeoSphere {
       },
       "properties": {
         "name": name,
-        "radius": radiusInMeters,
+        "radius": radius,
         "geoSphereId": geoSphereId,
       },
     };

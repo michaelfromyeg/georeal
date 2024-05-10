@@ -24,30 +24,43 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           isMapPressed
               ? const CustomMap()
-              : Container(
-                  padding: const EdgeInsets.only(top: 75),
-                  color: GlobalVariables.backgroundColor,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Consumer<GeoSphereViewModel>(
-                          builder: (context, geoSphereViewModel, child) {
-                            return ListView.builder(
-                              itemCount: geoSphereViewModel.geoSpheres.length,
-                              itemBuilder: (context, index) {
-                                var geoSphere =
-                                    geoSphereViewModel.geoSpheres[index];
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                                  child: GeoSphereWidget(geoSphere: geoSphere),
-                                );
-                              },
-                            );
-                          },
+              : SafeArea(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: GlobalVariables.backgroundColor,
+                      border: Border.all(width: 1, color: Colors.white),
+                    ),
+                    padding: const EdgeInsets.only(top: 75),
+                    child: Column(
+                      children: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Provider.of<GeoSphereViewModel>(context,
+                                      listen: false)
+                                  .fetchGeoSpheres();
+                            },
+                            child: Text("Get GeoSphere")),
+                        Expanded(
+                          child: Consumer<GeoSphereViewModel>(
+                            builder: (context, geoSphereViewModel, child) {
+                              return ListView.builder(
+                                itemCount: geoSphereViewModel.geoSpheres.length,
+                                itemBuilder: (context, index) {
+                                  var geoSphere =
+                                      geoSphereViewModel.geoSpheres[index];
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                                    child:
+                                        GeoSphereWidget(geoSphere: geoSphere),
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
           SafeArea(

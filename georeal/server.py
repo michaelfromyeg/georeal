@@ -53,12 +53,14 @@ else:
 
 
 from .routes.auth import auth
+from .routes.geofences import geofences
 from .routes.routes import api
 from .routes.users import users
 
 app.register_blueprint(api)
 app.register_blueprint(users)
 app.register_blueprint(auth)
+app.register_blueprint(geofences)
 
 @app.cli.command("bootstrap")
 def bootstrap_table() -> None:
