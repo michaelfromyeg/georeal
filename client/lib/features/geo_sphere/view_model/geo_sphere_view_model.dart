@@ -32,7 +32,6 @@ class GeoSphereViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-/*
   Future<void> setAndCreateGeoSphere(double radius, String name) async {
     LocationData? locationData = _locationViewModel.currentLocation;
 
@@ -70,7 +69,8 @@ class GeoSphereViewModel extends ChangeNotifier {
       }
     }
   }
-*/
+
+/*
   Future<void> setAndCreateGeoSphere(double radius, String name) async {
     // Static latitude and longitude values
     double dummyLatitude = 49.257471832085294;
@@ -87,7 +87,7 @@ class GeoSphereViewModel extends ChangeNotifier {
     GeoSphereService.createGeoSphere(geoSphere: newGeoSphere);
     notifyListeners();
   }
-
+*/
   void deleteGeoSphere(GeoSphere geoSphereToDelete) {
     geoSpheres
         .removeWhere((geoSphere) => geoSphere.name == geoSphereToDelete.name);
