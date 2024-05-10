@@ -1,82 +1,75 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/widgets/geo_sphere_widget.dart';
+import 'package:georeal/features/home/widgets/map_navbar.dart';
+import 'package:georeal/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/map.dart';
 
 /// HomeScreen is the main screen of the app which contains the Map
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool isMapPressed = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          const Column(
-            children: [
-              Expanded(
-                child: CustomMap(),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Consumer<GeoSphereViewModel>(
-              builder: (context, geoSphereViewModel, child) {
-                return SafeArea(
-                  child: GestureDetector(
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                spreadRadius: 4,
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
+          isMapPressed
+              ? const CustomMap()
+              : Container(
+                  padding: const EdgeInsets.only(top: 75),
+                  color: GlobalVariables.backgroundColor,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Consumer<GeoSphereViewModel>(
+                          builder: (context, geoSphereViewModel, child) {
+                            return ListView.builder(
+                              itemCount: geoSphereViewModel.geoSpheres.length,
+                              itemBuilder: (context, index) {
+                                var geoSphere =
+                                    geoSphereViewModel.geoSpheres[index];
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                                  child: GeoSphereWidget(geoSphere: geoSphere),
+                                );
+                              },
+                            );
+                          },
                         ),
-                        Icon(
-                          Icons.camera_alt_outlined,
-                          size: 28,
-                          color: geoSphereViewModel.inGeoSphere
-                              ? Colors.green
-                              : Colors.red,
-                        ),
-                      ],
-                    ),
-                    onTap: () => {
-                      log('${geoSphereViewModel.inGeoSphere}'),
-                      if (geoSphereViewModel.inGeoSphere)
-                        {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return PhotoPrompt(
-                                    geosphere:
-                                        geoSphereViewModel.geoSpheres.last);
-                              })
-                        }
-                      else
-                        {}
-                    },
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Consumer<GeoSphereViewModel>(
+                builder: (context, geoSphereViewModel, child) {
+                  return MapNavbar(
+                    model: geoSphereViewModel,
+                    onMapPressed: () {
+                      setState(() {
+                        isMapPressed = true;
+                      });
+                    },
+                    onFeedPressed: () {
+                      setState(() {
+                        isMapPressed = false;
+                      });
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ],

@@ -52,9 +52,13 @@ else:
     # )
 
 
-from .routes import api
+from .routes.auth import auth
+from .routes.routes import api
+from .routes.users import users
 
 app.register_blueprint(api)
+app.register_blueprint(users)
+app.register_blueprint(auth)
 
 @app.cli.command("bootstrap")
 def bootstrap_table() -> None:
@@ -83,6 +87,7 @@ def bootstrap_table() -> None:
 
 with app.app_context():
     logger.info("Creating database...")
+   # db.drop_all()
     db.create_all()
 
 

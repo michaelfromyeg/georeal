@@ -19,6 +19,9 @@ class User(db.Model):
                               primaryjoin=(friends.c.friend_id == id),
                               secondaryjoin=(friends.c.friended_id == id),
                               backref=db.backref('friended', lazy='dynamic'), lazy='dynamic')
+    num_places = db.Column(db.Integer, default=0)
+    num_posts = db.Column(db.Integer, default=0)
+    num_friends = db.Column(db.Integer, default=0)
 
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,3 +44,12 @@ class Location(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True, nullable=False)
+
+class FriendRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='sent_requests')
+    receiver = db.relationship('User', foreign_keys=[receiver_id], backref='received_requests')
+

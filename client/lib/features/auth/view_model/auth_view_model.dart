@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:georeal/features/auth/services/auth_service.dart';
-import 'package:georeal/features/view_models/user_view_model.dart';
+import 'package:georeal/models/user.dart';
 
 /// handles all data and logic for the authentication process
 
@@ -16,6 +18,7 @@ class AuthViewModel with ChangeNotifier {
   final TextEditingController _passwordController = TextEditingController();
   String? _errorMessage;
   VoidCallback? onAuthSuccess;
+  User? user;
 
   Auth get authMode => _authMode;
 
@@ -23,6 +26,7 @@ class AuthViewModel with ChangeNotifier {
   TextEditingController get nameController => _nameController;
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
+  User get currentUser => user!;
 
   void setErrorMessage(String? message) {
     _errorMessage = message;
@@ -38,41 +42,41 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> login() async {
+  Future<User?> login() async {
     try {
-      var response = await AuthService.login(
+      User? user = await AuthService.login(
         _emailController.text,
         _passwordController.text,
       );
-      _nameController.text = response['username'];
-      onAuthSuccess?.call();
-      return true;
+
+      if (user != null) {
+        log('USER: ${user.toString()}');
+        return user;
+      } else {
+        return null;
+      }
     } catch (e) {
-      setErrorMessage(e.toString());
-      return false;
+      log('SignIn failed: $e');
+      rethrow;
     }
   }
 
-  Future<bool> register(UserViewModel user) async {
+  Future<User?> register() async {
     try {
-      await AuthService.register(
+      User? user = await AuthService.register(
         _nameController.text,
         _emailController.text,
         _passwordController.text,
       );
-      onAuthSuccess?.call();
-      return true;
+      if (user != null) {
+        return user;
+      } else {
+        return null;
+      }
     } catch (e) {
-      setErrorMessage(e.toString());
-      return false;
+      log('Register failed: $e');
+      rethrow;
     }
-  }
-
-  void _setUser(UserViewModel user) {
-    user.setUser({
-      'name': _nameController.text,
-      'email': _emailController.text,
-    });
   }
 
   @override

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:georeal/features/geo_sphere/views/geo_spheres_view.dart';
+import 'package:georeal/features/friends/view/friends_screen.dart';
 import 'package:georeal/features/home/screens/home_screen.dart';
+import 'package:georeal/features/profile/views/profile_screen.dart';
 import 'package:georeal/global_variables.dart';
-
-import 'features/geo_sphere/widgets/add_geo_sphere_modal.dart';
 
 /// HomeRouter serves as the main navigation hub of the app
 
@@ -30,7 +29,8 @@ class _HomeRouterState extends State<HomeRouter> {
 
   final screens = [
     const HomeScreen(),
-    const GeoSphereView(), /* FriendsScreen() */
+    const FriendsScreen(),
+    const ProfileScreen(), /* FriendsScreen() */
   ];
 
   @override
@@ -38,8 +38,9 @@ class _HomeRouterState extends State<HomeRouter> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      backgroundColor: GlobalVariables.backgroundColor,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton:  FloatingActionButton(
         foregroundColor: Colors.black, //Color.fromARGB(255, 3, 179, 0),
         backgroundColor: GlobalVariables.secondaryColor,
         shape: const RoundedRectangleBorder(
@@ -64,17 +65,18 @@ class _HomeRouterState extends State<HomeRouter> {
           );
         },
         child: const Icon(Icons.add),
-      ),
+      ),*/
       bottomNavigationBar: BottomAppBar(
         height: 64,
-        color: const Color.fromARGB(255, 12, 12, 12),
+        color: Colors.black,
         shape: const CircularNotchedRectangle(),
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildBottomNavItem(Icons.map_outlined, 'Map', 0),
-              buildBottomNavItem(Icons.language, 'Spaces', 1),
+              buildBottomNavItem(Icons.search, 'Friends', 1),
+              buildBottomNavItem(Icons.person, 'Profile', 2),
             ],
           ),
         ),

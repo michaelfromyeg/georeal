@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:georeal/constants/env_variables.dart';
+import 'package:georeal/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
-  static Future<dynamic> login(String email, String password) async {
+  static Future<User?> login(String email, String password) async {
     try {
       var uri = Uri.parse('${EnvVariables.uri}/login');
       var response = await http.post(
@@ -19,7 +21,9 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        return json.decode(response.body); // Return the user object (or token
+        final userJson = json.decode(response.body);
+        log('User fetched: $userJson');
+        return User.fromMap(userJson); // Return the user object (or token
       } else {
         throw Exception(
             'Failed to login. Please check your credentials and try again.');
@@ -29,9 +33,10 @@ class AuthService {
     }
   }
 
-  static Future<void> register(
+  static Future<User?> register(
       String name, String email, String password) async {
     try {
+      log('Registering user...', name: 'AuthService');
       var uri = Uri.parse('${EnvVariables.uri}/register');
       var response = await http.post(
         uri,
@@ -46,7 +51,9 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        return json.decode(response.body); // Return the user object (or token
+        final userJson = json.decode(response.body);
+        log('User fetched: $userJson');
+        return User.fromMap(userJson);
       } else {
         throw Exception('Failed to register. Please try again');
       }
