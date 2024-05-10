@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/widgets/add_geo_sphere_modal.dart';
 
 class MapNavbar extends StatelessWidget {
   final GeoSphereViewModel model;
@@ -115,28 +116,17 @@ class MapNavbar extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.add,
                   size: 28,
-                  color: model.inGeoSphere
-                      ? Colors.green
-                      : const Color.fromARGB(255, 255, 255, 255),
+                  color: Color.fromARGB(255, 255, 255, 255),
                 ),
               ],
             ),
-            onTap: () => {
-              log('${model.inGeoSphere}'),
-              if (model.inGeoSphere)
-                {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return PhotoPrompt(geosphere: model.geoSpheres.last);
-                      })
-                }
-              else
-                {}
-            },
+            onTap: () => showModalBottomSheet(
+              context: context,
+              builder: (context) => const AddGeoSphereModal(),
+            ),
           ),
         ],
       ),
