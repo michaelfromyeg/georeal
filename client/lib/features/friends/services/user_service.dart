@@ -136,4 +136,22 @@ class UserService {
       throw Exception('Failed to reject friend request: $e');
     }
   }
+
+  static Future<List<OtherUser>> searchUsers(String query) async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse(
+            '${EnvVariables.uri}/users/search?query=${Uri.encodeComponent(query)}'),
+      );
+      List<OtherUser> users = [];
+      log('Searching users: ${response.body}');
+      for (var user in json.decode(response.body)) {
+        users.add(OtherUser.fromMap(user));
+      }
+      return users;
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to search users: $e');
+    }
+  }
 }

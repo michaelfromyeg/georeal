@@ -19,6 +19,9 @@ class FriendsScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   child: TextField(
+                    controller:
+                        Provider.of<FriendViewModel>(context, listen: false)
+                            .searchController,
                     decoration: InputDecoration(
                       hintText: 'Search by username',
                       hintStyle: TextStyle(
@@ -52,7 +55,8 @@ class FriendsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 20),
                 child: TextButton(
                   onPressed: () {
-                    // Cancel button action
+                    Provider.of<FriendViewModel>(context, listen: false)
+                        .searchUsers();
                   },
                   style: TextButton.styleFrom(
                     backgroundColor:

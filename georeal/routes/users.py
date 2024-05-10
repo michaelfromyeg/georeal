@@ -155,3 +155,25 @@ def reject_friend_request(request_id):
     db.session.commit()
 
     return jsonify({'message': 'Friend request rejected'}), 200
+
+
+@users.route('/users/search', methods=['GET'])
+def search_users():
+    search_query = request.args.get('query')
+    if not search_query:
+        return jsonify({'error': 'Missing query parameter'}), 400
+
+    users = User.query.filter(User.username.ilike(f'%{search_query}%')).all()
+    users_list = []
+    for user in users:
+        user_data = {
+            'user_id': user.id,
+            'username': user.username,
+            'num_places': user.num_places,
+            'num_posts': user.num_posts,
+            'num_friends': user.num_friends,
+            'is_friend': False,
+        }
+        users_list.append(user_data)
+
+    return jsonify(users_list), 200
