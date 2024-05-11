@@ -25,6 +25,22 @@ def get_geofences() -> tuple[Response, int]:
         'radius': g.radius,
         'creator_id': g.creator_id,
     } for g in geofences]), 200
+
+@geofences.route("/geofences/<int:user_id>", methods=["GET"])
+def get_geofences_by_user(user_id: int) -> tuple[Response, int]:
+    """
+    Get all regions that are geofenced by a specific user.
+    """
+    geofences = Geofence.query.filter_by(creator_id=user_id).all()
+    return jsonify([{
+        'id': g.id,
+        'name': g.name,
+        'latitude': g.latitude,
+        'longitude': g.longitude,
+        'radius': g.radius,
+        'creator_id': g.creator_id,
+    } for g in geofences]), 200
+
         
 @geofences.route("/geofences", methods=["POST"])
 def create_geofence():

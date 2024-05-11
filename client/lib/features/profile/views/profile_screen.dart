@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
+import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
+import 'package:georeal/features/geo_sphere/widgets/geo_sphere_widget.dart';
 import 'package:georeal/features/profile/views/friend_request_screen.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() =>
+        Provider.of<GeoSphereViewModel>(context, listen: false)
+            .fetchUserGeoSpheres(
+                Provider.of<UserProvider>(context, listen: false).user!.id));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +119,24 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const Divider(),
+            Expanded(
+              child: Consumer<GeoSphereViewModel>(
+                builder: (context, geoSphereViewModel, child) {
+                  // geoSphereViewModel.fetchUserGeoSpheres(user.id);
+                  return ListView.builder(
+                    itemCount: geoSphereViewModel.selectedUserGeoSpheres.length,
+                    itemBuilder: (context, index) {
+                      var geoSphere =
+                          geoSphereViewModel.selectedUserGeoSpheres[index];
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                        child: GeoSphereWidget(geoSphere: geoSphere),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

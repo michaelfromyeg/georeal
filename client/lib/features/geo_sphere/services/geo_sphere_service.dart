@@ -71,6 +71,27 @@ class GeoSphereService {
     }
   }
 
+  static Future<List<GeoSphere>?> getGeoSpheresByUserId(int userId) async {
+    try {
+      var response =
+          await http.get(Uri.parse('${EnvVariables.uri}/geofences/$userId'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> geofencesData = json.decode(response.body);
+        List<GeoSphere> geoSpheres = [];
+        for (var geofenceData in geofencesData) {
+          geoSpheres.add(GeoSphere.fromJson(geofenceData));
+        }
+        return geoSpheres;
+      } else {
+        throw Exception(
+            'Failed to get geospheres. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception("Error occurred: $e");
+    }
+  }
+
   static Future<void> deleteGeoSphere(int id) async {
     log('Deleting geosphere with id: $id');
     try {

@@ -19,17 +19,28 @@ class GeoSphereViewModel extends ChangeNotifier {
 
   final LocationViewModel _locationViewModel;
   final List<GeoSphere> _geoSpheres = [];
+  List<GeoSphere> _selectedUserGeoSpheres = [];
 
   GeoSphereViewModel(this._locationViewModel) {
     fetchGeoSpheres();
   }
 
   List<GeoSphere> get geoSpheres => _geoSpheres;
+  List<GeoSphere> get selectedUserGeoSpheres => _selectedUserGeoSpheres;
 
   Future<void> fetchGeoSpheres() async {
     List<GeoSphere>? geoSpheres = await GeoSphereService.getAllGeoSpheres();
     if (geoSpheres != null) {
       _geoSpheres.addAll(geoSpheres);
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchUserGeoSpheres(int userID) async {
+    List<GeoSphere>? userGeoSpheres =
+        await GeoSphereService.getGeoSpheresByUserId(userID);
+    if (userGeoSpheres != null) {
+      _selectedUserGeoSpheres = userGeoSpheres;
       notifyListeners();
     }
   }
