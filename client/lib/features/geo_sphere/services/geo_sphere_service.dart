@@ -70,4 +70,18 @@ class GeoSphereService {
       throw Exception("Error occurred: $e");
     }
   }
+
+  static Future<void> deleteGeoSphere(int id) async {
+    log('Deleting geosphere with id: $id');
+    try {
+      var response = await http
+          .delete(Uri.parse('${EnvVariables.uri}/geofences/delete/$id'));
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to delete geosphere. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception("Error occurred: $e");
+    }
+  }
 }

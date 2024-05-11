@@ -1,13 +1,10 @@
-import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/gallery/widgets/gallery_navbar.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
-import 'package:provider/provider.dart';
-
-/// Gallery view for a specific GeoSphere
 
 class GeoSphereGallery extends StatelessWidget {
   final GeoSphere geoSphere;
@@ -20,7 +17,7 @@ class GeoSphereGallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final galleryViewModel = context.watch<GalleryViewModel>();
-    List<String> photoPaths =
+    List<String> photoUrls =
         galleryViewModel.getPhotosFromGallery(geoSphere.geoSphereId);
 
     return Scaffold(
@@ -31,25 +28,40 @@ class GeoSphereGallery extends StatelessWidget {
             GalleryNavBar(
               geoSphere: geoSphere,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  galleryViewModel.fetchGallery(geoSphere.geoSphereId);
+                },
+                child: Text("Fetch Gallery")),
             Expanded(
-              // Wrap ListView.builder with Expanded
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 6,
                 ),
-                itemCount: photoPaths.length,
+                itemCount: photoUrls.length,
                 itemBuilder: (context, index) {
-                  String photoPath = photoPaths[index];
+                  String photoUrl = photoUrls[index];
                   return GestureDetector(
-                    child: Image.file(
-                      File(photoPath),
+                    child: Image.network(
+                      photoUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(Icons.error),
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                            child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ));
+                      },
                     ),
-                    onTap: () => _showFullSizeImage(context, photoPath),
+                    onTap: () => _showFullSizeImage(context, photoUrl),
                   );
-                  /*Image.asset(
-                          photoPath); */ // Display the image (assuming these are network images)
                 },
               ),
             ),
@@ -59,12 +71,12 @@ class GeoSphereGallery extends StatelessWidget {
     );
   }
 
-  _showFullSizeImage(BuildContext context, String photoPath) {
+  _showFullSizeImage(BuildContext context, String photoUrl) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Image.file(File(photoPath)),
+          content: Image.network(photoUrl),
           actions: <Widget>[
             TextButton(
               child: const Text('Close'),

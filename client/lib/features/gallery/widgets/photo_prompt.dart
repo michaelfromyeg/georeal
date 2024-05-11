@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
   File? image;
 
   Future pickImage(
-      ImageSource source, GalleryViewModel galleryViewModel) async {
+      ImageSource source, GalleryViewModel galleryViewModel, int userID) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
@@ -35,7 +36,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
       log("beofre");
       // Save the image path to the gallery
       galleryViewModel.addPhotoToGallery(
-          widget.geosphere.geoSphereId, image.path);
+          widget.geosphere.geoSphereId, imageTemporary, userID);
       log("after");
       /*
       Provider.of<GalleryService>(context, listen: false)
@@ -54,6 +55,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
   Widget build(BuildContext context) {
     final galleryViewModel =
         Provider.of<GalleryViewModel>(context, listen: false);
+    final userID = Provider.of<UserProvider>(context).user!.id;
     return AlertDialog(
       title: const Text("Add a photo!"),
       content: SizedBox(
@@ -61,7 +63,8 @@ class _PhotoPromptState extends State<PhotoPrompt> {
         child: Column(
           children: [
             ElevatedButton(
-              onPressed: () => pickImage(ImageSource.gallery, galleryViewModel),
+              onPressed: () =>
+                  pickImage(ImageSource.gallery, galleryViewModel, userID),
               child: const Text("Pick Gallery"),
             ),
             ElevatedButton(
@@ -69,13 +72,13 @@ class _PhotoPromptState extends State<PhotoPrompt> {
                 if (Platform.isAndroid) {
                   var status = await Permission.camera.request();
                   if (status.isGranted) {
-                    pickImage(ImageSource.camera, galleryViewModel);
+                    pickImage(ImageSource.camera, galleryViewModel, userID);
                   } else {
                     print("bruh");
                   }
                 } else if (Platform.isIOS) {
                   // TODO: Implement iOS camera permission
-                  pickImage(ImageSource.camera, galleryViewModel);
+                  pickImage(ImageSource.camera, galleryViewModel, userID);
                 }
               },
               child: const Text("Pick Camera"),

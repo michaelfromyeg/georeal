@@ -26,9 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ? const CustomMap()
               : SafeArea(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: GlobalVariables.backgroundColor,
-                      border: Border.all(width: 1, color: Colors.white),
                     ),
                     padding: const EdgeInsets.only(top: 75),
                     child: Column(
