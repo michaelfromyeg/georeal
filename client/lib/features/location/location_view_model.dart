@@ -62,10 +62,9 @@ class LocationViewModel extends ChangeNotifier {
       _updateLocation();
       BackgroundFetch.finish(taskId);
     }).then((int status) {
-      print('Background Fetch initialized with status: $status');
-      log("LOCATION HAS BEEN UPDATED");
+      log('Background Fetch initialized with status: $status');
     }).catchError((e) {
-      print('Background Fetch failed to initialize: $e');
+      log('Background Fetch failed to initialize: $e');
     });
   }
 
@@ -76,7 +75,7 @@ class LocationViewModel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("Failed to get location: $e");
+      log("Failed to get location: $e");
     }
   }
 
@@ -87,7 +86,7 @@ class LocationViewModel extends ChangeNotifier {
       notifyListeners();
       return locationData;
     } catch (e) {
-      print("Failed to get location: $e");
+      log("Failed to get location: $e");
       return null;
     }
   }

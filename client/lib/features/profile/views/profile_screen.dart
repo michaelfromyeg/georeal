@@ -17,7 +17,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() =>
         Provider.of<GeoSphereViewModel>(context, listen: false)

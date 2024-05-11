@@ -63,7 +63,9 @@ class GalleryNavBar extends StatelessWidget {
             );
             if (confirmDelete) {
               geoSphereViewModel.deleteGeoSphere(geoSphere);
-              Navigator.of(context).pop(true);
+              if (context.mounted) {
+                Navigator.of(context).pop(true);
+              }
             }
           },
           iconSize: 24,

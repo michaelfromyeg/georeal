@@ -15,19 +15,6 @@ class GalleryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void addPhotoToGallery(int geoSphereId, String photoPath) {
-  //   final gallery = _galleries[geoSphereId];
-  //   if (gallery != null) {
-  //     gallery.photoPaths.add(photoPath);
-  //     notifyListeners();
-  //   } else {
-  //     Gallery newGallery = Gallery(id: geoSphereId);
-  //     newGallery.photoPaths.add(photoPath);
-  //     _galleries[geoSphereId] = newGallery;
-  //     notifyListeners();
-  //   }
-  // }
-
   Future<void> addPhotoToGallery(
       int geoSphereID, File photo, int userID) async {
     await GalleryService.uploadPhoto(geoSphereID, userID, photo);
@@ -37,18 +24,16 @@ class GalleryViewModel extends ChangeNotifier {
     List<String>? photoUrls =
         await GalleryService.getPhotosByGeoSphereId(geoSphereId);
 
-    if (photoUrls == null || photoUrls.isEmpty) {
-      // Optionally handle the case where no photos are found
+    if (photoUrls.isEmpty) {
+      // handle the case where no photos are found
     }
 
     final gallery = _galleries[geoSphereId];
 
     if (gallery != null) {
-      // Update existing gallery
       gallery.photoPaths = photoUrls;
       notifyListeners();
     } else {
-      // Create a new gallery if one doesn't exist
       _galleries[geoSphereId] = Gallery(id: geoSphereId, photoPaths: photoUrls);
       notifyListeners();
     }

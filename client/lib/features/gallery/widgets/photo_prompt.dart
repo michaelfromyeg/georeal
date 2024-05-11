@@ -33,21 +33,18 @@ class _PhotoPromptState extends State<PhotoPrompt> {
 
       final imageTemporary = File(image.path);
       this.image = imageTemporary;
-      log("beofre");
-      // Save the image path to the gallery
+
       galleryViewModel.addPhotoToGallery(
           widget.geosphere.geoSphereId, imageTemporary, userID);
-      log("after");
-      /*
-      Provider.of<GalleryService>(context, listen: false)
-          .uploadPhoto(widget.geoSphereId, imageTemporary);*/
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => GeoSphereGallery(geoSphere: widget.geosphere),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GeoSphereGallery(geoSphere: widget.geosphere),
+          ),
+        );
+      }
     } on PlatformException catch (e) {
-      print("Failed to pick image: $e");
+      log("Failed to pick image: $e");
     }
   }
 
@@ -74,7 +71,7 @@ class _PhotoPromptState extends State<PhotoPrompt> {
                   if (status.isGranted) {
                     pickImage(ImageSource.camera, galleryViewModel, userID);
                   } else {
-                    print("bruh");
+                    log("Camera permission denied");
                   }
                 } else if (Platform.isIOS) {
                   // TODO: Implement iOS camera permission

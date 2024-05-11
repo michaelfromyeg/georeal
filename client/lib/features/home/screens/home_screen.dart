@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       listen: false)
                                   .fetchGeoSpheres();
                             },
-                            child: Text("Get GeoSphere")),
+                            child: const Text("Get GeoSphere")),
                         Expanded(
                           child: Consumer<GeoSphereViewModel>(
                             builder: (context, geoSphereViewModel, child) {

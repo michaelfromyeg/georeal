@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/gallery/widgets/gallery_navbar.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/geo_sphere_model.dart';
+import 'package:provider/provider.dart';
 
 class GeoSphereGallery extends StatelessWidget {
   final GeoSphere geoSphere;
@@ -32,7 +31,7 @@ class GeoSphereGallery extends StatelessWidget {
                 onPressed: () {
                   galleryViewModel.fetchGallery(geoSphere.geoSphereId);
                 },
-                child: Text("Fetch Gallery")),
+                child: const Text("Fetch Gallery")),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -48,7 +47,7 @@ class GeoSphereGallery extends StatelessWidget {
                       photoUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          Icon(Icons.error),
+                          const Icon(Icons.error),
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
                         return Center(

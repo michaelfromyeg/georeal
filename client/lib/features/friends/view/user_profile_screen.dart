@@ -5,12 +5,11 @@ import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dar
 import 'package:georeal/features/geo_sphere/widgets/geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/other_user.dart';
-import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  OtherUser user;
-  UserProfileScreen({
+  final OtherUser user;
+  const UserProfileScreen({
     super.key,
     required this.user,
   });
@@ -22,7 +21,6 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() =>
         Provider.of<GeoSphereViewModel>(context, listen: false)
@@ -46,7 +44,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            ProfileLayout(),
+            const ProfileLayout(),
             Expanded(
               child: Consumer<GeoSphereViewModel>(
                 builder: (context, geoSphereViewModel, child) {

@@ -3,8 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GlobalVariables {
   //static String get URI => dotenv.env['SERVER_URI'] ?? 'http://localhost:5000';
+  // ignore: non_constant_identifier_names
   static String get URI => 'http://localhost:5000';
 
+  // ignore: non_constant_identifier_names
   static String get GOOGLE_API_KEY => dotenv.env['GOOGLE_API_KEY'] ?? '';
 
   // COLORS

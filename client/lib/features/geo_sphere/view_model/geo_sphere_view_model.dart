@@ -59,7 +59,7 @@ class GeoSphereViewModel extends ChangeNotifier {
           latitude: locationData.latitude!,
           longitude: locationData.longitude!,
           name: name);
-      if (newGeoSphere != null) {
+      if (newGeoSphere is GeoSphere) {
         _geoSpheres.add(newGeoSphere);
         notifyListeners();
       }
@@ -102,7 +102,7 @@ class GeoSphereViewModel extends ChangeNotifier {
       }
       return 'No neighborhood found';
     } catch (e) {
-      print("Error occurred: $e");
+      log.log("Error occurred: $e");
       return 'Error occurred'; // Return this in case of an error
     }
   }

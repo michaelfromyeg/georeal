@@ -9,7 +9,7 @@ import '../../../models/geo_sphere_model.dart';
 /// handles http requests for the GeoSpheres
 
 class GeoSphereService {
-  static Future<GeoSphere> createGeoSphere({
+  static Future<GeoSphere?> createGeoSphere({
     required int userID,
     required double radius,
     required double latitude,

@@ -21,12 +21,6 @@ class _HomeRouterState extends State<HomeRouter> {
 
   int _page = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _page = index;
-    });
-  }
-
   final screens = [
     const HomeScreen(),
     const FriendsScreen(),

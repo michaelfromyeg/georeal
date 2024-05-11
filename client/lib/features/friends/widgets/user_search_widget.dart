@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view/user_profile_screen.dart';
@@ -47,27 +45,25 @@ class UserSearchWidget extends StatelessWidget {
             content: Text('User data is not available.'),
             duration: Duration(seconds: 2),
           ));
-          return;
         }
-        log('username: $username');
-        log('username: ${userProvider.user!.id}');
+
         await viewModel.getUserByUsername(username, userProvider.user!.id);
-
-        if (viewModel.selectedUser == null) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Selected user data is not available.'),
-            duration: Duration(seconds: 2),
-          ));
-          return;
+        if (context.mounted) {
+          if (viewModel.selectedUser == null) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Selected user data is not available.'),
+              duration: Duration(seconds: 2),
+            ));
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    UserProfileScreen(user: viewModel.selectedUser!),
+              ),
+            );
+          }
         }
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                UserProfileScreen(user: viewModel.selectedUser!),
-          ),
-        );
       },
     );
   }
