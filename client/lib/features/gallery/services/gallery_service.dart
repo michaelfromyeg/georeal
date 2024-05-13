@@ -36,21 +36,24 @@ class GalleryService {
   }
 
   static Future<List<String>> getPhotosByGeoSphereId(int geoSphereId) async {
-    var response = await http
-        .get(Uri.parse('${EnvVariables.uri}/geofences/$geoSphereId/posts'));
+    try {
+      var response = await http
+          .get(Uri.parse('${EnvVariables.uri}/geofences/$geoSphereId/posts'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> photosData = json.decode(response.body);
-      List<String> photoUrls = photosData
-          .map((photoData) =>
-                  "${EnvVariables.uri}/uploads/${photoData['photo_url']}" // Ensure the server gives the full path or append domain if necessary
-              )
-          .toList();
-      log("photoUrls: $photoUrls");
-      return photoUrls;
-    } else {
-      throw Exception(
-          'Failed to get photos. Status code: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        List<dynamic> photosData = json.decode(response.body);
+        List<String> photoUrls = photosData
+            .map((photoData) => "${EnvVariables.uri}${photoData['photo_url']}")
+            .toList();
+        log("Fetched photo URLs successfully: $photoUrls");
+        return photoUrls;
+      } else {
+        throw Exception(
+            'Failed to fetch photos. Status code: ${response.statusCode}. Response body: ${response.body}');
+      }
+    } catch (e) {
+      log('Error occurred while fetching photos: ${e.toString()}');
+      rethrow; // This allows further handling of the error, such as showing a user-friendly message or error state UI.
     }
   }
 }

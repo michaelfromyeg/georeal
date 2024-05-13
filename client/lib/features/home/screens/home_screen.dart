@@ -32,13 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(top: 75),
                     child: Column(
                       children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              Provider.of<GeoSphereViewModel>(context,
-                                      listen: false)
-                                  .fetchGeoSpheres();
-                            },
-                            child: const Text("Get GeoSphere")),
                         Expanded(
                           child: Consumer<GeoSphereViewModel>(
                             builder: (context, geoSphereViewModel, child) {
