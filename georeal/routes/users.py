@@ -12,6 +12,7 @@ def get_all_users():
     for user in users:
         user_data = {
             'user_id': user.id,
+            'name': user.name,
     'username': user.username,
     'num_places': user.num_places,
     'num_posts': user.num_posts,
@@ -55,6 +56,7 @@ def get_user_details():
 
     user_details = {
         'user_id': user.id,
+        'name': user.name,
         'username': user.username,
         'num_places': user.num_places,
         'num_posts': user.num_posts,
@@ -169,6 +171,7 @@ def search_users():
         user_data = {
             'user_id': user.id,
             'username': user.username,
+            'name': user.name,
             'num_places': user.num_places,
             'num_posts': user.num_posts,
             'num_friends': user.num_friends,

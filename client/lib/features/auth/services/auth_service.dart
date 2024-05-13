@@ -34,7 +34,7 @@ class AuthService {
   }
 
   static Future<User?> register(
-      String name, String email, String password) async {
+      String name, String username, String email, String password) async {
     try {
       log('Registering user...', name: 'AuthService');
       var uri = Uri.parse('${EnvVariables.uri}/register');
@@ -44,7 +44,8 @@ class AuthService {
           'Content-Type': 'application/json',
         },
         body: json.encode({
-          'username': name,
+          'name': name,
+          'username': username,
           'email': email,
           'password': password,
         }),

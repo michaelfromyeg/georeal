@@ -89,7 +89,7 @@ def bootstrap_table() -> None:
 
 with app.app_context():
     logger.info("Creating database...")
-   # db.drop_all()
+    #db.drop_all()
     db.create_all()
 
 

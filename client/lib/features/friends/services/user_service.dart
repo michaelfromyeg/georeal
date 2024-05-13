@@ -13,7 +13,7 @@ class UserService {
 
       if (response.statusCode == 200) {
         final List<dynamic> usersJson = json.decode(response.body);
-
+        log(usersJson.toString());
         List<OtherUser> users =
             usersJson.map((user) => OtherUser.fromMap(user)).toList();
 

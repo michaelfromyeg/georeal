@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:georeal/features/auth/services/auth_service.dart';
 import 'package:georeal/models/user.dart';
 
@@ -14,6 +15,7 @@ enum Auth {
 class AuthViewModel with ChangeNotifier {
   Auth _authMode = Auth.signin;
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _errorMessage;
@@ -26,6 +28,7 @@ class AuthViewModel with ChangeNotifier {
   TextEditingController get nameController => _nameController;
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
+  TextEditingController get usernameController => _usernameController;
   User get currentUser => user!;
 
   void setErrorMessage(String? message) {
@@ -65,6 +68,7 @@ class AuthViewModel with ChangeNotifier {
     try {
       User? user = await AuthService.register(
         _nameController.text,
+        _usernameController.text,
         _emailController.text,
         _passwordController.text,
       );

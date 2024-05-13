@@ -81,9 +81,10 @@ class _ProfileLayoutState extends State<ProfileLayout> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "First Name",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              Text(
+                viewModel.selectedUser?.name ?? "Unknown",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               GestureDetector(
                 onTap: _isRequested || _isProcessing ? null : _handleAddFriend,

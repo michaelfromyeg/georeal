@@ -1,6 +1,7 @@
 class OtherUser {
   final int id;
   final String username;
+  final String name;
   final int numPlaces;
   final int numPosts;
   final int numFriends;
@@ -10,6 +11,7 @@ class OtherUser {
   OtherUser({
     required this.id,
     required this.username,
+    required this.name,
     required this.numPlaces,
     required this.numPosts,
     required this.numFriends,
@@ -21,6 +23,7 @@ class OtherUser {
     return OtherUser(
       id: json['user_id'] as int,
       username: json['username'] as String,
+      name: json['name'] as String,
       numPlaces: json['num_places'] as int,
       numPosts: json['num_posts'] as int,
       numFriends: json['num_friends'] as int,
@@ -33,6 +36,7 @@ class OtherUser {
     return {
       'user_id': id,
       'username': username,
+      'name': name,
       'num_places': numPlaces,
       'numPosts': numPosts,
       'num_friends': numFriends,

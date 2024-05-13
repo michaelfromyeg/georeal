@@ -66,7 +66,7 @@ class AuthScreen extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                "Sign Up",
+                "Sign In",
                 style: TextStyle(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 16,
@@ -108,7 +108,7 @@ class AuthScreen extends StatelessWidget {
           height: 16,
         ),
         AuthTextField(
-          controller: model.nameController,
+          controller: model.usernameController,
           hintText: "Username",
           isTextHidden: false,
         ),

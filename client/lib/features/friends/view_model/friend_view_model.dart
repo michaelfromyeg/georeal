@@ -17,7 +17,7 @@ class FriendViewModel extends ChangeNotifier {
       _searchedUsers = await UserService.getAllUsers();
       notifyListeners();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'fetchUsers');
     }
   }
 
@@ -26,7 +26,7 @@ class FriendViewModel extends ChangeNotifier {
       _selectedUser = await UserService.getUserByUsername(username, userId);
       notifyListeners();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'getUserByUsername');
     }
   }
 
@@ -34,7 +34,7 @@ class FriendViewModel extends ChangeNotifier {
     try {
       await UserService.sendFriendRequest(senderId, receiverId);
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'sendFriendRequest');
     }
   }
 
@@ -44,7 +44,7 @@ class FriendViewModel extends ChangeNotifier {
       log(_searchedUsers.toString(), name: 'Searched users');
       notifyListeners();
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: 'searchUsers');
     }
   }
 }

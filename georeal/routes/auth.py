@@ -11,25 +11,27 @@ def register():
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')
+    name = data.get('name')
     plain_password = data.get('password')
-    print(username, email, plain_password)
+    
     # Hash password
     pw_hash = bcrypt.generate_password_hash(plain_password).decode('utf-8')
-    print("ok")
+    
     # Check if the user already exists by email or username
     user = User.query.filter((User.username == username) | (User.email == email)).first()
     if user:
         print("User already exists")
         return jsonify({'message': 'User already exists'}), 400
-    print(1)
-    new_user = User(username=username, email=email, password_hash=pw_hash)
-    print(2)
+    
+    new_user = User(username=username, email=email, password_hash=pw_hash, name=name)
+    
     db.session.add(new_user)
     db.session.commit()
     
     return jsonify({
         'id': new_user.id,
         'username': new_user.username,
+        'name': new_user.name,
         'email': new_user.email,
         'num_places': new_user.num_places,
         'num_posts': new_user.num_posts,
@@ -47,6 +49,7 @@ def login():
         # Success
         return jsonify({
             'id': user.id,
+            'name': user.name,
             'username': user.username,
             'email': user.email,
             'num_places': user.num_places,
