@@ -15,12 +15,11 @@ class GalleryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addPhotoToGallery(
-      int geoSphereID, File photo, int userID) async {
+  void addPhotoToGallery(int geoSphereID, File photo, int userID) async {
     await GalleryService.uploadPhoto(geoSphereID, userID, photo);
   }
 
-  Future<void> fetchGallery(int geoSphereId) async {
+  void fetchGallery(int geoSphereId) async {
     List<String>? photoUrls =
         await GalleryService.getPhotosByGeoSphereId(geoSphereId);
 

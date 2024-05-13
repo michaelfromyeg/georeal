@@ -47,22 +47,18 @@ class _AddGeoSphereModalState extends State<AddGeoSphereModal> {
                     bottom:
                         10.0), // Optional spacing from the rest of the modal content
               ),
-              Text(
+              const Text(
                 "Add a Geo-Sphere!",
-                style:
-                    GlobalVariables.headerStyle.copyWith(color: Colors.black),
+                style: GlobalVariables.headerStyle,
               ),
               const SizedBox(height: 20),
               Text(
-                "When you are in the desired location, select a radius and press the button to create your new geo-sphere",
-                style: GlobalVariables.bodyStyleRegular.copyWith(
-                  color: Colors.black,
-                ),
-              ),
+                  "When you are in the desired location, select a radius and press the button to create your new geo-sphere",
+                  style: GlobalVariables.bodyStyleRegular
+                      .copyWith(color: Colors.white)),
               const SizedBox(height: 20),
               const Text(
                 "Please select the radius of your geo-sphere in meters:",
-                style: TextStyle(color: Colors.black),
               ),
               Slider(
                 value: sliderValue,
@@ -80,7 +76,6 @@ class _AddGeoSphereModalState extends State<AddGeoSphereModal> {
               ),
               const Text(
                 "Give your Geo-Sphere a name:",
-                style: TextStyle(color: Colors.black),
               ),
               TextField(
                 controller: nameController,

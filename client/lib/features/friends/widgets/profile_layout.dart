@@ -43,7 +43,10 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const ProfilePhoto(radius: 40),
+            ProfilePhoto(
+              radius: 40,
+              image: Image.asset("assets/images/profile_photo.jpg"),
+            ),
             Column(
               children: [
                 Text(

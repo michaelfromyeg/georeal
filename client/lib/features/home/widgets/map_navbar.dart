@@ -124,6 +124,7 @@ class MapNavbar extends StatelessWidget {
               ],
             ),
             onTap: () => showModalBottomSheet(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               context: context,
               builder: (context) => const AddGeoSphereModal(),
             ),

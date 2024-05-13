@@ -80,7 +80,10 @@ class _FriendRequestItemState extends State<FriendRequestItem> {
     return ListTile(
       title: Row(
         children: [
-          const ProfilePhoto(radius: 20),
+          ProfilePhoto(
+            radius: 20,
+            image: Image.asset("assets/images/profile_photo.jpg"),
+          ),
           const SizedBox(width: 10),
           Text(
             widget.request.senderUsername,

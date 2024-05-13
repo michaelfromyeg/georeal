@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/gallery/views/full_screen_image_viewer.dart';
@@ -16,19 +18,22 @@ class GeoSphereGallery extends StatefulWidget {
 }
 
 class _GeoSphereGalleryState extends State<GeoSphereGallery> {
-  late List<String> photoUrls;
+  //late List<String> photoUrls;
 
   @override
   void initState() {
     super.initState();
     final galleryViewModel =
         Provider.of<GalleryViewModel>(context, listen: false);
-    photoUrls =
-        galleryViewModel.getPhotosFromGallery(widget.geoSphere.geoSphereId);
+    log("Getting photos from gallery", name: "GeoSphereGallery");
+
+    galleryViewModel.fetchGallery(widget.geoSphere.geoSphereId);
   }
 
   @override
   Widget build(BuildContext context) {
+    final galleryViewModel =
+        Provider.of<GalleryViewModel>(context, listen: false);
     return Scaffold(
       backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
@@ -38,42 +43,47 @@ class _GeoSphereGalleryState extends State<GeoSphereGallery> {
               geoSphere: widget.geoSphere,
             ),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 2,
-                  mainAxisSpacing: 2,
-                ),
-                itemCount: photoUrls.length,
-                itemBuilder: (context, index) {
-                  String photoUrl = photoUrls[index];
-                  return GestureDetector(
-                    child: Image.network(
-                      photoUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.error),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            FullScreenImageViewer(imageUrl: photoUrl),
+              child: Consumer<GalleryViewModel>(
+                  builder: (context, viewModel, child) {
+                var photoUrls = galleryViewModel
+                    .getPhotosFromGallery(widget.geoSphere.geoSphereId);
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  itemCount: photoUrls.length,
+                  itemBuilder: (context, index) {
+                    String photoUrl = photoUrls[index];
+                    return GestureDetector(
+                      child: Image.network(
+                        photoUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.error),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                },
-              ),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              FullScreenImageViewer(imageUrl: photoUrl),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),

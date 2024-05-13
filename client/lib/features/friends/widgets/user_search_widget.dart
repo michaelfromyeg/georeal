@@ -24,8 +24,9 @@ class UserSearchWidget extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const ProfilePhoto(
+              ProfilePhoto(
                 radius: 20,
+                image: Image.asset("assets/images/profile_photo.jpg"),
               ),
               const SizedBox(width: 10),
               Text(
