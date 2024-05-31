@@ -9,6 +9,7 @@ import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/features/gallery/services/gallery_service.dart';
 import 'package:georeal/features/gallery/view_model/gallery_view_model.dart';
 import 'package:georeal/features/geo_sphere/services/geo_sphere_service.dart';
+import 'package:georeal/features/profile/view_model/profile_view_model.dart';
 import 'package:georeal/providers/user_provider';
 import 'package:georeal/util/theme.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,9 @@ Future main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => GalleryViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProfileViewModel(),
         ),
         ChangeNotifierProvider(create: (context) => FriendViewModel()),
       ],
