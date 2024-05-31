@@ -1,6 +1,12 @@
-from flask import Blueprint, jsonify, request
+import os
+
+from flask import Blueprint
+from flask import current_app as app
+from flask import jsonify, request
+from werkzeug.utils import secure_filename
 
 from georeal.models import FriendRequest, User, db
+from georeal.utils import allowed_file
 
 users = Blueprint('users', __name__)
 
@@ -18,6 +24,7 @@ def get_all_users():
     'num_posts': user.num_posts,
     'num_friends': user.num_friends,
     'is_friend': False,
+    'profile_photo': user.profile_photo,
         }
         users_list.append(user_data)
 
@@ -62,7 +69,8 @@ def get_user_details():
         'num_posts': user.num_posts,
         'num_friends': user.num_friends,
         'is_friend': is_friend,
-        'friend_request_status': friend_request_sent
+        'friend_request_status': friend_request_sent,
+        'profile_photo': user.profile_photo,
     }
 
     return jsonify(user_details), 200
@@ -176,7 +184,35 @@ def search_users():
             'num_posts': user.num_posts,
             'num_friends': user.num_friends,
             'is_friend': False,
+            'profile_photo': user.profile_photo,
         }
         users_list.append(user_data)
 
     return jsonify(users_list), 200
+
+@users.route('/user/<int:user_id>/profile_photo/upload', methods=['POST'])
+def upload_profile_photo(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
+    photo_file = request.files['photo']
+
+    if photo_file and allowed_file(photo_file.filename):
+        filename = secure_filename(photo_file.filename)
+        local_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        photo_file.save(local_path)
+
+        user.profile_photo = f"/uploads/{filename}"
+        db.session.commit()
+
+        return jsonify({'message': 'Profile photo uploaded successfully', 'photo_url': user.profile_photo}), 200
+    return jsonify({'error': 'No valid files were uploaded'}), 400
+
+@users.route('/user/<int:user_id>/profile_photo', methods=['GET'])
+def get_profile_photo(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    return jsonify({'photo_url': user.profile_photo}), 200

@@ -13,6 +13,7 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    profile_photo = db.Column(db.String(255), nullable=True)
     last_location = db.relationship('Location', backref='user', lazy=True, uselist=False)
     geofences = db.relationship('Geofence', backref='creator', lazy=True)
     posts = db.relationship('Post', backref='author', lazy=True)

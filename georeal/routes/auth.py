@@ -35,7 +35,8 @@ def register():
         'email': new_user.email,
         'num_places': new_user.num_places,
         'num_posts': new_user.num_posts,
-        'num_friends': new_user.num_friends
+        'num_friends': new_user.num_friends,
+        'profile_photo': new_user.profile_photo,
     }), 200
 
 @auth.route('/login', methods=['POST'])
@@ -55,6 +56,7 @@ def login():
             'num_places': user.num_places,
             'num_posts': user.num_posts,
             'num_friends': user.num_friends, 
+            'profile_photo': user.profile_photo,
         }), 200
     else:
         return jsonify({'message': 'Invalid email or password'}), 401

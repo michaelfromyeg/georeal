@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/profile/view_model/profile_view_model.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -16,39 +19,51 @@ class ProfilePhotoEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<ProfileViewModel>(context, listen: false);
+    final user = Provider.of<UserProvider>(context, listen: false).user!;
+    model.fetchProfilePhoto(user.id);
+    log(user.profilePhotoUrl ?? 'No Photo Url');
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: ProfilePhoto(
-                radius: MediaQuery.of(context).size.width / 4,
-                image: Image.asset("assets/images/profile_photo.jpg"),
+      ),
+      body: Consumer<ProfileViewModel>(
+        builder: (context, model, child) {
+          return Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (contet) => _updateProfileDialogue(model));
-              },
-              child: const Text("Change Photo"),
-            ),
-          ],
-        ));
+              Center(
+                child: ProfilePhoto(
+                  radius: MediaQuery.of(context).size.width / 4,
+                  image: user.profilePhotoUrl != null
+                      ? Image.network(user.profilePhotoUrl!)
+                      : image,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) =>
+                          _updateProfileDialogue(model, user.id));
+                },
+                child: const Text("Change Photo"),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
-  _updateProfileDialogue(ProfileViewModel model) {
+  _updateProfileDialogue(ProfileViewModel model, int userId) {
     return AlertDialog(
         content: SizedBox(
       height: 200,
@@ -64,12 +79,12 @@ class ProfilePhotoEditScreen extends StatelessWidget {
           ),
           ElevatedButton(
               onPressed: () async {
-                await model.updateProfilePhoto(ImageSource.camera);
+                await model.updateProfilePhoto(ImageSource.camera, userId);
               },
               child: const Text("Take Photo")),
           ElevatedButton(
               onPressed: () async {
-                await model.updateProfilePhoto(ImageSource.gallery);
+                await model.updateProfilePhoto(ImageSource.gallery, userId);
               },
               child: const Text("Choose from Library")),
         ],

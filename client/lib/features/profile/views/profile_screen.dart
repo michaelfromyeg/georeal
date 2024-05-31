@@ -62,9 +62,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 GestureDetector(
                   child: ProfilePhoto(
-                    radius: 30,
-                    image: Image.asset("assets/images/profile_photo.jpg"),
-                  ),
+                      radius: 30,
+                      image: user.profilePhotoUrl != null
+                          ? Image.network(user.profilePhotoUrl!)
+                          : const Image(
+                              image:
+                                  AssetImage("assets/images/profile_photo.jpg"),
+                            )),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {

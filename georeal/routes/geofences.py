@@ -76,8 +76,7 @@ def upload_photo(geofence_id):
         local_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         photo_file.save(local_path)
 
-        # Store the relative path or just the filename if you configure the server to resolve it
-        photo_url = f"/uploads/{filename}"  # Adjust according to how you access your server
+        photo_url = f"/uploads/{filename}"  
         new_post = Post(photo_url=photo_url, author_id=request.form['author_id'], geofence_id=geofence_id)
         db.session.add(new_post)
         db.session.commit()
