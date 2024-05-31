@@ -15,14 +15,16 @@ class AuthScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: GlobalVariables.backgroundColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Consumer<AuthViewModel>(
-            builder: (context, model, child) {
-              return model.authMode == Auth.signin
-                  ? _signInForm(context, model)
-                  : _signUpForm(context, model);
-            },
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Consumer<AuthViewModel>(
+              builder: (context, model, child) {
+                return model.authMode == Auth.signin
+                    ? _signInForm(context, model)
+                    : _signUpForm(context, model);
+              },
+            ),
           ),
         ),
       ),
@@ -30,62 +32,65 @@ class AuthScreen extends StatelessWidget {
   }
 
   Widget _signInForm(BuildContext context, AuthViewModel model) {
-    return Column(
-      children: [
-        const Text(
-          "Sign In",
-          style: GlobalVariables.headerStyle,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        AuthTextField(
-          controller: model.emailController,
-          hintText: "Email",
-          isTextHidden: false,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        AuthTextField(
-          controller: model.passwordController,
-          hintText: "Password",
-          isTextHidden: true,
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        GestureDetector(
-          child: Container(
-            height: 50,
-            width: MediaQuery.of(context).size.width - 40,
-            decoration: BoxDecoration(
-              color: Theme.of(context).hintColor,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: GlobalVariables.secondaryColor),
-            ),
-            child: Center(
-              child: Text(
-                "Sign In",
-                style: TextStyle(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Sign In",
+            style: GlobalVariables.headerStyle,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AuthTextField(
+            controller: model.emailController,
+            hintText: "Email",
+            isTextHidden: false,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          AuthTextField(
+            controller: model.passwordController,
+            hintText: "Password",
+            isTextHidden: true,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          GestureDetector(
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width - 40,
+              decoration: BoxDecoration(
+                color: Theme.of(context).hintColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: GlobalVariables.secondaryColor),
+              ),
+              child: Center(
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
+            onTap: () async {
+              await _authenticateUser(context, model.login);
+            },
           ),
-          onTap: () async {
-            await _authenticateUser(context, model.login);
-          },
-        ),
-        TextButton(
-          onPressed: model.toggleAuthMode,
-          child: const Text(
-            "Don't have an Account? Sign up.",
-            style: TextStyle(color: GlobalVariables.secondaryColor),
+          TextButton(
+            onPressed: model.toggleAuthMode,
+            child: const Text(
+              "Don't have an Account? Sign up.",
+              style: TextStyle(color: GlobalVariables.secondaryColor),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
