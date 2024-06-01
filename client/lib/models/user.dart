@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:georeal/constants/env_variables.dart';
 
 class User {
@@ -8,9 +10,9 @@ class User {
   final int numPlaces;
   final int numPosts;
   final int numFriends;
-  String?
-      profilePhotoUrl; // Assuming profile photo is managed separately or not directly included in this model
-  // Assuming lastLocation, places, posts, and friends are managed separately or not directly included in this model
+  String? profilePhotoUrl;
+  List<int>?
+      friendsIds; // IDs of friends, to be used primarily for the logged-in user
 
   User({
     required this.id,
@@ -21,15 +23,17 @@ class User {
     this.numPlaces = 0,
     this.numPosts = 0,
     this.numFriends = 0,
+    this.friendsIds,
   });
 
   factory User.fromMap(Map<String, dynamic> data) {
+    log(data.toString(), name: 'User.fromMap');
     String? profilePhotoPath = data['profile_photo'];
     String? fullProfilePhotoUrl = profilePhotoPath != null
         ? '${EnvVariables.uri}$profilePhotoPath'
         : null;
     return User(
-      id: data['id'],
+      id: data['user_id'],
       username: data['username'],
       email: data['email'],
       name: data['name'],
@@ -37,7 +41,13 @@ class User {
       numPosts: data['num_posts'] ?? 0,
       numFriends: data['num_friends'] ?? 0,
       profilePhotoUrl: fullProfilePhotoUrl,
+      friendsIds: data['friends_ids']?.cast<
+          int>(), // Assuming `friends_ids` is part of the data map when applicable
     );
+  }
+
+  bool isFriend(int userId) {
+    return friendsIds?.contains(userId) ?? false;
   }
 
   Map<String, dynamic> toMap() {
@@ -50,6 +60,7 @@ class User {
       'num_posts': numPosts,
       'num_friends': numFriends,
       'profile_photo': profilePhotoUrl,
+      'friends_ids': friendsIds,
     };
   }
 }

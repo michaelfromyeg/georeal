@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/profile/view_model/profile_view_model.dart';
@@ -21,7 +19,7 @@ class ProfilePhotoEditScreen extends StatelessWidget {
     final model = Provider.of<ProfileViewModel>(context, listen: false);
     final user = Provider.of<UserProvider>(context, listen: false).user!;
     model.fetchProfilePhoto(user.id);
-    log(user.profilePhotoUrl ?? 'No Photo Url');
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(

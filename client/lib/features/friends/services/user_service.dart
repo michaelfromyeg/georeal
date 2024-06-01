@@ -3,19 +3,21 @@ import 'dart:developer';
 
 import 'package:georeal/constants/env_variables.dart';
 import 'package:georeal/models/friend_request.dart';
-import 'package:georeal/models/other_user.dart';
+import 'package:georeal/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static Future<List<OtherUser>> getAllUsers() async {
+  static Future<List<User>> getAllUsers() async {
     try {
       final response = await http.get(Uri.parse('${EnvVariables.uri}/users'));
 
       if (response.statusCode == 200) {
         final List<dynamic> usersJson = json.decode(response.body);
-        log(usersJson.toString());
-        List<OtherUser> users =
-            usersJson.map((user) => OtherUser.fromMap(user)).toList();
+        log(usersJson.toString(), name: 'getAllUsers');
+        for (var user in usersJson) {
+          log(user.toString(), name: 'getAllUsers');
+        }
+        List<User> users = usersJson.map((user) => User.fromMap(user)).toList();
 
         return users;
       } else {
@@ -28,10 +30,8 @@ class UserService {
     }
   }
 
-  static Future<OtherUser> getUserByUsername(
-      String username, int userId) async {
+  static Future<User> getUserByUsername(String username, int userId) async {
     try {
-      log('Fetching user with username: $username');
       final response = await http.get(
         Uri.parse(
             '${EnvVariables.uri}/user?username=${Uri.encodeComponent(username)}&user_id=${Uri.encodeComponent(userId.toString())}'),
@@ -40,7 +40,7 @@ class UserService {
 
       if (response.statusCode == 200) {
         final userJson = json.decode(response.body);
-        return OtherUser.fromMap(userJson);
+        return User.fromMap(userJson);
       } else {
         throw Exception(
             'Failed to load user with status code: ${response.statusCode}');
@@ -53,7 +53,6 @@ class UserService {
 
   static Future<String> sendFriendRequest(int senderId, int receiverId) async {
     try {
-      log('Sending friend request from $senderId to $receiverId');
       http.Response response = await http.post(
         Uri.parse(
             '${EnvVariables.uri}/users/friend_request?sender_id=${Uri.encodeComponent(senderId.toString())}&receiver_id=${Uri.encodeComponent(receiverId.toString())}'),
@@ -134,16 +133,16 @@ class UserService {
     }
   }
 
-  static Future<List<OtherUser>> searchUsers(String query) async {
+  static Future<List<User>> searchUsers(String query) async {
     try {
       http.Response response = await http.get(
         Uri.parse(
             '${EnvVariables.uri}/users/search?query=${Uri.encodeComponent(query)}'),
       );
-      List<OtherUser> users = [];
-      log('Searching users: ${response.body}');
+      List<User> users = [];
+
       for (var user in json.decode(response.body)) {
-        users.add(OtherUser.fromMap(user));
+        users.add(User.fromMap(user));
       }
       return users;
     } catch (e) {

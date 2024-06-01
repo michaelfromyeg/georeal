@@ -19,13 +19,15 @@ def get_all_users():
         user_data = {
             'user_id': user.id,
             'name': user.name,
-    'username': user.username,
-    'num_places': user.num_places,
-    'num_posts': user.num_posts,
-    'num_friends': user.num_friends,
-    'is_friend': False,
-    'profile_photo': user.profile_photo,
+            'email': user.email,
+            'username': user.username,
+            'num_places': user.num_places,
+            'num_posts': user.num_posts,
+            'num_friends': user.num_friends,
+            'profile_photo': user.profile_photo,
+            'friends_ids': user.get_friends_ids(),
         }
+        
         users_list.append(user_data)
 
     return jsonify(users_list), 200
@@ -63,14 +65,14 @@ def get_user_details():
 
     user_details = {
         'user_id': user.id,
-        'name': user.name,
-        'username': user.username,
-        'num_places': user.num_places,
-        'num_posts': user.num_posts,
-        'num_friends': user.num_friends,
-        'is_friend': is_friend,
-        'friend_request_status': friend_request_sent,
-        'profile_photo': user.profile_photo,
+            'name': user.name,
+            'email': user.email,
+            'username': user.username,
+            'num_places': user.num_places,
+            'num_posts': user.num_posts,
+            'num_friends': user.num_friends,
+            'profile_photo': user.profile_photo,
+            'friends_ids': user.get_friends_ids(),
     }
 
     return jsonify(user_details), 200
@@ -178,13 +180,14 @@ def search_users():
     for user in users:
         user_data = {
             'user_id': user.id,
-            'username': user.username,
             'name': user.name,
+            'email': user.email,
+            'username': user.username,
             'num_places': user.num_places,
             'num_posts': user.num_posts,
             'num_friends': user.num_friends,
-            'is_friend': False,
             'profile_photo': user.profile_photo,
+            'friends_ids': user.get_friends_ids(),
         }
         users_list.append(user_data)
 

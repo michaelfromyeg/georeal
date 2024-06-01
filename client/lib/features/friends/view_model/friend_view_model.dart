@@ -2,15 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:georeal/features/friends/services/user_service.dart';
-import 'package:georeal/models/other_user.dart';
+import 'package:georeal/models/user.dart';
 
 class FriendViewModel extends ChangeNotifier {
-  List<OtherUser> _searchedUsers = [];
-  OtherUser? _selectedUser;
+  List<User> _searchedUsers = [];
+  User? _selectedUser;
   TextEditingController searchController = TextEditingController();
 
-  List<OtherUser> get searchedUsers => _searchedUsers;
-  OtherUser? get selectedUser => _selectedUser;
+  List<User> get searchedUsers => _searchedUsers;
+  User? get selectedUser => _selectedUser;
 
   void fetchUsers() async {
     try {
@@ -41,7 +41,6 @@ class FriendViewModel extends ChangeNotifier {
   Future<void> searchUsers() async {
     try {
       _searchedUsers = await UserService.searchUsers(searchController.text);
-      log(_searchedUsers.toString(), name: 'Searched users');
       notifyListeners();
     } catch (e) {
       log(e.toString(), name: 'searchUsers');

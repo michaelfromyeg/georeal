@@ -85,7 +85,7 @@ class FriendsScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final friend = model.searchedUsers[index];
                       return UserSearchWidget(
-                        username: friend.username,
+                        user: friend,
                       );
                     },
                   );

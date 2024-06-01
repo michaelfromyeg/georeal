@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/models/user.dart';
 import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class ProfileLayout extends StatefulWidget {
-  const ProfileLayout({super.key});
+  final User user;
+  const ProfileLayout({super.key, required this.user});
 
   @override
   State<ProfileLayout> createState() => _ProfileLayoutState();
@@ -26,7 +28,7 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             senderUsername, viewModel.selectedUser!.id);
         setState(() => _isRequested = true);
       } else {
-        // Handle error or invalid state
+        // TODO: Handle error or invalid state
       }
     } finally {
       setState(() => _isProcessing = false);
@@ -45,7 +47,11 @@ class _ProfileLayoutState extends State<ProfileLayout> {
           children: [
             ProfilePhoto(
               radius: 40,
-              image: Image.asset("assets/images/profile_photo.jpg"),
+              image: widget.user.profilePhotoUrl != null
+                  ? Image.network(widget.user.profilePhotoUrl!)
+                  : const Image(
+                      image: AssetImage('assets/images/default_profile.png'),
+                    ),
             ),
             Column(
               children: [

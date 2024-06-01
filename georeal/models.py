@@ -25,6 +25,9 @@ class User(db.Model):
     num_posts = db.Column(db.Integer, default=0)
     num_friends = db.Column(db.Integer, default=0)
 
+    def get_friends_ids(self):
+        return [friend.id for friend in self.friends.all()]
+
 class Geofence(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)

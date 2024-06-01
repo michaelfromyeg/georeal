@@ -4,11 +4,11 @@ import 'package:georeal/features/friends/widgets/profile_layout.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
 import 'package:georeal/features/geo_sphere/widgets/geo_sphere_widget.dart';
 import 'package:georeal/global_variables.dart';
-import 'package:georeal/models/other_user.dart';
+import 'package:georeal/models/user.dart';
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  final OtherUser user;
+  final User user;
   const UserProfileScreen({
     super.key,
     required this.user,
@@ -44,7 +44,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const ProfileLayout(),
+            ProfileLayout(
+              user: widget.user,
+            ),
             Expanded(
               child: Consumer<GeoSphereViewModel>(
                 builder: (context, geoSphereViewModel, child) {

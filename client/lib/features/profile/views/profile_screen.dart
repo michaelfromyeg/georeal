@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false).user!;
+    log(user.profilePhotoUrl ?? "No profile photo", name: "ProfileScreen");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: GlobalVariables.backgroundColor,

@@ -3,14 +3,20 @@ import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view/user_profile_screen.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/global_variables.dart';
+import 'package:georeal/models/user.dart';
 import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
-class UserSearchWidget extends StatelessWidget {
-  final String username;
+class UserSearchWidget extends StatefulWidget {
+  final User user;
 
-  const UserSearchWidget({super.key, required this.username});
+  const UserSearchWidget({super.key, required this.user});
 
+  @override
+  State<UserSearchWidget> createState() => _UserSearchWidgetState();
+}
+
+class _UserSearchWidgetState extends State<UserSearchWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,11 +32,15 @@ class UserSearchWidget extends StatelessWidget {
             children: [
               ProfilePhoto(
                 radius: 20,
-                image: Image.asset("assets/images/profile_photo.jpg"),
+                image: widget.user.profilePhotoUrl != null
+                    ? Image.network(widget.user.profilePhotoUrl!)
+                    : const Image(
+                        image: AssetImage('assets/images/default_profile.png'),
+                      ),
               ),
               const SizedBox(width: 10),
               Text(
-                username,
+                widget.user.username,
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -48,7 +58,6 @@ class UserSearchWidget extends StatelessWidget {
           ));
         }
 
-        await viewModel.getUserByUsername(username, userProvider.user!.id);
         if (context.mounted) {
           if (viewModel.selectedUser == null) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -59,8 +68,7 @@ class UserSearchWidget extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    UserProfileScreen(user: viewModel.selectedUser!),
+                builder: (context) => UserProfileScreen(user: widget.user),
               ),
             );
           }
