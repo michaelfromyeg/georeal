@@ -13,10 +13,7 @@ class UserService {
 
       if (response.statusCode == 200) {
         final List<dynamic> usersJson = json.decode(response.body);
-        log(usersJson.toString(), name: 'getAllUsers');
-        for (var user in usersJson) {
-          log(user.toString(), name: 'getAllUsers');
-        }
+
         List<User> users = usersJson.map((user) => User.fromMap(user)).toList();
 
         return users;

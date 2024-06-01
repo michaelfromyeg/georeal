@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:georeal/constants/env_variables.dart';
 
 class User {
@@ -27,7 +25,6 @@ class User {
   });
 
   factory User.fromMap(Map<String, dynamic> data) {
-    log(data.toString(), name: 'User.fromMap');
     String? profilePhotoPath = data['profile_photo'];
     String? fullProfilePhotoUrl = profilePhotoPath != null
         ? '${EnvVariables.uri}$profilePhotoPath'

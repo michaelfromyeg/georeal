@@ -102,3 +102,4 @@ flutter:
     - .env
     - assets/map/style.json
     - assets/map/simple_style.json
+    - assets/images/default_profile.png
