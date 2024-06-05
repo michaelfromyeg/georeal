@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/services/user_service.dart';
 import 'package:georeal/models/friend_request.dart';
 import 'package:georeal/providers/user_provider';
@@ -80,10 +79,6 @@ class _FriendRequestItemState extends State<FriendRequestItem> {
     return ListTile(
       title: Row(
         children: [
-          ProfilePhoto(
-            radius: 20,
-            image: Image.asset("assets/images/profile_photo.jpg"),
-          ),
           const SizedBox(width: 10),
           Text(
             widget.request.senderUsername,
