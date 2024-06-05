@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
 import 'package:georeal/features/friends/widgets/user_search_widget.dart';
+import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
 
 class FriendsScreen extends StatelessWidget {
@@ -84,9 +85,13 @@ class FriendsScreen extends StatelessWidget {
                     itemCount: model.searchedUsers.length,
                     itemBuilder: (context, index) {
                       final friend = model.searchedUsers[index];
-                      return UserSearchWidget(
-                        user: friend,
-                      );
+                      final user = Provider.of<UserProvider>(context).user;
+                      if (friend.username != user?.username) {
+                        return UserSearchWidget(
+                          user: friend,
+                        );
+                      }
+                      return null;
                     },
                   );
                 }

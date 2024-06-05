@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:georeal/common/custom_progress_indicator.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/features/friends/view_model/selected_user_view_model.dart';
 import 'package:georeal/models/user.dart';
 import 'package:georeal/providers/user_provider';
 import 'package:provider/provider.dart';
@@ -14,26 +16,7 @@ class ProfileLayout extends StatefulWidget {
 }
 
 class _ProfileLayoutState extends State<ProfileLayout> {
-  bool _isRequested = false;
-  bool _isProcessing = false;
-
-  Future<void> _handleAddFriend() async {
-    setState(() => _isProcessing = true);
-    try {
-      final viewModel = Provider.of<FriendViewModel>(context, listen: false);
-      final senderUsername =
-          Provider.of<UserProvider>(context, listen: false).user?.id;
-      if (senderUsername != null && viewModel.selectedUser?.id != null) {
-        await viewModel.sendFriendRequest(
-            senderUsername, viewModel.selectedUser!.id);
-        setState(() => _isRequested = true);
-      } else {
-        // TODO: Handle error or invalid state
-      }
-    } finally {
-      setState(() => _isProcessing = false);
-    }
-  }
+  Future<void> _handleAddFriend() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -95,32 +78,43 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              GestureDetector(
-                onTap: _isRequested || _isProcessing ? null : _handleAddFriend,
-                child: Container(
-                  width: 100,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).hintColor),
-                    borderRadius: BorderRadius.circular(5),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _isProcessing
-                        ? const Center(
-                            child:
-                                CircularProgressIndicator(color: Colors.white))
-                        : Center(
-                            child: Text(
-                              _isRequested ? "Requested" : "Add Friend",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor),
-                            ),
-                          ),
-                  ),
-                ),
+              Consumer<SelectedUserViewModel>(
+                builder: (context, model, child) {
+                  return GestureDetector(
+                    onTap: () {
+                      model.sendFriendRequest(
+                          Provider.of<UserProvider>(context, listen: false)
+                              .user!
+                              .id);
+                    },
+                    child: Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Theme.of(context).hintColor),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: model.friendRequestStatus ==
+                                FriendRequestStatus.loading
+                            ? const Center(
+                                child: CustomProgressIndicator(),
+                              )
+                            : Center(
+                                child: Text(
+                                  getFriendRequestLabel(
+                                      model.friendRequestStatus),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
+                                ),
+                              ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -128,5 +122,18 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         const Divider(),
       ],
     );
+  }
+
+  String getFriendRequestLabel(FriendRequestStatus status) {
+    switch (status) {
+      case FriendRequestStatus.pending:
+        return "Pending";
+      case FriendRequestStatus.friend:
+        return "Friends";
+      case FriendRequestStatus.notFriend:
+        return "Add Friend";
+      default:
+        return "Add Friend";
+    }
   }
 }

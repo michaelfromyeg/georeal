@@ -67,14 +67,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       image: user.profilePhotoUrl != null
                           ? Image.network(user.profilePhotoUrl!)
                           : const Image(
-                              image:
-                                  AssetImage("assets/images/profile_photo.jpg"),
+                              image: AssetImage(
+                                  "assets/images/default_profile.png"),
                             )),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return ProfilePhotoEditScreen(
-                        image: Image.asset("assets/images/profile_photo.jpg"),
+                        image: user.profilePhotoUrl != null
+                            ? Image.network(user.profilePhotoUrl!)
+                            : const Image(
+                                image: AssetImage(
+                                    "assets/images/default_profile.png"),
+                              ),
                       );
                     }));
                   },

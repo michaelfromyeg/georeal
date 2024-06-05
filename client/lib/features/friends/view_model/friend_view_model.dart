@@ -7,10 +7,14 @@ import 'package:georeal/models/user.dart';
 class FriendViewModel extends ChangeNotifier {
   List<User> _searchedUsers = [];
   User? _selectedUser;
+  final bool _friendRequestIsProcessing = false;
+  final bool _hasRequested = false;
   TextEditingController searchController = TextEditingController();
 
   List<User> get searchedUsers => _searchedUsers;
   User? get selectedUser => _selectedUser;
+  bool get friendRequestIsProcessing => _friendRequestIsProcessing;
+  bool get hasRequested => _hasRequested;
 
   void fetchUsers() async {
     try {
@@ -27,14 +31,6 @@ class FriendViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log(e.toString(), name: 'getUserByUsername');
-    }
-  }
-
-  Future<void> sendFriendRequest(int senderId, int receiverId) async {
-    try {
-      await UserService.sendFriendRequest(senderId, receiverId);
-    } catch (e) {
-      log(e.toString(), name: 'sendFriendRequest');
     }
   }
 

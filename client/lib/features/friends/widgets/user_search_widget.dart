@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:georeal/common/profile_photo.dart';
 import 'package:georeal/features/friends/view/user_profile_screen.dart';
 import 'package:georeal/features/friends/view_model/friend_view_model.dart';
+import 'package:georeal/features/friends/view_model/selected_user_view_model.dart';
 import 'package:georeal/global_variables.dart';
 import 'package:georeal/models/user.dart';
 import 'package:georeal/providers/user_provider';
@@ -59,19 +60,15 @@ class _UserSearchWidgetState extends State<UserSearchWidget> {
         }
 
         if (context.mounted) {
-          if (viewModel.selectedUser == null) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Selected user data is not available.'),
-              duration: Duration(seconds: 2),
-            ));
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserProfileScreen(user: widget.user),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider(
+                create: (context) => SelectedUserViewModel(widget.user),
+                child: UserProfileScreen(user: widget.user),
               ),
-            );
-          }
+            ),
+          );
         }
       },
     );
