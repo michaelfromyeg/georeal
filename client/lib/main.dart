@@ -18,7 +18,7 @@ import 'features/geo_sphere/view_model/geo_sphere_view_model.dart';
 import 'features/location/location_view_model.dart';
 
 @pragma('vm:entry-point')
-void backgroundFetchHeadlessTask(HeadlessTask task) async {
+Future<void> backgroundFetchHeadlessTask(HeadlessTask task) async {
   String taskId = task.taskId;
   bool isTimeout = task.timeout;
   if (isTimeout) {
@@ -75,7 +75,7 @@ Future main() async {
       child: const MyApp(),
     ),
   );
-  log('[BackgroundFetch] Registering headless task.', name: 'BackgroundFetch');
+  log('Registering headless task.', name: 'BackgroundFetch');
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
@@ -111,6 +111,7 @@ class _MyAppState extends State<MyApp> {
             requiresDeviceIdle: false,
             requiredNetworkType: NetworkType.NONE), (String taskId) async {
       // <-- Event handler
+
       // This is the fetch-event callback.
       log("[BackgroundFetch] Event received $taskId");
       setState(() {
@@ -163,6 +164,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    _onClickEnable(true);
     return MaterialApp(
       theme: CustomTheme.theme,
       debugShowCheckedModeBanner: false,

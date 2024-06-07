@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:georeal/features/gallery/widgets/photo_prompt.dart';
 import 'package:georeal/features/geo_sphere/view_model/geo_sphere_view_model.dart';
@@ -52,7 +50,6 @@ class MapNavbar extends StatelessWidget {
               ],
             ),
             onTap: () => {
-              log('${model.inGeoSphere}'),
               if (model.inGeoSphere)
                 {
                   showDialog(
@@ -62,7 +59,14 @@ class MapNavbar extends StatelessWidget {
                       })
                 }
               else
-                {}
+                {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('You are not inside a GeoSphere.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  ),
+                }
             },
           ),
           Row(
